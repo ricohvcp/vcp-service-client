@@ -1,0 +1,26 @@
+{
+  "name": "ucs-service-client",
+  "description": "client of ucs service",
+  "version": "0.0.0",
+  "dependencies": {
+    "urlsearchparams": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "power-assert": "*"
+  },
+  "homepage": "https://github.com/ucs-service-client",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "package.json",
+    "test"
+  ],
+  "keywords": [],
+  "license": "MIT",
+  "main": "build/browser/bundle.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ricohvcp/ucs-service-client.git"
+  }
+}

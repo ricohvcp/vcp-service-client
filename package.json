@@ -1,0 +1,88 @@
+{
+  "name": "ucs-service-client",
+  "description": "client of ucs service",
+  "version": "0.0.0",
+  "bugs": {
+    "url": "http://github.com/ricohvcp/ucs-service-client/issues"
+  },
+  "dependencies": {
+    "urlsearchparams": "*",
+    "xmlhttprequest": "^1.7.0"
+  },
+  "devDependencies": {
+    "bower": "*",
+    "browserify": "*",
+    "browserify-istanbul": "*",
+    "del": "*",
+    "eslint-plugin-no-func-space": "*",
+    "eslint-plugin-nodeca": "*",
+    "espowerify": "*",
+    "fixbow": "*",
+    "fixpack": "*",
+    "gulp": "*",
+    "gulp-babel": "*",
+    "gulp-connect": "*",
+    "gulp-eslint": "*",
+    "gulp-espower": "*",
+    "gulp-istanbul": "*",
+    "gulp-mocha": "*",
+    "gulp-remove-lines": "*",
+    "intelli-espower-loader": "*",
+    "karma-browserify": "*",
+    "karma-chrome-launcher": "*",
+    "karma-cli": "*",
+    "karma-coverage": "*",
+    "karma-firefox-launcher": "*",
+    "karma-ie-launcher": "*",
+    "karma-mocha": "*",
+    "karma-safari-launcher": "*",
+    "main-bower-files": "*",
+    "mocha": "*",
+    "power-assert": "*",
+    "vinyl-source-stream": "*"
+  },
+  "directories": {
+    "test": "test/"
+  },
+  "engines": {
+    "node": ">=0.10.0 <0.12",
+    "npm": ">=2.0.0"
+  },
+  "files": [
+    ".eslintrc",
+    ".gitignore",
+    ".travis.yml",
+    "CHANGELOG.md",
+    "README.md",
+    "bower.json",
+    "bower_components",
+    "build",
+    "gulpfile.js",
+    "index.js",
+    "lib",
+    "node_modules",
+    "package.json",
+    "src",
+    "test"
+  ],
+  "homepage": "http://github.com/ricohvcp/ucs-service-client",
+  "keywords": [],
+  "license": "MIT",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ricohvcp/ucs-service-client.git"
+  },
+  "scripts": {
+    "bower": "bower install && gulp bower",
+    "clean": "gulp clean",
+    "clean-all": "gulp clean:all",
+    "lint": "eslint src test index.js gulpfile.js *.conf.js && fixpack && fixbow",
+    "postinstall": "npm install eslint@es6jsx",
+    "start": "gulp server",
+    "test": "gulp test",
+    "test-browser": "gulp clean && gulp build && gulp build:test && npm run bower && karma start",
+    "x-full-rebuild": "npm run clean-all && npm install && npm test",
+    "x-install-global-bin": "npm install -g gulp bower mocha eslint fixpack fixbow karma-cli"
+  }
+}

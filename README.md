@@ -4,19 +4,32 @@
 
 ucs service client for javascript
 
-## tasks
 
-all tasks should completely run from npm command.
+## how to use
 
 ```sh
-## clone git repo
 $ git clone https://github.com/ucs-oauth-client
+$ npm install
+$ npm run build
+```
 
+- source for node.js will be in `build/src` directory
+- source for browser will be in `build/browser` directory
+
+
+## tasks
+
+all tasks could run from npm command.
+
+```sh
 ## install npm dependencies
 $ npm install
 
 ## install bower dependencies and move it main files to lib
 $ npm run bower
+
+## build all files in build/
+$ npm run build
 
 ## clean the build, tmp, lib, and npm-debug.log
 $ npm run clean
@@ -28,11 +41,12 @@ $ npm run clean-all
 $ npm run lint
 
 ## run test on server
-$ npm run test
+$ npm test
 
 ## run test on browser and get coverage
 $ npm run test-browser
 ```
+
 
 ## LICENSE
 

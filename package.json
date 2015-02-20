@@ -75,6 +75,7 @@
   },
   "scripts": {
     "bower": "bower install && gulp bower",
+    "build": "gulp build",
     "clean": "gulp clean",
     "clean-all": "gulp clean:all",
     "lint": "eslint src test index.js gulpfile.js *.conf.js && fixpack && fixbow",

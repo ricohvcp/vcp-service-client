@@ -216,39 +216,39 @@ describe('Session test', function() {
   });
 
   // TODO: fix service for browser
-  //it('logUpload', (done) => {
-  //  let session = new Session(params, endpoint);
-  //  let filename = 'test_from_browser';
-  //  let log = new Array(16).join('a').toString();
+  // it('logUpload', (done) => {
+  //   let session = new Session(params, endpoint);
+  //   let filename = 'test_from_browser';
+  //   let log = new Array(16).join('a').toString();
 
-  //  session.auth().then(() => {
-  //    return session.logUpload(log, filename);
-  //  }).then((result) => {
-  //    assert.strictEqual(result, '');
-  //    done();
-  //  }).catch(done);
-  //});
+  //   session.auth().then(() => {
+  //     return session.logUpload(log, filename);
+  //   }).then((result) => {
+  //     assert.strictEqual(result, '');
+  //     done();
+  //   }).catch(done);
+  // });
 
-  //it('logUpload cancel', (done) => {
-  //  let session = new Session(params, endpoint);
-  //  let filename = 'test_from_browser';
-  //  let log = new Array(100000).join('a').toString();
+  // it('logUpload cancel', (done) => {
+  //   let session = new Session(params, endpoint);
+  //   let filename = 'test_from_browser';
+  //   let log = new Array(100000).join('a').toString();
 
-  //  session.auth().then(() => {
-  //    // cancel
-  //    setTimeout(() => {
-  //      session.logUploadCancel();
-  //    }, 300);
+  //   session.auth().then(() => {
+  //     // cancel
+  //     setTimeout(() => {
+  //       session.logUploadCancel();
+  //     }, 300);
 
-  //    return session.logUpload(log, filename);
-  //  }).then((result) => {
-  //    assert.fail('cant be here');
-  //  }).catch((err) => {
-  //    assert.ok(err instanceof Error);
-  //    assert.strictEqual(err.message, 'upload canceled');
-  //    done();
-  //  }).catch(done);
-  //});
+  //     return session.logUpload(log, filename);
+  //   }).then((result) => {
+  //     assert.fail('cant be here');
+  //   }).catch((err) => {
+  //     assert.ok(err instanceof Error);
+  //     assert.strictEqual(err.message, 'upload canceled');
+  //     done();
+  //   }).catch(done);
+  // });
 
   it('logUpload file size error', () => {
     let session = new Session(params, endpoint);

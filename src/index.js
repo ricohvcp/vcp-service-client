@@ -1,6 +1,7 @@
 var URLSearchParams = URLSearchParams || require('urlsearchparams').URLSearchParams;
-var scopes = require('./scopes').SCOPES;
 var XMLHttpRequest = XMLHttpRequest || require('xmlhttprequest').XMLHttpRequest;
+
+var scopes = require('./scopes').SCOPES;
 
 export class FetchError extends Error {
   constructor(message, code) {
@@ -26,7 +27,7 @@ class Emitter {
   }
 
   off(name, fn) {
-    if (arguments.length === 0) {
+    if (name === undefined && fn === undefined) {
       delete this.events;
       this.events = {};
       return;
@@ -48,7 +49,6 @@ class Emitter {
 }
 
 class Fetcher extends Emitter {
-
   fetch(url, options) {
     if (url === undefined) {
       throw new Error('url required');
@@ -76,7 +76,7 @@ class Fetcher extends Emitter {
     return new Promise((done, fail) => {
       xhr.addEventListener('error', fail);
 
-      this.on('cancel', (data) => {
+      this.on('cancel', () => {
         xhr.abort();
         fail(new Error('upload canceled'));
       });

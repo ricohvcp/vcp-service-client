@@ -1,5 +1,6 @@
 var URLSearchParams = URLSearchParams || require('urlsearchparams').URLSearchParams;
 var XMLHttpRequest = XMLHttpRequest || require('xmlhttprequest').XMLHttpRequest;
+var assert = require('assert');
 
 var scopes = require('./scopes').SCOPES;
 
@@ -50,9 +51,7 @@ class Emitter {
 
 class Fetcher extends Emitter {
   fetch(url, options) {
-    if (url === undefined) {
-      throw new Error('url required');
-    }
+    assert(url, 'url required');
 
     options = options || {};
 
@@ -108,8 +107,8 @@ class Fetcher extends Emitter {
 export class Session extends Fetcher {
 
   constructor(endpoint, params) {
-    if (endpoint === undefined) throw new Error('endpoint required');
-    if (params === undefined) throw new Error('params required');
+    assert(endpoint, 'endpoint required');
+    assert(params, 'params required');
 
     super();
     this.endpoint = endpoint;
@@ -140,7 +139,7 @@ export class Session extends Fetcher {
   }
 
   discovery(scope) {
-    if (scope === undefined) throw new Error('scope is required');
+    assert(scope, 'scope is required');
 
     let url = `${this.endpoint}/auth/discovery`;
     let access_token = this.authInfo.access_token;
@@ -184,7 +183,7 @@ export class Session extends Fetcher {
   }
 
   roster(cid) {
-    if (cid === undefined) throw new Error('cid is required');
+    assert(cid, 'cid is required');
 
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}/${cid}`;
@@ -198,17 +197,15 @@ export class Session extends Fetcher {
   }
 
   logUpload(log, filename) {
-    if (log === undefined) throw new Error('log is required');
-    if (filename === undefined) throw new Error('filename is required');
+    assert(log, 'log is required');
+    assert(filename, 'filename is required');
 
-    // API limit is 128MB for logfile
-    if (log.length > 1024 * 1024 * 128) {
-      throw new Error('logfile too big. (API limit 128MB)');
-    }
+    // API limit for logfile name
+    assert(filename.length < 32, 'logfile name too large. (API limit less than 32byte )');
+    assert(/^[a-zA-Z0-9_\-\.]*$/.test(filename), 'invalid log filename. (API limit alpahnumeric and -, ., _)');
 
-    if (filename.length > 32 || !/^[a-zA-Z0-9_\-\.]*$/.test(filename)) {
-      throw new Error('invalid log filename. (API limit less than 32byte with alpahnumeric and -, ., _)');
-    }
+    // API limit is limit for logfile size
+    assert(log.length < 1024 * 1024 * 128, 'logfile too big. (API limit 128MB)');
 
     return this.discovery(scopes.LOG_UPLOAD_API).then((res) => {
       let url = res.endpoint;

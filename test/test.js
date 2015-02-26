@@ -28,10 +28,11 @@ describe('Session test', function() {
 
     it('error', () => {
       assert.throws(() => {
-        new Session(endpoint);
+        let session = new Session(endpoint);
+        assert.fail('cant be here: ' + session);
       },
       (err) => {
-        return (err instanceof Error) && (err.message === "params required");
+        return err instanceof Error && err.message === 'params required';
       });
     });
   });

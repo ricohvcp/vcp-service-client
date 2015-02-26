@@ -123,102 +123,115 @@ describe('Session test', function() {
     });
   });
 
-  it('auth', (done) => {
-    let session = new Session(endpoint, params);
-    session.auth().then(() => {
-      assert.ok(session.authInfo.access_token);
-      assert.ok(session.authInfo.refresh_token);
-      assert.ok(session.authInfo.token_type);
-      assert.ok(session.authInfo.expires_in);
-      assert.ok(session.authInfo.scope);
-      done();
-    }).catch(done);
+  describe('auth', () => {
+    it('success', (done) => {
+      let session = new Session(endpoint, params);
+      session.auth().then(() => {
+        assert.ok(session.authInfo.access_token);
+        assert.ok(session.authInfo.refresh_token);
+        assert.ok(session.authInfo.token_type);
+        assert.ok(session.authInfo.expires_in);
+        assert.ok(session.authInfo.scope);
+        done();
+      }).catch(done);
+    });
   });
 
-  it('accountInfo', (done) => {
-    let session = new Session(endpoint, params);
-    session.auth().then(() => {
-      return session.accountInfo();
-    }).then((info) => {
-      assert.strictEqual(typeof info.email_verified, 'boolean');
-      assert.strictEqual(typeof info.web_password_changed, 'boolean');
-      done();
-    }).catch(done);
+  describe('accountInfo', () => {
+    it('success', (done) => {
+      let session = new Session(endpoint, params);
+      session.auth().then(() => {
+        return session.accountInfo();
+      }).then((info) => {
+        assert.strictEqual(typeof info.email_verified, 'boolean');
+        assert.strictEqual(typeof info.web_password_changed, 'boolean');
+        done();
+      }).catch(done);
+    });
   });
 
-  it('userInfo', (done) => {
-    let session = new Session(endpoint, params);
-    session.auth().then(() => {
-      return session.userInfo();
-    }).then((info) => {
-      assert.strictEqual(info.type, 'account');
-      assert.strictEqual(typeof info.id, 'number');
-      assert.strictEqual(typeof info.display_name, 'string');
-      assert.strictEqual(typeof info.email, 'string');
-      assert.strictEqual(typeof info.link, 'string');
-      assert.strictEqual(info.udc_id, params.username);
-      done();
-    }).catch(done);
+  describe('userInfo', () => {
+    it('success', (done) => {
+      let session = new Session(endpoint, params);
+      session.auth().then(() => {
+        return session.userInfo();
+      }).then((info) => {
+        assert.strictEqual(info.type, 'account');
+        assert.strictEqual(typeof info.id, 'number');
+        assert.strictEqual(typeof info.display_name, 'string');
+        assert.strictEqual(typeof info.email, 'string');
+        assert.strictEqual(typeof info.link, 'string');
+        assert.strictEqual(info.udc_id, params.username);
+        done();
+      }).catch(done);
+    });
   });
 
-  it('information', (done) => {
-    let session = new Session(endpoint, params);
-    session.auth().then(() => {
-      return session.information();
-    }).then((info) => {
-      assert.strictEqual(typeof info.ja, 'string');
-      assert.strictEqual(typeof info.global, 'string');
-      done();
-    }).catch(done);
+  describe('information', (done) => {
+    it('success', (done) => {
+      let session = new Session(endpoint, params);
+      session.auth().then(() => {
+        return session.information();
+      }).then((info) => {
+        assert.strictEqual(typeof info.ja, 'string');
+        assert.strictEqual(typeof info.global, 'string');
+        done();
+      }).catch(done);
+    });
   });
 
-  it('rosters', (done) => {
-    let session = new Session(endpoint, params);
-    session.auth().then(() => {
-      return session.rosters();
-    }).then((rosters) => {
-      // TODO: more assert
-      assert.ok(rosters);
-      done();
-    }).catch(done);
+  describe('rosters', (done) => {
+    it('success', (done) => {
+      let session = new Session(endpoint, params);
+      session.auth().then(() => {
+        return session.rosters();
+      }).then((rosters) => {
+        // TODO: more assert
+        assert.ok(rosters);
+        done();
+      }).catch(done);
+    });
   });
 
-  it('roster', (done) => {
-    var cid;
-    let session = new Session(endpoint, params);
-    session.auth().then(() => {
-      return session.rosters();
-    }).then((rosters) => {
-      if (rosters.results.length > 0) {
-        cid = rosters.results.shift().udc_id;
-      } else {
-        return done(new Error(`${params.username} doesn't have a roster`));
-      }
-      return session.roster(cid);
-    }).then((roster) => {
-      assert.ok(roster);
-      assert.strictEqual(roster.udc_id, cid);
-      done();
-    }).catch(done);
+  describe('roster', (done) => {
+    it('success', (done) => {
+      var cid;
+      let session = new Session(endpoint, params);
+      session.auth().then(() => {
+        return session.rosters();
+      }).then((rosters) => {
+        if (rosters.results.length > 0) {
+          cid = rosters.results.shift().udc_id;
+        } else {
+          return done(new Error(`${params.username} doesn't have a roster`));
+        }
+        return session.roster(cid);
+      }).then((roster) => {
+        assert.ok(roster);
+        assert.strictEqual(roster.udc_id, cid);
+        done();
+      }).catch(done);
+    });
+
+    it('error', (done) => {
+      var cid;
+      let session = new Session(endpoint, params);
+      session.auth().then(() => {
+        return session.roster('invalidCID');
+      }).then((roster) => {
+        assert.ok(roster);
+        assert.strictEqual(roster.udc_id, cid);
+        done();
+      }).catch((err) => {
+        assert.ok(err instanceof FetchError);
+        assert.strictEqual(err.message, '存在しないUDC-IDです');
+        assert.strictEqual(err.code, 'roster.error.udcid.notexist');
+        done();
+      }).catch(done);
+    });
   });
 
-  it('roster error', (done) => {
-    var cid;
-    let session = new Session(endpoint, params);
-    session.auth().then(() => {
-      return session.roster('invalidCID');
-    }).then((roster) => {
-      assert.ok(roster);
-      assert.strictEqual(roster.udc_id, cid);
-      done();
-    }).catch((err) => {
-      assert.ok(err instanceof FetchError);
-      assert.strictEqual(err.message, '存在しないUDC-IDです');
-      assert.strictEqual(err.code, 'roster.error.udcid.notexist');
-      done();
-    }).catch(done);
-  });
-
+  describe('logUpload', (done) => {
   // TODO: fix service for browser
   // it('logUpload', (done) => {
   //   let session = new Session(endpoint, params);
@@ -254,27 +267,28 @@ describe('Session test', function() {
   //   }).catch(done);
   // });
 
-  it('logUpload file size error', () => {
-    let session = new Session(endpoint, params);
-    let filename = 'test_from_browser';
-    let log = new Array(1024 * 1024 * 200).join('a').toString();
+    it('file size error', () => {
+      let session = new Session(endpoint, params);
+      let filename = 'test_from_browser';
+      let log = new Array(1024 * 1024 * 200).join('a').toString();
 
-    try {
-      session.logUpload(log, filename);
-    } catch(err) {
-      assert.strictEqual(err.message, 'logfile too big. (API limit 128MB)');
-    }
-  });
+      try {
+        session.logUpload(log, filename);
+      } catch(err) {
+        assert.strictEqual(err.message, 'logfile too big. (API limit 128MB)');
+      }
+    });
 
-  it('logUpload file name error', () => {
-    let session = new Session(endpoint, params);
-    let filename = 'test#from%browser';
-    let log = new Array(16).join('a').toString();
+    it('file name error', () => {
+      let session = new Session(endpoint, params);
+      let filename = 'test#from%browser';
+      let log = new Array(16).join('a').toString();
 
-    try {
-      session.logUpload(log, filename);
-    } catch(err) {
-      assert.strictEqual(err.message, 'invalid log filename. (API limit less than 32byte with alpahnumeric and -, ., _)');
-    }
+      try {
+        session.logUpload(log, filename);
+      } catch(err) {
+        assert.strictEqual(err.message, 'invalid log filename. (API limit alpahnumeric and -, ., _)');
+      }
+    });
   });
 });

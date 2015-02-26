@@ -108,6 +108,9 @@ class Fetcher extends Emitter {
 export class Session extends Fetcher {
 
   constructor(endpoint, params) {
+    if (endpoint === undefined) throw new Error('endpoint required');
+    if (params === undefined) throw new Error('params required');
+
     super();
     this.endpoint = endpoint;
     this.params = params;
@@ -115,15 +118,13 @@ export class Session extends Fetcher {
 
   auth() {
     let url = `${this.endpoint}/auth/token`;
-
     let urlParams = new URLSearchParams();
+
     Object.keys(this.params).forEach((key) => {
       let value = this.params[key];
-
       if (key === 'scope') {
         value = value.join(' ');
       }
-
       urlParams.append(key, value);
     });
 
@@ -139,6 +140,8 @@ export class Session extends Fetcher {
   }
 
   discovery(scope) {
+    if (scope === undefined) throw new Error('scope is required');
+
     let url = `${this.endpoint}/auth/discovery`;
     let access_token = this.authInfo.access_token;
 
@@ -181,6 +184,8 @@ export class Session extends Fetcher {
   }
 
   roster(cid) {
+    if (cid === undefined) throw new Error('cid is required');
+
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}/${cid}`;
       let access_token = res.access_token;
@@ -193,6 +198,9 @@ export class Session extends Fetcher {
   }
 
   logUpload(log, filename) {
+    if (log === undefined) throw new Error('log is required');
+    if (filename === undefined) throw new Error('filename is required');
+
     // API limit is 128MB for logfile
     if (log.length > 1024 * 1024 * 128) {
       throw new Error('logfile too big. (API limit 128MB)');

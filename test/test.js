@@ -18,10 +18,22 @@ describe('Session test', function() {
     grant_type: 'password'
   };
 
-  it('constructor', () => {
-    let session = new Session(endpoint, params);
-    assert.ok(session.params);
-    assert.strictEqual(Object.keys(session.events).length, 0);
+  describe('constructor', () => {
+    it('new', () => {
+      let session = new Session(endpoint, params);
+      assert.deepEqual(session.params, params); // TODO: strictDeepEqual in io.js
+      assert.strictEqual(session.endpoint, endpoint);
+      assert.strictEqual(Object.keys(session.events).length, 0);
+    });
+
+    it('error', () => {
+      assert.throws(() => {
+        new Session(endpoint);
+      },
+      (err) => {
+        return (err instanceof Error) && (err.message === "params required");
+      });
+    });
   });
 
   it('on', () => {

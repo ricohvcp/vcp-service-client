@@ -9,8 +9,7 @@ export class FetchError extends Error {
   }
 }
 
-class Fetcher {
-
+class Emitter {
   constructor() {
     this.events = {};
   }
@@ -46,6 +45,9 @@ class Fetcher {
       delete this.events[name];
     }
   }
+}
+
+class Fetcher extends Emitter {
 
   fetch(url, options) {
     if (url === undefined) {

@@ -157,17 +157,6 @@ describe('Session test', function() {
     }).catch(done);
   });
 
-  it('udcservice', (done) => {
-    let session = new Session(params, endpoint);
-    session.auth().then(() => {
-      return session.udcService();
-    }).then((service) => {
-      // TODO: more assert
-      assert.ok(service);
-      done();
-    }).catch(done);
-  });
-
   it('rosters', (done) => {
     let session = new Session(params, endpoint);
     session.auth().then(() => {

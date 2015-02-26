@@ -166,12 +166,8 @@ export class Session extends Fetcher {
     return this.discovery(scopes.INFORMATION_URI);
   }
 
-  udcService() {
-    return this.discovery(scopes.UDC_SERVICE_API);
-  }
-
   rosters() {
-    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then(res => {
+    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}`;
       let access_token = res.access_token;
 
@@ -183,7 +179,7 @@ export class Session extends Fetcher {
   }
 
   roster(cid) {
-    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then(res => {
+    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}/${cid}`;
       let access_token = res.access_token;
 

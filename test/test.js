@@ -19,13 +19,13 @@ describe('Session test', function() {
   };
 
   it('constructor', () => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     assert.ok(session.params);
     assert.strictEqual(Object.keys(session.events).length, 0);
   });
 
   it('on', () => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     function test0() {}
     function test1() {}
     function test2() {}
@@ -40,7 +40,7 @@ describe('Session test', function() {
   });
 
   it('off', () => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
 
     function test0() {}
     function test1() {}
@@ -55,7 +55,7 @@ describe('Session test', function() {
   });
 
   it('off name', () => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
 
     function test0() {}
     function test1() {}
@@ -73,7 +73,7 @@ describe('Session test', function() {
   });
 
   it('off name all', () => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
 
     function test0() {}
     function test1() {}
@@ -88,7 +88,7 @@ describe('Session test', function() {
   });
 
   it('emit', () => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
 
     let c = 0;
     session.on('test', function test0(data) {
@@ -109,7 +109,7 @@ describe('Session test', function() {
   });
 
   it('auth', (done) => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     session.auth().then(() => {
       assert.ok(session.authInfo.access_token);
       assert.ok(session.authInfo.refresh_token);
@@ -121,7 +121,7 @@ describe('Session test', function() {
   });
 
   it('accountInfo', (done) => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     session.auth().then(() => {
       return session.accountInfo();
     }).then((info) => {
@@ -132,7 +132,7 @@ describe('Session test', function() {
   });
 
   it('userInfo', (done) => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     session.auth().then(() => {
       return session.userInfo();
     }).then((info) => {
@@ -147,7 +147,7 @@ describe('Session test', function() {
   });
 
   it('information', (done) => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     session.auth().then(() => {
       return session.information();
     }).then((info) => {
@@ -158,7 +158,7 @@ describe('Session test', function() {
   });
 
   it('rosters', (done) => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     session.auth().then(() => {
       return session.rosters();
     }).then((rosters) => {
@@ -170,7 +170,7 @@ describe('Session test', function() {
 
   it('roster', (done) => {
     var cid;
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     session.auth().then(() => {
       return session.rosters();
     }).then((rosters) => {
@@ -189,7 +189,7 @@ describe('Session test', function() {
 
   it('roster error', (done) => {
     var cid;
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     session.auth().then(() => {
       return session.roster('invalidCID');
     }).then((roster) => {
@@ -206,7 +206,7 @@ describe('Session test', function() {
 
   // TODO: fix service for browser
   // it('logUpload', (done) => {
-  //   let session = new Session(params, endpoint);
+  //   let session = new Session(endpoint, params);
   //   let filename = 'test_from_browser';
   //   let log = new Array(16).join('a').toString();
 
@@ -219,7 +219,7 @@ describe('Session test', function() {
   // });
 
   // it('logUpload cancel', (done) => {
-  //   let session = new Session(params, endpoint);
+  //   let session = new Session(endpoint, params);
   //   let filename = 'test_from_browser';
   //   let log = new Array(100000).join('a').toString();
 
@@ -240,7 +240,7 @@ describe('Session test', function() {
   // });
 
   it('logUpload file size error', () => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     let filename = 'test_from_browser';
     let log = new Array(1024 * 1024 * 200).join('a').toString();
 
@@ -252,7 +252,7 @@ describe('Session test', function() {
   });
 
   it('logUpload file name error', () => {
-    let session = new Session(params, endpoint);
+    let session = new Session(endpoint, params);
     let filename = 'test#from%browser';
     let log = new Array(16).join('a').toString();
 

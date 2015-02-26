@@ -107,10 +107,10 @@ class Fetcher extends Emitter {
 
 export class Session extends Fetcher {
 
-  constructor(params, endpoint) {
+  constructor(endpoint, params) {
     super();
-    this.params = params;
     this.endpoint = endpoint;
+    this.params = params;
   }
 
   auth() {

@@ -34,7 +34,7 @@ describe('Session test', function() {
       } catch(err) {
         assert(err instanceof Error);
         assert.strictEqual(err.message, 'endpoint required');
-      };
+      }
     });
 
     it('new without params', () => {
@@ -44,7 +44,7 @@ describe('Session test', function() {
       } catch(err) {
         assert(err instanceof Error);
         assert.strictEqual(err.message, 'params required');
-      };
+      }
     });
 
     describe('new with invalid params', () => {
@@ -55,27 +55,27 @@ describe('Session test', function() {
         {
           name: 'without params.client_id',
           params: () => {
-            let _p = copy(params);
-            delete _p.client_id;
-            return _p;
+            let p = copy(params);
+            delete p.client_id;
+            return p;
           },
           message: 'params.client_id required'
         },
         {
           name: 'with empty params.client_id',
           params: () => {
-            let _p = copy(params);
-            _p.client_id = '';
-            return _p;
+            let p = copy(params);
+            p.client_id = '';
+            return p;
           },
           message: 'params.client_id required'
         },
         {
           name: 'with invalid type params.client_id',
           params: () => {
-            let _p = copy(params);
-            _p.client_id = 1000;
-            return _p;
+            let p = copy(params);
+            p.client_id = 1000;
+            return p;
           },
           message: 'params.client_id should be string'
         },
@@ -84,27 +84,27 @@ describe('Session test', function() {
         {
           name: 'without params.client_secret',
           params: () => {
-            let _p = copy(params);
-            delete _p.client_secret;
-            return _p;
+            let p = copy(params);
+            delete p.client_secret;
+            return p;
           },
           message: 'params.client_secret required'
         },
         {
           name: 'with empty params.client_secret',
           params: () => {
-            let _p = copy(params);
-            _p.client_secret = '';
-            return _p;
+            let p = copy(params);
+            p.client_secret = '';
+            return p;
           },
           message: 'params.client_secret required'
         },
         {
           name: 'with invalid params.client_secret',
           params: () => {
-            let _p = copy(params);
-            _p.client_secret = 1000;
-            return _p;
+            let p = copy(params);
+            p.client_secret = 1000;
+            return p;
           },
           message: 'params.client_secret should be string'
         },
@@ -112,27 +112,27 @@ describe('Session test', function() {
         {
           name: 'without params.username',
           params: () => {
-            let _p = copy(params);
-            delete _p.username;
-            return _p;
+            let p = copy(params);
+            delete p.username;
+            return p;
           },
           message: 'params.username required'
         },
         {
           name: 'with empty params.username',
           params: () => {
-            let _p = copy(params);
-            _p.username = '';
-            return _p;
+            let p = copy(params);
+            p.username = '';
+            return p;
           },
           message: 'params.username required'
         },
         {
           name: 'with invalid params.username',
           params: () => {
-            let _p = copy(params);
-            _p.username = 1000;
-            return _p;
+            let p = copy(params);
+            p.username = 1000;
+            return p;
           },
           message: 'params.username should be string'
         },
@@ -140,27 +140,27 @@ describe('Session test', function() {
         {
           name: 'without params.password',
           params: () => {
-            let _p = copy(params);
-            delete _p.password;
-            return _p;
+            let p = copy(params);
+            delete p.password;
+            return p;
           },
           message: 'params.password required'
         },
         {
           name: 'with empty params.password',
           params: () => {
-            let _p = copy(params);
-            _p.password = '';
-            return _p;
+            let p = copy(params);
+            p.password = '';
+            return p;
           },
           message: 'params.password required'
         },
         {
           name: 'with invalid params.password',
           params: () => {
-            let _p = copy(params);
-            _p.password = 1000;
-            return _p;
+            let p = copy(params);
+            p.password = 1000;
+            return p;
           },
           message: 'params.password should be string'
         },
@@ -168,18 +168,18 @@ describe('Session test', function() {
         {
           name: 'without params.scope',
           params: () => {
-            let _p = copy(params);
-            delete _p.scope;
-            return _p;
+            let p = copy(params);
+            delete p.scope;
+            return p;
           },
           message: 'params.scope required'
         },
         {
           name: 'with invalid params.scope',
           params: () => {
-            let _p = copy(params);
-            _p.scope = 1000;
-            return _p;
+            let p = copy(params);
+            p.scope = 1000;
+            return p;
           },
           message: 'params.scope should be array'
         },
@@ -187,30 +187,30 @@ describe('Session test', function() {
         {
           name: 'without params.grant_type',
           params: () => {
-            let _p = copy(params);
-            delete _p.grant_type;
-            return _p;
+            let p = copy(params);
+            delete p.grant_type;
+            return p;
           },
           message: 'params.grant_type required'
         },
         {
           name: 'with empty params.grant_type',
           params: () => {
-            let _p = copy(params);
-            _p.grant_type = '';
-            return _p;
+            let p = copy(params);
+            p.grant_type = '';
+            return p;
           },
           message: 'params.grant_type required'
         },
         {
           name: 'with invalid params.grant_type',
           params: () => {
-            let _p = copy(params);
-            _p.grant_type = 1000;
-            return _p;
+            let p = copy(params);
+            p.grant_type = 1000;
+            return p;
           },
           message: 'params.grant_type should be string'
-        },
+        }
       ].forEach((p) => {
         it(p.name, () => {
           try {
@@ -219,7 +219,7 @@ describe('Session test', function() {
           } catch (err) {
             assert(err instanceof assert.AssertionError);
             assert.strictEqual(err.message, p.message);
-          };
+          }
         });
       });
     });

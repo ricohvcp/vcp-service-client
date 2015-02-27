@@ -262,10 +262,14 @@ describe('Session test', function() {
       function test0() {}
       function test1() {}
       function test2() {}
+      function notused() {}
 
       session.on('test', test0);
       session.on('test', test1);
       session.on('test', test2);
+
+      session.off('test', notused);
+      assert.strictEqual(session.events.test.length, 3);
 
       session.off('test', test1);
       assert.strictEqual(session.events.test.length, 2);
@@ -284,6 +288,9 @@ describe('Session test', function() {
       session.on('test', test0);
       session.on('test', test1);
       session.on('test', test2);
+
+      session.off('notexists');
+      assert.strictEqual(session.events.test.length, 3);
 
       session.off('test');
       assert.strictEqual(session.events.test, undefined);

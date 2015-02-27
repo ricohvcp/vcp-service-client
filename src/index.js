@@ -92,11 +92,11 @@ class Fetcher extends Emitter {
         if (status > 399) {
           let message, code;
 
-          if (json.error) {
+          if (json.error !== undefined) {
             // single error
             message = json.error_description;
             code = json.error;
-          } else if (json.errors) {
+          } else if (json.errors !== undefined) {
             // multiple error
             // but use only first.
             message = json.errors[0].message;

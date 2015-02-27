@@ -90,8 +90,21 @@ class Fetcher extends Emitter {
         }
 
         if (status > 399) {
-          let message = json.errors[0].message;
-          let code = json.errors[0].message_id;
+          let message, code;
+
+          if (json.error) {
+            // single error
+            message = json.error_description;
+            code = json.error;
+          } else if (json.errors) {
+            // multiple error
+            // but use only first.
+            message = json.errors[0].message;
+            code = json.errors[0].message_id;
+          } else {
+            throw new Error('cant be here: error = ' + text);
+          }
+
           let err = new FetchError(message, code);
           return fail(err);
         }

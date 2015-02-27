@@ -135,6 +135,20 @@ describe('Session test', function() {
         done();
       }).catch(done);
     });
+
+    it('error', (done) => {
+      let p = JSON.parse(JSON.stringify(params));
+      delete p.client_id;
+      let session = new Session(endpoint, p);
+      session.auth().then(() => {
+        assert.fail('cant be here');
+      }).catch((err) => {
+        assert.ok(err instanceof FetchError);
+        assert.strictEqual(err.message, '\'client_id\' required.');
+        assert.strictEqual(err.code, 'invalid_request');
+        done();
+      }).catch(done);
+    });
   });
 
   describe('accountInfo', () => {

@@ -131,7 +131,7 @@ export class Session extends Fetcher {
   static validateParams(params) {
     assert(params, 'params required');
 
-    assert(params.client_id, 'params.client_id required')
+    assert(params.client_id, 'params.client_id required');
     assert.strictEqual(typeof params.client_id, 'string',  'params.client_id should be string');
 
     assert(params.client_secret, 'params.client_secret required');

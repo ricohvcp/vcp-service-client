@@ -28,23 +28,23 @@ describe('Session test', function() {
     });
 
     it('new without endpoint', () => {
-      assert.throws(() => {
+      try {
         let session = new Session();
         assert.fail('cant be here: ' + session);
-      },
-      (err) => {
-        return err instanceof Error && err.message === 'endpoint required';
-      });
+      } catch(err) {
+        assert(err instanceof Error);
+        assert.strictEqual(err.message, 'endpoint required');
+      };
     });
 
     it('new without params', () => {
-      assert.throws(() => {
+      try {
         let session = new Session(endpoint);
         assert.fail('cant be here: ' + session);
-      },
-      (err) => {
-        return err instanceof Error && err.message === 'params required';
-      });
+      } catch(err) {
+        assert(err instanceof Error);
+        assert.strictEqual(err.message, 'params required');
+      };
     });
 
     describe('new with invalid params', () => {
@@ -213,13 +213,13 @@ describe('Session test', function() {
         },
       ].forEach((p) => {
         it(p.name, () => {
-          assert.throws(() => {
+          try {
             let session = new Session(endpoint, p.params());
             assert.fail('cant be here: ' + session);
-          },
-          (err) => {
-            return err instanceof assert.AssertionError && err.message === p.message;
-          });
+          } catch (err) {
+            assert(err instanceof assert.AssertionError);
+            assert.strictEqual(err.message, p.message);
+          };
         });
       });
     });

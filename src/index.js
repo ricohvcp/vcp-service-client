@@ -121,11 +121,33 @@ export class Session extends Fetcher {
 
   constructor(endpoint, params) {
     assert(endpoint, 'endpoint required');
-    assert(params, 'params required');
+    Session.validateParams(params);
 
     super();
     this.endpoint = endpoint;
     this.params = params;
+  }
+
+  static validateParams(params) {
+    assert(params, 'params required');
+
+    assert(params.client_id, 'params.client_id required')
+    assert.strictEqual(typeof params.client_id, 'string',  'params.client_id should be string');
+
+    assert(params.client_secret, 'params.client_secret required');
+    assert.strictEqual(typeof params.client_secret, 'string',  'params.client_secret should be string');
+
+    assert(params.username,'params.username required');
+    assert.strictEqual(typeof params.username, 'string',  'params.username should be string');
+
+    assert(params.password,'params.password required');
+    assert.strictEqual(typeof params.password, 'string',  'params.password should be string');
+
+    assert(params.scope, 'params.scope required');
+    assert(Array.isArray(params.scope), 'params.scope should be array');
+
+    assert(params.grant_type,'params.grant_type required');
+    assert.strictEqual(typeof params.grant_type, 'string',  'params.grant_type should be string');
   }
 
   auth() {

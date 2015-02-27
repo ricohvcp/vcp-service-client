@@ -26,13 +26,200 @@ describe('Session test', function() {
       assert.strictEqual(Object.keys(session.events).length, 0);
     });
 
-    it('error', () => {
+    it('new without endpoint', () => {
+      assert.throws(() => {
+        let session = new Session();
+        assert.fail('cant be here: ' + session);
+      },
+      (err) => {
+        return err instanceof Error && err.message === 'endpoint required';
+      });
+    });
+
+    it('new without params', () => {
       assert.throws(() => {
         let session = new Session(endpoint);
         assert.fail('cant be here: ' + session);
       },
       (err) => {
         return err instanceof Error && err.message === 'params required';
+      });
+    });
+
+    describe('new with invalid params', () => {
+      let copy = (o) => JSON.parse(JSON.stringify(o));
+
+      [
+        // client_id
+        {
+          name: 'without params.client_id',
+          params: () => {
+            let _p = copy(params);
+            delete _p.client_id;
+            return _p;
+          },
+          message: 'params.client_id required'
+        },
+        {
+          name: 'with empty params.client_id',
+          params: () => {
+            let _p = copy(params);
+            _p.client_id = '';
+            return _p;
+          },
+          message: 'params.client_id required'
+        },
+        {
+          name: 'with invalid type params.client_id',
+          params: () => {
+            let _p = copy(params);
+            _p.client_id = 1000;
+            return _p;
+          },
+          message: 'params.client_id should be string'
+        },
+
+        // client_secret
+        {
+          name: 'without params.client_secret',
+          params: () => {
+            let _p = copy(params);
+            delete _p.client_secret;
+            return _p;
+          },
+          message: 'params.client_secret required'
+        },
+        {
+          name: 'with empty params.client_secret',
+          params: () => {
+            let _p = copy(params);
+            _p.client_secret = '';
+            return _p;
+          },
+          message: 'params.client_secret required'
+        },
+        {
+          name: 'with invalid params.client_secret',
+          params: () => {
+            let _p = copy(params);
+            _p.client_secret = 1000;
+            return _p;
+          },
+          message: 'params.client_secret should be string'
+        },
+        // username
+        {
+          name: 'without params.username',
+          params: () => {
+            let _p = copy(params);
+            delete _p.username;
+            return _p;
+          },
+          message: 'params.username required'
+        },
+        {
+          name: 'with empty params.username',
+          params: () => {
+            let _p = copy(params);
+            _p.username = '';
+            return _p;
+          },
+          message: 'params.username required'
+        },
+        {
+          name: 'with invalid params.username',
+          params: () => {
+            let _p = copy(params);
+            _p.username = 1000;
+            return _p;
+          },
+          message: 'params.username should be string'
+        },
+        // password
+        {
+          name: 'without params.password',
+          params: () => {
+            let _p = copy(params);
+            delete _p.password;
+            return _p;
+          },
+          message: 'params.password required'
+        },
+        {
+          name: 'with empty params.password',
+          params: () => {
+            let _p = copy(params);
+            _p.password = '';
+            return _p;
+          },
+          message: 'params.password required'
+        },
+        {
+          name: 'with invalid params.password',
+          params: () => {
+            let _p = copy(params);
+            _p.password = 1000;
+            return _p;
+          },
+          message: 'params.password should be string'
+        },
+        // scope
+        {
+          name: 'without params.scope',
+          params: () => {
+            let _p = copy(params);
+            delete _p.scope;
+            return _p;
+          },
+          message: 'params.scope required'
+        },
+        {
+          name: 'with invalid params.scope',
+          params: () => {
+            let _p = copy(params);
+            _p.scope = 1000;
+            return _p;
+          },
+          message: 'params.scope should be array'
+        },
+        // grant_type
+        {
+          name: 'without params.grant_type',
+          params: () => {
+            let _p = copy(params);
+            delete _p.grant_type;
+            return _p;
+          },
+          message: 'params.grant_type required'
+        },
+        {
+          name: 'with empty params.grant_type',
+          params: () => {
+            let _p = copy(params);
+            _p.grant_type = '';
+            return _p;
+          },
+          message: 'params.grant_type required'
+        },
+        {
+          name: 'with invalid params.grant_type',
+          params: () => {
+            let _p = copy(params);
+            _p.grant_type = 1000;
+            return _p;
+          },
+          message: 'params.grant_type should be string'
+        },
+      ].forEach((p) => {
+        it(p.name, () => {
+          assert.throws(() => {
+            let session = new Session(endpoint, p.params());
+            assert.fail('cant be here: ' + session);
+          },
+          (err) => {
+            return err instanceof assert.AssertionError && err.message === p.message;
+          });
+        });
       });
     });
   });
@@ -136,16 +323,16 @@ describe('Session test', function() {
       }).catch(done);
     });
 
-    it('error', (done) => {
+    it('error: param with invalid client_id', (done) => {
       let p = JSON.parse(JSON.stringify(params));
-      delete p.client_id;
+      p.client_id = 'xxxxxxxx';
       let session = new Session(endpoint, p);
       session.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
         assert.ok(err instanceof FetchError);
-        assert.strictEqual(err.message, '\'client_id\' required.');
-        assert.strictEqual(err.code, 'invalid_request');
+        assert.ok(/The client identifier provided is invalid.*/.test(err.message));
+        assert.strictEqual(err.code, 'invalid_client');
         done();
       }).catch(done);
     });

@@ -484,8 +484,9 @@ describe('Session test', function() {
       session.auth().then(() => {
         return session.rosters();
       }).then((rosters) => {
-        // TODO: more assert
-        assert.ok(rosters);
+        assert.ok(Array.isArray(rosters.results));
+        assert.strictEqual(typeof rosters.total_results, 'number');
+        assert.strictEqual(rosters.total_results, rosters.results.length);
         done();
       }).catch(done);
     });

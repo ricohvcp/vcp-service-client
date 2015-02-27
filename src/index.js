@@ -189,6 +189,9 @@ export class Session extends Fetcher {
       access_token: access_token,
       body: body
     }).then(response => {
+      if (response[scope] === undefined) {
+        throw new Error(`discovery result doesn't include ${scope} field: ${JSON.stringify(response)}`);
+      }
       return response[scope];
     });
   }

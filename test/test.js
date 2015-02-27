@@ -2,6 +2,7 @@ var assert = require('power-assert');
 var Session = require('../src').Session;
 var FetchError = require('../src').FetchError;
 var config = require('../src/config').config;
+var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;
 
 describe('Session test', function() {
@@ -405,6 +406,32 @@ describe('Session test', function() {
         assert.strictEqual(err.code, 'unsupported_grant_type');
         done();
       }).catch(done);
+    });
+  });
+
+  describe('discovery', () => {
+    it('success', (done) => {
+      let session = new Session(endpoint, params);
+      session.auth().then(() => {
+        // any scope with granted are ok
+        return session.discovery(scopes.INFORMATION_URI);
+      }).then((info) => {
+        assert(info);
+        done();
+      }).catch(done);
+    });
+
+    it('error: no result for SCOPE', (done) => {
+      let session = new Session(endpoint, params);
+      session.auth().then(() => {
+        return session.discovery(scopes.AUTH_API);
+      }).then((info) => {
+        assert.fail('cant be here');
+      }).catch((err) => {
+        assert.ok(err instanceof Error);
+        assert.ok(/discovery result doesn\'t include.*/.test(err.message));
+        done();
+      });
     });
   });
 

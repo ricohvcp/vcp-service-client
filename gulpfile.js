@@ -93,6 +93,7 @@ gulp.task('test', [ 'build:babel', 'build:test' ], function(cb) {
     .on('finish', function() {
       gulp.src('build/test/*.js')
         .pipe(mocha({
+          // grep: 'auth',
           reporter: 'spec'
         }))
         .pipe(istanbul.writeReports({

@@ -336,6 +336,76 @@ describe('Session test', function() {
         done();
       }).catch(done);
     });
+
+    it('error: param with invalid client_secret', (done) => {
+      let p = JSON.parse(JSON.stringify(params));
+      p.client_secret = 'xxxxxxxx';
+      let session = new Session(endpoint, p);
+      session.auth().then(() => {
+        assert.fail('cant be here');
+      }).catch((err) => {
+        assert.ok(err instanceof FetchError);
+        assert.ok(/The client identifier provided is invalid.*/.test(err.message));
+        assert.strictEqual(err.code, 'invalid_client');
+        done();
+      }).catch(done);
+    });
+
+    it('error: param with invalid username', (done) => {
+      let p = JSON.parse(JSON.stringify(params));
+      p.username = 'xxxxxxxx';
+      let session = new Session(endpoint, p);
+      session.auth().then(() => {
+        assert.fail('cant be here');
+      }).catch((err) => {
+        assert.ok(err instanceof FetchError);
+        assert.ok(/The provided access grant is invalid, expired, or revoked.*/.test(err.message));
+        assert.strictEqual(err.code, 'invalid_grant');
+        done();
+      }).catch(done);
+    });
+
+    it('error: param with invalid password', (done) => {
+      let p = JSON.parse(JSON.stringify(params));
+      p.password = 'xxxxxxxx';
+      let session = new Session(endpoint, p);
+      session.auth().then(() => {
+        assert.fail('cant be here');
+      }).catch((err) => {
+        assert.ok(err instanceof FetchError);
+        assert.ok(/The provided access grant is invalid, expired, or revoked.*/.test(err.message));
+        assert.strictEqual(err.code, 'invalid_grant');
+        done();
+      }).catch(done);
+    });
+
+    it('error: param with invalid scope', (done) => {
+      let p = JSON.parse(JSON.stringify(params));
+      p.scope = [];
+      let session = new Session(endpoint, p);
+      session.auth().then(() => {
+        assert.fail('cant be here');
+      }).catch((err) => {
+        assert.ok(err instanceof FetchError);
+        assert.ok(/The request is missing a required parameter.*/.test(err.message));
+        assert.strictEqual(err.code, 'invalid_request');
+        done();
+      }).catch(done);
+    });
+
+    it('error: param with invalid grant_type', (done) => {
+      let p = JSON.parse(JSON.stringify(params));
+      p.grant_type = 'xxxxxxxx';
+      let session = new Session(endpoint, p);
+      session.auth().then(() => {
+        assert.fail('cant be here');
+      }).catch((err) => {
+        assert.ok(err instanceof FetchError);
+        assert.ok(/The access grant included - its type or another attribute - is not supported by the authorization server..*/.test(err.message));
+        assert.strictEqual(err.code, 'unsupported_grant_type');
+        done();
+      }).catch(done);
+    });
   });
 
   describe('accountInfo', () => {

@@ -81,7 +81,7 @@
     "lint": "eslint src test index.js gulpfile.js *.conf.js && fixpack && fixbow",
     "postinstall": "npm install eslint@es6jsx",
     "start": "gulp server",
-    "test": "gulp test",
+    "test": "gulp lint && gulp test",
     "test-browser": "gulp clean && gulp build && gulp build:test && npm run bower && karma start",
     "x-full-rebuild": "npm run clean-all && npm install && npm test",
     "x-install-global-bin": "npm install -g gulp bower mocha eslint fixpack fixbow karma-cli"

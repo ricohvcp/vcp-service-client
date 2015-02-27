@@ -56,7 +56,9 @@ gulp.task('build:browserify', [ 'build:babel', 'build:test' ], function() {
     // remove require() before browserify
     // for avoid bundiling npm module
     .pipe(removeLines({ 'filters': [
-      /require\(['"]xmlhttprequest/,
+      /require\(['"]xmlhttprequest/
+    ]}))
+    .pipe(removeLines({ 'filters': [
       /require\(['"]urlsearchparams/
     ]}))
     .pipe(gulp.dest('build/src'))

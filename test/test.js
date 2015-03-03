@@ -576,7 +576,8 @@ describe('Session test', function() {
     it('file size error', () => {
       let session = new Session(endpoint, params);
       let filename = 'test_from_browser';
-      let log = new Array(1024 * 1024 * 200).join('a').toString();
+      let log = 'a';
+      for (var i = 0; i < 27; i++) log += log;
 
       try {
         session.logUpload(log, filename);

@@ -58,6 +58,7 @@ class Fetcher extends Emitter {
     let method = options.method || 'get';
 
     var req = superagent[method](url);
+    req.timeout(5000); //TODO: optional
 
     // set access_token to Authroization header
     if (options.access_token) {
@@ -73,7 +74,19 @@ class Fetcher extends Emitter {
     }
 
     return new Promise((done, fail) => {
+
+      this.on('cancel', () => {
+        // req.abort() blocks for returning TimeouError to req.end
+        // so make it async and reject promise first
+        setTimeout(() => {
+          req.abort()
+        }, 0);
+        fail(new Error('upload canceled'));
+      });
+
       req.end((err, res) => {
+        this.off('cancel');
+
         if (err) {
           return fail(err);
         }
@@ -106,11 +119,6 @@ class Fetcher extends Emitter {
         }
 
         return done(body);
-      });
-
-      this.on('cancel', () => {
-        req.abort();
-        fail(new Error('upload canceled'));
       });
     });
   }

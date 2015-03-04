@@ -546,7 +546,6 @@ describe('Session test', function() {
       session.auth().then(() => {
         return session.logUpload(log, filename);
       }).then((result) => {
-        console.log(result);
         assert.strictEqual(result, null);
         done();
       }).catch(done);
@@ -564,7 +563,7 @@ describe('Session test', function() {
         // cancel
         setTimeout(() => {
           session.logUploadCancel();
-        }, 30);
+        }, 50);
 
         return session.logUpload(log, filename);
       }).then((result) => {

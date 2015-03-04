@@ -540,14 +540,14 @@ describe('Session test', function() {
   describe('logUpload', (done) => {
     it('success', (done) => {
       let session = new Session(endpoint, params);
-      let filename = 'test_from_browser';
+      let filename = 'log_upload_test_from_browser';
       let log = 'aaaaaaaaaaaaaaaaaaaaaa';
 
       session.auth().then(() => {
         return session.logUpload(log, filename);
       }).then((result) => {
         console.log(result);
-        assert.strictEqual(result, '');
+        assert.strictEqual(result, null);
         done();
       }).catch(done);
     });

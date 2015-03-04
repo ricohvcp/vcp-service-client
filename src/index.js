@@ -66,7 +66,9 @@ class Fetcher extends Emitter {
 
     // set content-type to form-urlencoded
     if (options.body) {
-      req.type('form');
+      if (typeof options.body === 'object') {
+        req.type('form');
+      }
       req.send(options.body);
     }
 
@@ -100,7 +102,7 @@ class Fetcher extends Emitter {
         }
 
         if (res.header['content-length'] === '0') {
-          body = '';
+          body = null;
         }
 
         return done(body);

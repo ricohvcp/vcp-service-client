@@ -538,7 +538,7 @@ describe('Session test', function() {
   });
 
   describe('logUpload', (done) => {
-    it('logUpload', (done) => {
+    it('success', (done) => {
       let session = new Session(endpoint, params);
       let filename = 'test_from_browser';
       let log = 'aaaaaaaaaaaaaaaaaaaaaa';
@@ -546,6 +546,7 @@ describe('Session test', function() {
       session.auth().then(() => {
         return session.logUpload(log, filename);
       }).then((result) => {
+        console.log(result);
         assert.strictEqual(result, '');
         done();
       }).catch(done);

@@ -1,6 +1,7 @@
 var URLSearchParams = URLSearchParams || require('urlsearchparams').URLSearchParams;
 var XMLHttpRequest = XMLHttpRequest || require('xmlhttprequest').XMLHttpRequest;
 var assert = require('assert');
+var superagent = require('superagent');
 
 var scopes = require('./scopes').SCOPES;
 
@@ -50,57 +51,47 @@ class Emitter {
 }
 
 class Fetcher extends Emitter {
+
   fetch(url, options) {
+
     assert(url, 'url required');
 
     options = options || {};
 
-    let method = options.method || 'GET';
-    let xhr = new XMLHttpRequest();
+    let method = options.method || 'get';
 
-    xhr.open(method, url);
+    var req = superagent[method](url);
 
     // set access_token to Authroization header
     if (options.access_token) {
-      xhr.setRequestHeader('Authorization', `Bearer ${options.access_token}`);
+      req.set('Authorization', `Bearer ${options.access_token}`);
     }
 
     // set content-type to form-urlencoded
     if (options.body) {
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      req.type('form');
+      req.send(options.body);
     }
 
-    xhr.responseType = 'text';
-
     return new Promise((done, fail) => {
-      xhr.addEventListener('error', fail);
+      req.end((err, res) => {
+        if (err) return fail(err);
 
-      this.on('cancel', () => {
-        xhr.abort();
-        fail(new Error('upload canceled'));
-      });
-
-      xhr.addEventListener('load', () => {
-        let status = xhr.status;
-        let text = xhr.responseText;
-        let json;
-
-        if (/json/.test(xhr.getResponseHeader('content-type'))) {
-          json = JSON.parse(text);
-        }
+        let status = res.status;
+        let body = res.body;
 
         if (status > 399) {
           let message, code;
 
-          if (json.error !== undefined) {
+          if (body.error !== undefined) {
             // single error
-            message = json.error_description;
-            code = json.error;
-          } else if (json.errors !== undefined) {
+            message = body.error_description;
+            code = body.error;
+          } else if (body.errors !== undefined) {
             // multiple error
             // but use only first.
-            message = json.errors[0].message;
-            code = json.errors[0].message_id;
+            message = body.errors[0].message;
+            code = body.errors[0].message_id;
           } else {
             throw new Error('cant be here: error = ' + text);
           }
@@ -109,10 +100,17 @@ class Fetcher extends Emitter {
           return fail(err);
         }
 
-        return done(json || text);
+        if (res.header['content-length'] === '0') {
+          body = '';
+        }
+
+        return done(body);
       });
 
-      xhr.send(options.body || '');
+      this.on('cancel', () => {
+        req.abort();
+        fail(new Error('upload canceled'));
+      });
     });
   }
 }
@@ -152,21 +150,18 @@ export class Session extends Fetcher {
 
   auth() {
     let url = `${this.endpoint}/auth/token`;
-    let urlParams = new URLSearchParams();
-
-    Object.keys(this.params).forEach((key) => {
-      let value = this.params[key];
-      if (key === 'scope') {
-        value = value.join(' ');
-      }
-      urlParams.append(key, value);
-    });
-
-    let body = urlParams.toString();
+    let params = this.params;
 
     return this.fetch(url, {
-      method: 'POST',
-      body: body
+      method: 'post',
+      body: { // copy params for join scope
+        client_id :params.client_id,
+        client_secret :params.client_secret,
+        username :params.username,
+        password :params.password,
+        scope :params.scope.join(' '),
+        grant_type :params.grant_type,
+      }
     }).then((authInfo) => {
       this.authInfo = authInfo;
       return Promise.resolve();
@@ -179,15 +174,10 @@ export class Session extends Fetcher {
     let url = `${this.endpoint}/auth/discovery`;
     let access_token = this.authInfo.access_token;
 
-    let urlParams = new URLSearchParams();
-    urlParams.append('scope', scope);
-
-    let body = urlParams.toString();
-
     return this.fetch(url, {
-      method: 'POST',
+      method: 'post',
       access_token: access_token,
-      body: body
+      body: { scope: scope }
     }).then(response => {
       if (response[scope] === undefined) {
         throw new Error(`discovery result doesn't include ${scope} field: ${JSON.stringify(response)}`);
@@ -214,7 +204,7 @@ export class Session extends Fetcher {
       let access_token = res.access_token;
 
       return this.fetch(url, {
-        method: 'GET',
+        method: 'get',
         access_token: access_token
       });
     });
@@ -228,7 +218,7 @@ export class Session extends Fetcher {
       let access_token = res.access_token;
 
       return this.fetch(url, {
-        method: 'GET',
+        method: 'get',
         access_token: access_token
       });
     });
@@ -250,7 +240,7 @@ export class Session extends Fetcher {
       url = url.replace('{filename_suffix}', filename);
 
       return this.fetch(url, {
-        method: 'POST',
+        method: 'post',
         body: log,
         access_token: res.access_token
       });

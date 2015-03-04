@@ -8,7 +8,6 @@ var gulp = require('gulp'),
     espower = require('gulp-espower'),
     istanbul = require('gulp-istanbul'),
     mocha = require('gulp-mocha'),
-    removeLines = require('gulp-remove-lines'),
     source = require('vinyl-source-stream'),
     babel = require('gulp-babel');
 
@@ -53,14 +52,6 @@ gulp.task('build:babel', function() {
 gulp.task('build:browserify', [ 'build:babel', 'build:test' ], function() {
   /*eslint comma-spacing: 0*/
   gulp.src('build/src/index.js')
-    // remove require() before browserify
-    // for avoid bundiling npm module
-    .pipe(removeLines({ 'filters': [
-      /require\(['"]xmlhttprequest/
-    ]}))
-    .pipe(removeLines({ 'filters': [
-      /require\(['"]urlsearchparams/
-    ]}))
     .pipe(gulp.dest('build/src'))
     .on('end', function() {
       browserify('./build/src/index.js')

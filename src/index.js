@@ -1,5 +1,3 @@
-var URLSearchParams = URLSearchParams || require('urlsearchparams').URLSearchParams;
-var XMLHttpRequest = XMLHttpRequest || require('xmlhttprequest').XMLHttpRequest;
 var assert = require('assert');
 var superagent = require('superagent');
 

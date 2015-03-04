@@ -3,7 +3,6 @@
   "description": "client of ucs service",
   "version": "0.0.0",
   "dependencies": {
-    "urlsearchparams": "*"
   },
   "devDependencies": {
     "mocha": "*",

@@ -53,7 +53,6 @@ class Emitter {
 class Fetcher extends Emitter {
 
   fetch(url, options) {
-
     assert(url, 'url required');
 
     options = options || {};
@@ -75,7 +74,9 @@ class Fetcher extends Emitter {
 
     return new Promise((done, fail) => {
       req.end((err, res) => {
-        if (err) return fail(err);
+        if (err) {
+          return fail(err);
+        }
 
         let status = res.status;
         let body = res.body;
@@ -155,12 +156,12 @@ export class Session extends Fetcher {
     return this.fetch(url, {
       method: 'post',
       body: { // copy params for join scope
-        client_id :params.client_id,
-        client_secret :params.client_secret,
-        username :params.username,
-        password :params.password,
-        scope :params.scope.join(' '),
-        grant_type :params.grant_type,
+        client_id: params.client_id,
+        client_secret: params.client_secret,
+        username: params.username,
+        password: params.password,
+        scope: params.scope.join(' '),
+        grant_type: params.grant_type
       }
     }).then((authInfo) => {
       this.authInfo = authInfo;

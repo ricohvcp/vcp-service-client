@@ -556,7 +556,9 @@ describe('Session test', function() {
       let session = new Session(endpoint, params);
       let filename = 'test_from_browser';
       let log = 'a';
-      for (var i = 0; i < 26; i++) log += log;
+      for (var i = 0; i < 26; i++) {
+        log += log;
+      }
 
       session.auth().then(() => {
         // cancel
@@ -578,7 +580,9 @@ describe('Session test', function() {
       let session = new Session(endpoint, params);
       let filename = 'test_from_browser';
       let log = 'a';
-      for (var i = 0; i < 27; i++) log += log;
+      for (var i = 0; i < 27; i++) {
+        log += log;
+      }
 
       try {
         session.logUpload(log, filename);

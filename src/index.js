@@ -1,4 +1,5 @@
 var assert = require('assert');
+var events = require('events');
 var superagent = require('superagent');
 
 var scopes = require('./scopes').SCOPES;
@@ -10,45 +11,7 @@ export class FetchError extends Error {
   }
 }
 
-class Emitter {
-  constructor() {
-    this.events = {};
-  }
-
-  emit(name, data) {
-    this.events[name].forEach((cb) => {
-      cb(data);
-    });
-  }
-
-  on(name, cb) {
-    this.events[name] = this.events[name] || [];
-    this.events[name].push(cb);
-  }
-
-  off(name, fn) {
-    if (name === undefined && fn === undefined) {
-      delete this.events;
-      this.events = {};
-      return;
-    }
-
-    if (this.events[name] === undefined) {
-      return;
-    }
-
-    if (fn !== undefined) {
-      let index = this.events[name].indexOf(fn);
-      if (index > -1) {
-        this.events[name].splice(index, 1);
-      }
-    } else {
-      delete this.events[name];
-    }
-  }
-}
-
-class Fetcher extends Emitter {
+class Fetcher extends events.EventEmitter {
 
   fetch(url, options) {
     assert(url, 'url required');
@@ -85,7 +48,7 @@ class Fetcher extends Emitter {
       });
 
       req.end((err, res) => {
-        this.off('cancel');
+        this.removeAllListeners('cancel');
 
         if (err) {
           return fail(err);

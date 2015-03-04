@@ -24,7 +24,6 @@ describe('Session test', function() {
       let session = new Session(endpoint, params);
       assert.deepEqual(session.params, params); // TODO: strictDeepEqual in io.js
       assert.strictEqual(session.endpoint, endpoint);
-      assert.strictEqual(Object.keys(session.events).length, 0);
     });
 
     it('new without endpoint', () => {
@@ -226,76 +225,6 @@ describe('Session test', function() {
   });
 
   describe('emitter', () => {
-    it('on', () => {
-      let session = new Session(endpoint, params);
-      function test0() {}
-      function test1() {}
-      function test2() {}
-
-      session.on('test', test0);
-      session.on('test', test1);
-      session.on('test', test2);
-      assert.strictEqual(session.events.test.length, 3);
-      assert.strictEqual(session.events.test[0], test0);
-      assert.strictEqual(session.events.test[1], test1);
-      assert.strictEqual(session.events.test[2], test2);
-    });
-
-    it('off', () => {
-      let session = new Session(endpoint, params);
-
-      function test0() {}
-      function test1() {}
-      function test2() {}
-
-      session.on('test0', test0);
-      session.on('test1', test1);
-      session.on('test2', test2);
-
-      session.off();
-      assert.strictEqual(Object.keys(session.events).length, 0);
-    });
-
-    it('off name', () => {
-      let session = new Session(endpoint, params);
-
-      function test0() {}
-      function test1() {}
-      function test2() {}
-      function notused() {}
-
-      session.on('test', test0);
-      session.on('test', test1);
-      session.on('test', test2);
-
-      session.off('test', notused);
-      assert.strictEqual(session.events.test.length, 3);
-
-      session.off('test', test1);
-      assert.strictEqual(session.events.test.length, 2);
-      assert.strictEqual(session.events.test[0], test0);
-      assert.strictEqual(session.events.test.indexOf(test1), -1);
-      assert.strictEqual(session.events.test[1], test2);
-    });
-
-    it('off name all', () => {
-      let session = new Session(endpoint, params);
-
-      function test0() {}
-      function test1() {}
-      function test2() {}
-
-      session.on('test', test0);
-      session.on('test', test1);
-      session.on('test', test2);
-
-      session.off('notexists');
-      assert.strictEqual(session.events.test.length, 3);
-
-      session.off('test');
-      assert.strictEqual(session.events.test, undefined);
-    });
-
     it('emit', () => {
       let session = new Session(endpoint, params);
 

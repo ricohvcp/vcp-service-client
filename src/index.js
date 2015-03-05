@@ -22,7 +22,7 @@ class Fetcher extends events.EventEmitter {
 
     let req = superagent[method](url);
 
-    let timeout = options.timeout || 3000;
+    let timeout = options.timeout || 5000;
     req.timeout(timeout);
 
     // set access_token to Authroization header

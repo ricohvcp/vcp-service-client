@@ -1,9 +1,19 @@
 # ucs-service-client
 
+[![NPM version](https://badge.fury.io/ucs-service-client.svg)](http://badge.fury.io/ucs-service-client)
+[![Dependency Status](https://gemnasium.com/uce-service-client.svg)](https://gemnasium.com/uce-service-client)
+
+
 ## DESCRIPTION
 
 ucs service client for javascript
 
+
+## install
+
+```sh
+$ npm install ucs-sercive-client
+```
 
 ## how to use
 

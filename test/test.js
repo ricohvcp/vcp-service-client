@@ -504,6 +504,27 @@ describe('Session test', function() {
       }).catch(done);
     });
 
+    it('error: timeout', (done) => {
+      let session = new Session(endpoint, params);
+      let filename = 'log_upload_test_from_browser';
+      let log = 'a';
+      for (let i = 0; i < 26; i++) {
+        log += log;
+      }
+
+      let timeout = 1;
+
+      session.auth().then(() => {
+        return session.logUpload(log, filename, timeout);
+      }).then((result) => {
+        assert.fail('cant be here');
+      }).catch((err) => {
+        assert.ok(err instanceof Error);
+        assert.strictEqual(err.message, `timeout of ${timeout}ms exceeded`);
+        done();
+      }).catch(done);
+    });
+
     it('error: file size too large', () => {
       let session = new Session(endpoint, params);
       let filename = 'log_upload_test_from_browser';

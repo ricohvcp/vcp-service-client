@@ -1,7 +1,7 @@
 {
   "name": "ucs-service-client",
   "description": "client of ucs service",
-  "version": "0",
+  "version": "0.0.0",
   "bugs": {
     "url": "http://github.com/ricohvcp/ucs-service-client/issues"
   },

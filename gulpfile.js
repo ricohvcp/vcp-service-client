@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     del = require('del'),
     espower = require('gulp-espower'),
     istanbul = require('gulp-istanbul'),
+    merge = require('merge-stream'),
     mocha = require('gulp-mocha'),
     source = require('vinyl-source-stream'),
     babel = require('gulp-babel');
@@ -43,13 +44,24 @@ gulp.task('bower', function() {
 
 // build with babel
 gulp.task('build:babel', function() {
-  return gulp.src('src/**/*.js')
+  var src = gulp.src('src/**/*.js')
     .pipe(babel())
     .pipe(gulp.dest('build/src'));
+
+  var config = gulp.src('config/*.js')
+    .pipe(babel())
+    .pipe(gulp.dest('build/config'));
+
+  var test = gulp.src('test/*.js')
+    .pipe(babel())
+    .pipe(espower())
+    .pipe(gulp.dest('build/test'));
+
+  return merge(src, config, test);
 });
 
 // build with browserify
-gulp.task('build:browserify', [ 'build:babel', 'build:test' ], function() {
+gulp.task('build:browserify', ['build:babel'], function() {
   /*eslint comma-spacing: 0*/
   gulp.src('build/src/index.js')
     .pipe(gulp.dest('build/src'))
@@ -70,16 +82,8 @@ gulp.task('build:browserify', [ 'build:babel', 'build:test' ], function() {
 // build src for browser
 gulp.task('build', ['build:browserify']);
 
-// all test are in /test, convert to power-assert in /tmp
-gulp.task('build:test', function() {
-  return gulp.src('test/*.js')
-    .pipe(babel())
-    .pipe(espower())
-    .pipe(gulp.dest('build/test'));
-});
-
 // run test on mocha and get coverage
-gulp.task('test', [ 'build:babel', 'build:test' ], function(cb) {
+gulp.task('test', ['build:babel'], function(cb) {
   gulp.src('build/src/**/*.js')
     .pipe(istanbul())
     .pipe(istanbul.hookRequire())

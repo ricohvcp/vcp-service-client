@@ -1,7 +1,7 @@
 var assert = require('power-assert');
 var Session = require('../src').Session;
 var FetchError = require('../src').FetchError;
-var config = require('../src/config').config;
+var config = require('../config/config').config;
 var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;
 

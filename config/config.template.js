@@ -10,7 +10,7 @@ var config = {
   PASSWORD:      '',
 
   // endpoint of UCS Auth API
-  ENDPOINT: '',
+  ENDPOINT: 'https://auth.ucs.ricoh.com',
 
   // scopes for required API (see, ../src/scopes.js)
   SCOPE_LIST: [

@@ -12,7 +12,8 @@
     "**/.*",
     "node_modules",
     "package.json",
-    "test"
+    "test",
+    "config/config.js"
   ],
   "keywords": [],
   "license": "MIT",

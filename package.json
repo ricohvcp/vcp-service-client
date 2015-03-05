@@ -63,7 +63,8 @@
     "node_modules",
     "package.json",
     "src",
-    "test"
+    "test",
+    "config/config.template.js"
   ],
   "homepage": "http://github.com/ricohvcp/ucs-service-client",
   "keywords": [],

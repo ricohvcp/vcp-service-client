@@ -13,8 +13,8 @@ describe('Session test', function() {
   let params = {
     client_id: config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,
-    username: config.CID_RWAN,
-    password: config.PASSWORD_RWAN,
+    username: config.CID,
+    password: config.PASSWORD,
     scope: config.SCOPE_LIST,
     grant_type: 'password'
   };

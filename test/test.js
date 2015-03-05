@@ -430,7 +430,7 @@ describe('Session test', function() {
 
   describe('roster', (done) => {
     it('success', (done) => {
-      var cid;
+      let cid;
       let session = new Session(endpoint, params);
       session.auth().then(() => {
         return session.rosters();
@@ -448,8 +448,8 @@ describe('Session test', function() {
       }).catch(done);
     });
 
-    it('error', (done) => {
-      var cid;
+    it('error: non-existent cid', (done) => {
+      let cid;
       let session = new Session(endpoint, params);
       session.auth().then(() => {
         return session.roster('invalidCID');
@@ -470,7 +470,7 @@ describe('Session test', function() {
     it('success', (done) => {
       let session = new Session(endpoint, params);
       let filename = 'log_upload_test_from_browser';
-      let log = 'aaaaaaaaaaaaaaaaaaaaaa';
+      let log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
       session.auth().then(() => {
         return session.logUpload(log, filename);
@@ -480,11 +480,11 @@ describe('Session test', function() {
       }).catch(done);
     });
 
-    it('logUpload cancel', (done) => {
+    it('cancel', (done) => {
       let session = new Session(endpoint, params);
-      let filename = 'test_from_browser';
+      let filename = 'log_upload_test_from_browser';
       let log = 'a';
-      for (var i = 0; i < 26; i++) {
+      for (let i = 0; i < 26; i++) {
         log += log;
       }
 
@@ -504,11 +504,11 @@ describe('Session test', function() {
       }).catch(done);
     });
 
-    it('file size error', () => {
+    it('error: file size too large', () => {
       let session = new Session(endpoint, params);
-      let filename = 'test_from_browser';
+      let filename = 'log_upload_test_from_browser';
       let log = 'a';
-      for (var i = 0; i < 27; i++) {
+      for (let i = 0; i < 27; i++) {
         log += log;
       }
 
@@ -519,10 +519,10 @@ describe('Session test', function() {
       }
     });
 
-    it('file name error', () => {
+    it('error: invalid file name', () => {
       let session = new Session(endpoint, params);
       let filename = 'test#from%browser';
-      let log = new Array(16).join('a').toString();
+      let log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
       try {
         session.logUpload(log, filename);

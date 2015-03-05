@@ -20,8 +20,10 @@ class Fetcher extends events.EventEmitter {
 
     let method = options.method || 'get';
 
-    var req = superagent[method](url);
-    req.timeout(5000); //TODO: optional
+    let req = superagent[method](url);
+
+    let timeout = options.timeout || 3000;
+    req.timeout(timeout);
 
     // set access_token to Authroization header
     if (options.access_token) {
@@ -37,7 +39,6 @@ class Fetcher extends events.EventEmitter {
     }
 
     return new Promise((done, fail) => {
-
       this.on('cancel', () => {
         // req.abort() blocks for returning TimeouError to req.end
         // so make it async and reject promise first
@@ -196,16 +197,19 @@ export class Session extends Fetcher {
     });
   }
 
-  logUpload(log, filename) {
+  logUpload(log, filename, timeout) {
     assert(log, 'log is required');
     assert(filename, 'filename is required');
 
     // API limit for logfile name
     assert(filename.length < 32, 'logfile name too large. (API limit less than 32byte )');
-    assert(/^[a-zA-Z0-9_\-\.]*$/.test(filename), 'invalid log filename. (API limit alpahnumeric and -, ., _)');
+    assert(/^[a-zA-Z0-9_\-\.]+$/.test(filename), 'invalid log filename. (API limit alpahnumeric and -, ., _)');
 
     // API limit is limit for logfile size
     assert(log.length < 1024 * 1024 * 128, 'logfile too big. (API limit 128MB)');
+
+    // optional and default to 5 sec
+    timeout = timeout || 5000;
 
     return this.discovery(scopes.LOG_UPLOAD_API).then((res) => {
       let url = res.endpoint;
@@ -214,7 +218,8 @@ export class Session extends Fetcher {
       return this.fetch(url, {
         method: 'post',
         body: log,
-        access_token: res.access_token
+        access_token: res.access_token,
+        timeout: timeout
       });
     });
   }

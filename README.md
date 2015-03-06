@@ -1,7 +1,7 @@
 # ucs-service-client
 
 [![npm version](https://badge.fury.io/js/ucs-service-client.svg)](http://badge.fury.io/js/ucs-service-client)
-[![Dependency Status](https://gemnasium.com/uce-service-client.svg)](https://gemnasium.com/uce-service-client)
+[![Dependency Status](https://gemnasium.com/ricohvcp/ucs-service-client.svg)](https://gemnasium.com/ricohvcp/ucs-service-client)
 
 
 ## DESCRIPTION

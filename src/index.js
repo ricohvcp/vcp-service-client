@@ -225,8 +225,6 @@ export class Session extends Fetcher {
   }
 
   logUploadCancel() {
-    setTimeout(() => {
-      this.emit('cancel');
-    }, 0);
+    this.emit('cancel');
   }
 }

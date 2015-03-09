@@ -6,11 +6,12 @@ var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;
 
 describe('Session test', function() {
-  /*eslint no-inner-declarations:0*/
+  /*eslint no-inner-declarations:0, no-redeclare:0*/
 
   this.timeout(5000);
 
   let params = {
+    /*eslint camelcase:0*/
     client_id: config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,
     username: config.CID,

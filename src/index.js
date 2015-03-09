@@ -43,7 +43,7 @@ class Fetcher extends events.EventEmitter {
         // req.abort() blocks for returning TimeouError to req.end
         // so make it async and reject promise first
         setTimeout(() => {
-          req.abort()
+          req.abort();
         }, 0);
         fail(new Error('upload canceled'));
       });
@@ -90,6 +90,17 @@ class Fetcher extends events.EventEmitter {
 
 export class Session extends Fetcher {
 
+  /**
+   * @constructor
+   * @param {String} endpoint - endpoint url string for Auth API
+   * @param {Object} params - parameter for Auth API
+   * @param {String} params.client_id - client_id of client app
+   * @param {String} params.client_secret - client_secret of client app
+   * @param {String} params.username - CID of user
+   * @param {String} params.password - password of user
+   * @param {String[]} params.scope - list of scope string
+   * @param {String} params.grant_type - grant_type of API
+   */
   constructor(endpoint, params) {
     assert(endpoint, 'endpoint required');
     Session.validateParams(params);
@@ -128,6 +139,7 @@ export class Session extends Fetcher {
     return this.fetch(url, {
       method: 'post',
       body: { // copy params for join scope
+        /*eslint camelcase:0*/
         client_id: params.client_id,
         client_secret: params.client_secret,
         username: params.username,
@@ -197,6 +209,15 @@ export class Session extends Fetcher {
     });
   }
 
+  /**
+   * upload log with Log Upload API.
+   * `log` will upload and save on log server with `filename`
+   *
+   * @param {String} log - log data for upload
+   * @param {String} filename - filename of uploaded log
+   * @param {Number} [timeout=5000ms] - number for uploading timeout in milli second
+   * @returns {Promise} resolve when upload finished, reject otherwise
+   */
   logUpload(log, filename, timeout) {
     assert(log, 'log is required');
     assert(filename, 'filename is required');
@@ -224,6 +245,10 @@ export class Session extends Fetcher {
     });
   }
 
+  /**
+   * canceling log upload
+   * and resolve promise of logUpload()
+   */
   logUploadCancel() {
     this.emit('cancel');
   }

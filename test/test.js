@@ -8,7 +8,7 @@ var endpoint = config.ENDPOINT;
 describe('Session test', function() {
   /*eslint no-inner-declarations:0, no-redeclare:0*/
 
-  this.timeout(5000);
+  this.timeout(10 * 1000); // 10sec
 
   let params = {
     /*eslint camelcase:0*/
@@ -485,7 +485,7 @@ describe('Session test', function() {
       let session = new Session(endpoint, params);
       let filename = 'log_upload_test_from_browser';
       let log = 'a';
-      for (let i = 0; i < 26; i++) {
+      for (let i = 0; i < 20; i++) {
         log += log;
       }
 
@@ -509,7 +509,7 @@ describe('Session test', function() {
       let session = new Session(endpoint, params);
       let filename = 'log_upload_test_from_browser';
       let log = 'a';
-      for (let i = 0; i < 26; i++) {
+      for (let i = 0; i < 20; i++) {
         log += log;
       }
 

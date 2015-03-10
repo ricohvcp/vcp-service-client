@@ -1,6 +1,7 @@
 /*eslint global-strict:0*/
 'use strict';
 var gulp = require('gulp'),
+    babel = require('gulp-babel'),
     bower = require('main-bower-files'),
     browserify = require('browserify'),
     connect = require('gulp-connect'),
@@ -9,8 +10,9 @@ var gulp = require('gulp'),
     istanbul = require('gulp-istanbul'),
     merge = require('merge-stream'),
     mocha = require('gulp-mocha'),
+    rename = require('gulp-rename'),
     source = require('vinyl-source-stream'),
-    babel = require('gulp-babel');
+    uglify = require('gulp-uglify');
 
 
 /**
@@ -61,7 +63,7 @@ gulp.task('build:babel', function() {
 });
 
 // build with browserify
-gulp.task('build:browserify', ['build:babel'], function() {
+gulp.task('build:browserify', ['build:babel'], function(done) {
   /*eslint comma-spacing: 0*/
   gulp.src('build/src/index.js')
     .pipe(gulp.dest('build/src'))
@@ -69,7 +71,8 @@ gulp.task('build:browserify', ['build:babel'], function() {
       browserify('./build/src/index.js')
         .bundle()
         .pipe(source('bundle.js'))
-        .pipe(gulp.dest('./build/browser'));
+        .pipe(gulp.dest('./build/browser'))
+        .on('end', done);
 
       browserify('./build/test/test.js')
         .ignore('power-assert')
@@ -80,7 +83,14 @@ gulp.task('build:browserify', ['build:babel'], function() {
 });
 
 // build src for browser
-gulp.task('build', ['build:browserify']);
+gulp.task('build', ['build:browserify'], function() {
+  gulp.src('build/browser/bundle.js')
+    .pipe(uglify())
+    .pipe(rename({
+      extname: '.min.js'
+    }))
+    .pipe(gulp.dest('./build/browser'));
+});
 
 // run test on mocha and get coverage
 gulp.task('test', ['build:babel'], function(cb) {

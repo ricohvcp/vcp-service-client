@@ -26,6 +26,10 @@ $ npm run build
 - source for node.js will be in `build/src` directory
 - source for browser will be in `build/browser` directory
 
+if your target browser doesn't have `Promise` API.
+use [ypromise](https://github.com/yahoo/ypromise) for polyfill.
+after build task, `lib/promise.js` is that.
+
 
 ## tasks
 

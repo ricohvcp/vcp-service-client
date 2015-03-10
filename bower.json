@@ -2,7 +2,9 @@
   "name": "ucs-service-client",
   "description": "client of ucs service",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "ypromise": "*"
+  },
   "devDependencies": {
     "mocha": "*",
     "power-assert": "*"

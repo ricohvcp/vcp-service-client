@@ -12,6 +12,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'lib/promise.js',
       'build/browser/bundle.js',
       'build/test/**/*.js'
     ],

@@ -1,9 +1,9 @@
 {
-  "name": "ucs-service-client",
-  "description": "client of ucs service",
+  "name": "vcp-service-client",
+  "description": "RICOH Visual Communication Platform service client for javascript",
   "version": "0.0.1",
   "bugs": {
-    "url": "http://github.com/ricohvcp/ucs-service-client/issues"
+    "url": "http://github.com/ricohvcp/vcp-service-client/issues"
   },
   "dependencies": {
     "superagent": "^0.21.0"
@@ -68,13 +68,13 @@
     "test",
     "config/config.template.js"
   ],
-  "homepage": "http://github.com/ricohvcp/ucs-service-client",
+  "homepage": "http://github.com/ricohvcp/vcp-service-client",
   "keywords": [],
   "license": "MIT",
   "main": "./index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ricohvcp/ucs-service-client.git"
+    "url": "git://github.com/ricohvcp/vcp-service-client.git"
   },
   "scripts": {
     "bower": "bower install && gulp bower",

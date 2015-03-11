@@ -1,6 +1,6 @@
 {
-  "name": "ucs-service-client",
-  "description": "client of ucs service",
+  "name": "vcp-service-client",
+  "description": "RICOH Visual Communication Platform service client for javascript",
   "version": "0.0.0",
   "dependencies": {
     "ypromise": "*"
@@ -9,7 +9,7 @@
     "mocha": "*",
     "power-assert": "*"
   },
-  "homepage": "https://github.com/ucs-service-client",
+  "homepage": "https://github.com/vcp-service-client",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -22,6 +22,6 @@
   "main": "build/browser/bundle.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ricohvcp/ucs-service-client.git"
+    "url": "git://github.com/ricohvcp/vcp-service-client.git"
   }
 }

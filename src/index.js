@@ -88,7 +88,7 @@ class Fetcher extends events.EventEmitter {
   }
 }
 
-export class Session extends Fetcher {
+export class VCPClient extends Fetcher {
 
   /**
    * @constructor
@@ -103,7 +103,7 @@ export class Session extends Fetcher {
    */
   constructor(endpoint, params) {
     assert(endpoint, 'endpoint required');
-    Session.validateParams(params);
+    VCPClient.validateParams(params);
 
     super();
     this.endpoint = endpoint;

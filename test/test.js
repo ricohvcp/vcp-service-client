@@ -1,11 +1,11 @@
 var assert = require('power-assert');
-var Session = require('../src').Session;
+var VCPClient = require('../src').VCPClient;
 var FetchError = require('../src').FetchError;
 var config = require('../config/config').config;
 var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;
 
-describe('Session test', function() {
+describe('VCPClient test', function() {
   /*eslint no-inner-declarations:0, no-redeclare:0*/
 
   this.timeout(10 * 1000); // 10sec
@@ -22,15 +22,15 @@ describe('Session test', function() {
 
   describe('constructor', () => {
     it('new', () => {
-      let session = new Session(endpoint, params);
-      assert.deepEqual(session.params, params); // TODO: strictDeepEqual in io.js
-      assert.strictEqual(session.endpoint, endpoint);
+      let client = new VCPClient(endpoint, params);
+      assert.deepEqual(client.params, params); // TODO: strictDeepEqual in io.js
+      assert.strictEqual(client.endpoint, endpoint);
     });
 
     it('new without endpoint', () => {
       try {
-        let session = new Session();
-        assert.fail('cant be here: ' + session);
+        let client = new VCPClient();
+        assert.fail('cant be here: ' + client);
       } catch(err) {
         assert(err instanceof Error);
         assert.strictEqual(err.message, 'endpoint required');
@@ -39,8 +39,8 @@ describe('Session test', function() {
 
     it('new without params', () => {
       try {
-        let session = new Session(endpoint);
-        assert.fail('cant be here: ' + session);
+        let client = new VCPClient(endpoint);
+        assert.fail('cant be here: ' + client);
       } catch(err) {
         assert(err instanceof Error);
         assert.strictEqual(err.message, 'params required');
@@ -214,8 +214,8 @@ describe('Session test', function() {
       ].forEach((p) => {
         it(p.name, () => {
           try {
-            let session = new Session(endpoint, p.params());
-            assert.fail('cant be here: ' + session);
+            let client = new VCPClient(endpoint, p.params());
+            assert.fail('cant be here: ' + client);
           } catch (err) {
             assert(err instanceof assert.AssertionError);
             assert.strictEqual(err.message, p.message);
@@ -227,36 +227,36 @@ describe('Session test', function() {
 
   describe('emitter', () => {
     it('emit', () => {
-      let session = new Session(endpoint, params);
+      let client = new VCPClient(endpoint, params);
 
       let c = 0;
-      session.on('test', function test0(data) {
+      client.on('test', function test0(data) {
         assert.strictEqual(data, 'data');
         if (c++ === 2) {
           done();
         }
       });
 
-      session.on('test', function test1(data) {
+      client.on('test', function test1(data) {
         assert.strictEqual(data, 'data');
         if (c++ === 2) {
           done();
         }
       });
 
-      session.emit('test', 'data');
+      client.emit('test', 'data');
     });
   });
 
   describe('auth', () => {
     it('success', (done) => {
-      let session = new Session(endpoint, params);
-      session.auth().then(() => {
-        assert.ok(session.authInfo.access_token);
-        assert.ok(session.authInfo.refresh_token);
-        assert.ok(session.authInfo.token_type);
-        assert.ok(session.authInfo.expires_in);
-        assert.ok(session.authInfo.scope);
+      let client = new VCPClient(endpoint, params);
+      client.auth().then(() => {
+        assert.ok(client.authInfo.access_token);
+        assert.ok(client.authInfo.refresh_token);
+        assert.ok(client.authInfo.token_type);
+        assert.ok(client.authInfo.expires_in);
+        assert.ok(client.authInfo.scope);
         done();
       }).catch(done);
     });
@@ -264,8 +264,8 @@ describe('Session test', function() {
     it('error: param with invalid client_id', (done) => {
       let p = JSON.parse(JSON.stringify(params));
       p.client_id = 'xxxxxxxx';
-      let session = new Session(endpoint, p);
-      session.auth().then(() => {
+      let client = new VCPClient(endpoint, p);
+      client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
         assert.ok(err instanceof FetchError);
@@ -278,8 +278,8 @@ describe('Session test', function() {
     it('error: param with invalid client_secret', (done) => {
       let p = JSON.parse(JSON.stringify(params));
       p.client_secret = 'xxxxxxxx';
-      let session = new Session(endpoint, p);
-      session.auth().then(() => {
+      let client = new VCPClient(endpoint, p);
+      client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
         assert.ok(err instanceof FetchError);
@@ -292,8 +292,8 @@ describe('Session test', function() {
     it('error: param with invalid username', (done) => {
       let p = JSON.parse(JSON.stringify(params));
       p.username = 'xxxxxxxx';
-      let session = new Session(endpoint, p);
-      session.auth().then(() => {
+      let client = new VCPClient(endpoint, p);
+      client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
         assert.ok(err instanceof FetchError);
@@ -306,8 +306,8 @@ describe('Session test', function() {
     it('error: param with invalid password', (done) => {
       let p = JSON.parse(JSON.stringify(params));
       p.password = 'xxxxxxxx';
-      let session = new Session(endpoint, p);
-      session.auth().then(() => {
+      let client = new VCPClient(endpoint, p);
+      client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
         assert.ok(err instanceof FetchError);
@@ -320,8 +320,8 @@ describe('Session test', function() {
     it('error: param with invalid scope', (done) => {
       let p = JSON.parse(JSON.stringify(params));
       p.scope = [];
-      let session = new Session(endpoint, p);
-      session.auth().then(() => {
+      let client = new VCPClient(endpoint, p);
+      client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
         assert.ok(err instanceof FetchError);
@@ -334,8 +334,8 @@ describe('Session test', function() {
     it('error: param with invalid grant_type', (done) => {
       let p = JSON.parse(JSON.stringify(params));
       p.grant_type = 'xxxxxxxx';
-      let session = new Session(endpoint, p);
-      session.auth().then(() => {
+      let client = new VCPClient(endpoint, p);
+      client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
         assert.ok(err instanceof FetchError);
@@ -348,10 +348,10 @@ describe('Session test', function() {
 
   describe('discovery', () => {
     it('success', (done) => {
-      let session = new Session(endpoint, params);
-      session.auth().then(() => {
+      let client = new VCPClient(endpoint, params);
+      client.auth().then(() => {
         // any scope with granted are ok
-        return session.discovery(scopes.INFORMATION_URI);
+        return client.discovery(scopes.INFORMATION_URI);
       }).then((info) => {
         assert(info);
         done();
@@ -359,9 +359,9 @@ describe('Session test', function() {
     });
 
     it('error: no result for SCOPE', (done) => {
-      let session = new Session(endpoint, params);
-      session.auth().then(() => {
-        return session.discovery(scopes.AUTH_API);
+      let client = new VCPClient(endpoint, params);
+      client.auth().then(() => {
+        return client.discovery(scopes.AUTH_API);
       }).then((info) => {
         assert.fail('cant be here');
       }).catch((err) => {
@@ -374,9 +374,9 @@ describe('Session test', function() {
 
   describe('accountInfo', () => {
     it('success', (done) => {
-      let session = new Session(endpoint, params);
-      session.auth().then(() => {
-        return session.accountInfo();
+      let client = new VCPClient(endpoint, params);
+      client.auth().then(() => {
+        return client.accountInfo();
       }).then((info) => {
         assert.strictEqual(typeof info.email_verified, 'boolean');
         assert.strictEqual(typeof info.web_password_changed, 'boolean');
@@ -387,9 +387,9 @@ describe('Session test', function() {
 
   describe('userInfo', () => {
     it('success', (done) => {
-      let session = new Session(endpoint, params);
-      session.auth().then(() => {
-        return session.userInfo();
+      let client = new VCPClient(endpoint, params);
+      client.auth().then(() => {
+        return client.userInfo();
       }).then((info) => {
         assert.strictEqual(info.type, 'account');
         assert.strictEqual(typeof info.id, 'number');
@@ -404,9 +404,9 @@ describe('Session test', function() {
 
   describe('information', (done) => {
     it('success', (done) => {
-      let session = new Session(endpoint, params);
-      session.auth().then(() => {
-        return session.information();
+      let client = new VCPClient(endpoint, params);
+      client.auth().then(() => {
+        return client.information();
       }).then((info) => {
         assert.strictEqual(typeof info.ja, 'string');
         assert.strictEqual(typeof info.global, 'string');
@@ -417,9 +417,9 @@ describe('Session test', function() {
 
   describe('rosters', (done) => {
     it('success', (done) => {
-      let session = new Session(endpoint, params);
-      session.auth().then(() => {
-        return session.rosters();
+      let client = new VCPClient(endpoint, params);
+      client.auth().then(() => {
+        return client.rosters();
       }).then((rosters) => {
         assert.ok(Array.isArray(rosters.results));
         assert.strictEqual(typeof rosters.total_results, 'number');
@@ -432,16 +432,16 @@ describe('Session test', function() {
   describe('roster', (done) => {
     it('success', (done) => {
       let cid;
-      let session = new Session(endpoint, params);
-      session.auth().then(() => {
-        return session.rosters();
+      let client = new VCPClient(endpoint, params);
+      client.auth().then(() => {
+        return client.rosters();
       }).then((rosters) => {
         if (rosters.results.length > 0) {
           cid = rosters.results.shift().udc_id;
         } else {
           return done(new Error(`${params.username} doesn't have a roster`));
         }
-        return session.roster(cid);
+        return client.roster(cid);
       }).then((roster) => {
         assert.ok(roster);
         assert.strictEqual(roster.udc_id, cid);
@@ -451,9 +451,9 @@ describe('Session test', function() {
 
     it('error: non-existent cid', (done) => {
       let cid;
-      let session = new Session(endpoint, params);
-      session.auth().then(() => {
-        return session.roster('invalidCID');
+      let client = new VCPClient(endpoint, params);
+      client.auth().then(() => {
+        return client.roster('invalidCID');
       }).then((roster) => {
         assert.ok(roster);
         assert.strictEqual(roster.udc_id, cid);
@@ -469,12 +469,12 @@ describe('Session test', function() {
 
   describe('logUpload', (done) => {
     it('success', (done) => {
-      let session = new Session(endpoint, params);
+      let client = new VCPClient(endpoint, params);
       let filename = 'log_upload_test_from_browser';
       let log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
-      session.auth().then(() => {
-        return session.logUpload(log, filename);
+      client.auth().then(() => {
+        return client.logUpload(log, filename);
       }).then((result) => {
         assert.strictEqual(result, null);
         done();
@@ -482,20 +482,20 @@ describe('Session test', function() {
     });
 
     it('cancel', (done) => {
-      let session = new Session(endpoint, params);
+      let client = new VCPClient(endpoint, params);
       let filename = 'log_upload_test_from_browser';
       let log = 'a';
       for (let i = 0; i < 20; i++) {
         log += log;
       }
 
-      session.auth().then(() => {
+      client.auth().then(() => {
         // cancel
         setTimeout(() => {
-          session.logUploadCancel();
+          client.logUploadCancel();
         }, 50);
 
-        return session.logUpload(log, filename);
+        return client.logUpload(log, filename);
       }).then((result) => {
         assert.fail('cant be here');
       }).catch((err) => {
@@ -506,7 +506,7 @@ describe('Session test', function() {
     });
 
     it('error: timeout', (done) => {
-      let session = new Session(endpoint, params);
+      let client = new VCPClient(endpoint, params);
       let filename = 'log_upload_test_from_browser';
       let log = 'a';
       for (let i = 0; i < 20; i++) {
@@ -515,8 +515,8 @@ describe('Session test', function() {
 
       let timeout = 1;
 
-      session.auth().then(() => {
-        return session.logUpload(log, filename, timeout);
+      client.auth().then(() => {
+        return client.logUpload(log, filename, timeout);
       }).then((result) => {
         assert.fail('cant be here');
       }).catch((err) => {
@@ -527,7 +527,7 @@ describe('Session test', function() {
     });
 
     it('error: file size too large', () => {
-      let session = new Session(endpoint, params);
+      let client = new VCPClient(endpoint, params);
       let filename = 'log_upload_test_from_browser';
       let log = 'a';
       for (let i = 0; i < 27; i++) {
@@ -535,19 +535,19 @@ describe('Session test', function() {
       }
 
       try {
-        session.logUpload(log, filename);
+        client.logUpload(log, filename);
       } catch(err) {
         assert.strictEqual(err.message, 'logfile too big. (API limit 128MB)');
       }
     });
 
     it('error: invalid file name', () => {
-      let session = new Session(endpoint, params);
+      let client = new VCPClient(endpoint, params);
       let filename = 'test#from%browser';
       let log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
       try {
-        session.logUpload(log, filename);
+        client.logUpload(log, filename);
       } catch(err) {
         assert.strictEqual(err.message, 'invalid log filename. (API limit alpahnumeric and -, ., _)');
       }

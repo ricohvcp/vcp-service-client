@@ -1,11 +1,14 @@
-## [0.0.0](https://github.com/path-to-repo/releases/tag/v0.0.0)
+# CHANGELOG
+
+## [0.0.3](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.2)
+
+rename Session class to VCPClient
+
+## [0.0.2](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.2)
+
+change module name to ucs-service-client to vcp-service-client
 
 
-#### Features
+## [0.0.0](https://github.com/ricohvcp/ucs-service-client/releases/tag/v0.0.0)
 
-- add new feature ([xxxxxxx](https://github.com/path-to-commit)
-
-
-#### Bug Fixes
-
-- bugfixed ([xxxxxxx](https://github.com/path-to-commit)
+Initial Release

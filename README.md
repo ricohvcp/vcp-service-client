@@ -51,8 +51,8 @@ need to call this onece, before calling other api.
 ```js
 // login
 client.auth()
-      .then(function(authInfo) {
-        console.log(authInfo);
+      .then(function() {
+        console.log(client.authInfo);
       });
 ```
 
@@ -153,6 +153,46 @@ client.discovery(scope.INFORMATION_URI)
       });
 ```
 
+### Example
+
+call auth & user info api.
+
+
+in browser
+
+```html
+<script src="build/browser/bundle.min.js"></script>
+<script>
+var client = new VCPClient('https://auth.ucs.ricoh.com', config);
+
+// call this first
+client.auth().then(function() {
+  console.log('auth success');
+});
+
+document.getElementById('#userinfo')
+        .addEventListener('click', function() {
+          // call after auth
+          client.userInfo().then(function(info) {
+            cosnole.log(info);
+          });
+        });
+</script>
+```
+
+in server
+
+```js
+var VCPClient = require('build/src').VCPClient;
+
+var client = new VCPClient('https://auth.ucs.ricoh.com', config);
+
+client.auth().then(function() {
+  return client.userInfo();
+}).then(function(info) {
+  console.log(info);
+});
+```
 
 ## how to build yourself
 

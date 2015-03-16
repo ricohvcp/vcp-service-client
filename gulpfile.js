@@ -68,7 +68,7 @@ gulp.task('build:browserify', ['build:babel'], function(done) {
   gulp.src('build/src/index.js')
     .pipe(gulp.dest('build/src'))
     .on('end', function() {
-      browserify('./build/src/index.js')
+      browserify('./build/src/index.js', { standalone: 'VCPClient' })
         .bundle()
         .pipe(source('bundle.js'))
         .pipe(gulp.dest('./build/browser'))

@@ -46,6 +46,7 @@ var client = new VCPClient('https://auth.ucs.ricoh.com', config);
 ### auth()
 
 call auth API and save authentication result in instance. return Promise.
+need to call this onece, before calling other api.
 
 ```js
 // login

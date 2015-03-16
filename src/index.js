@@ -22,7 +22,7 @@ class Fetcher extends events.EventEmitter {
 
     let req = superagent[method](url);
 
-    let timeout = options.timeout || 5000;
+    let timeout = options.timeout || 10000;
     req.timeout(timeout);
 
     // set access_token to Authroization header
@@ -229,8 +229,8 @@ export class VCPClient extends Fetcher {
     // API limit is limit for logfile size
     assert(log.length < 1024 * 1024 * 128, 'logfile too big. (API limit 128MB)');
 
-    // optional and default to 5 sec
-    timeout = timeout || 5000;
+    // optional and default to 10 sec
+    timeout = timeout || 10000;
 
     return this.discovery(scopes.LOG_UPLOAD_API).then((res) => {
       let url = res.endpoint;

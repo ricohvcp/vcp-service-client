@@ -120,7 +120,7 @@ call logupload API and upload logdata, return Promsie
 ```js
 var log = 'this is log data which you wanna upload';
 var filename = 'mylogfilename'; // this will be name of saved file at log server
-var timeout = 1000; // (default 5000 ms)
+var timeout = 5000; // (default 10000 ms)
 
 
 client.logUpload(log, filename, timeout)

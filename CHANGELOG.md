@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [0.0.6](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.6)
+
+- update superagent to v1.1.0
+
 ## [0.0.5](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.5)
 
 - fix for linux error handling

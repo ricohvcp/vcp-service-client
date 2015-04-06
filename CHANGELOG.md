@@ -1,6 +1,12 @@
 # CHANGELOG
 
-## [0.0.3](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.2)
+## [0.0.5](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.5)
+
+- fix for linux error handling
+- publish with build result
+
+
+## [0.0.3](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.3)
 
 rename Session class to VCPClient
 

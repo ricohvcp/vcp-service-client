@@ -38,21 +38,26 @@ class Fetcher extends events.EventEmitter {
       req.send(options.body);
     }
 
-    return new Promise((done, fail) => {
+    return new Promise((resolve, reject) => {
       this.on('cancel', () => {
         // req.abort() blocks for returning TimeouError to req.end
         // so make it async and reject promise first
         setTimeout(() => {
           req.abort();
         }, 0);
-        fail(new Error('upload canceled'));
+        reject(new Error('upload canceled'));
       });
 
       req.end((err, res) => {
         this.removeAllListeners('cancel');
 
+        if (err && err.response) {
+          res = err.response;
+          err = null;
+        }
+
         if (err) {
-          return fail(err);
+          return reject(err);
         }
 
         let status = res.status;
@@ -75,14 +80,14 @@ class Fetcher extends events.EventEmitter {
           }
 
           let err = new FetchError(message, code);
-          return fail(err);
+          return reject(err);
         }
 
         if (res.header['content-length'] === '0') {
           body = null;
         }
 
-        return done(body);
+        return resolve(body);
       });
     });
   }

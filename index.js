@@ -7,4 +7,4 @@
  * Copyright (c) 2015 Ricoh Company, Ltd. All Rights Reserved.
  */
 
-module.exports = require('./src');
+module.exports = require('./build/src');

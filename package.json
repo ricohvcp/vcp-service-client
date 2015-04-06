@@ -83,6 +83,7 @@
     "clean-all": "gulp clean:all",
     "lint": "eslint src test index.js gulpfile.js *.conf.js && fixpack && fixbow",
     "postinstall": "npm install eslint@es6jsx",
+    "prepublish": "npm run clean && npm run build",
     "start": "gulp server",
     "test": "gulp lint && gulp test",
     "test-browser": "gulp clean && gulp build && npm run bower && karma start",

@@ -3,12 +3,29 @@ env:
   browser : true
   node    : true
   mocha   : true
+  es6     : true
 
-globals:
-  $       : true
-
-settings:
-  ecmascript: 6
+ecmaFeatures:
+ arrowFunctions: true,
+ binaryLiterals: true,
+ blockBindings: true,
+ classes: true,
+ defaultParams: true,
+ destructuring: true,
+ forOf: true,
+ generators: true,
+ modules: true,
+ objectLiteralComputedProperties: true,
+ objectLiteralDuplicateProperties: true,
+ objectLiteralShorthandMethods: true,
+ objectLiteralShorthandProperties: true,
+ octalLiterals: true,
+ regexUFlag: true,
+ regexYFlag: true,
+ superInFunctions: true,
+ templateStrings: true,
+ unicodeCodePointEscapes: true,
+ globalReturn: true
 
 plugins:
   - nodeca
@@ -111,7 +128,7 @@ rules: # 0: disable, 1: warn, 2: error
   no-label-var           : 2 # no label with variable name no-shadow
   no-shadow              : 2 # no shadowing
   no-shadow-restricted-names: 2 # no shadowing Global props
-  no-undef               : 0 # no use undeclared vars
+  no-undef               : 1 # no use undeclared vars
   no-undef-init          : 2 # no initialize with undefined: var a = undefined;
   no-undefined           : 0 # allow using if (a === undefined) because undefined is const in strict mode and undef-init save us
   no-unused-vars         : [1, { vars: 'all', args: 'all' }] # no unused vars
@@ -164,15 +181,16 @@ rules: # 0: disable, 1: warn, 2: error
   #FIXME: uncomment this after update. space-after-function-name: [2, 'never'] # always no space after function name
   space-after-keywords   : [2, 'always'] # always space on keywords
   space-before-blocks    : [2, 'always'] # always space before block
-  space-in-brackets      : [2, 'always',
-    {
-      singleValue: false,
-      objectsInArrays: false,
-      arraysInArrays: false,
-      arraysInObjects: false,
-      objectsInObjects: false,
-      propertyName: false
-    }]
+  # TODO: breaks
+  # space-in-brackets      : [2, 'always',
+  #     {
+  #       singleValue: false,
+  #       objectsInArrays: false,
+  #       arraysInArrays: false,
+  #       arraysInObjects: false,
+  #       objectsInObjects: false,
+  #       propertyName: false
+  #     }]
   space-in-parens        : [2, 'never'] # always no space on parens
   space-infix-ops        : 2 # always space in infix ops
   space-return-throw-case: 2 # always space in return, throw, case

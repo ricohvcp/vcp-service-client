@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     connect = require('gulp-connect'),
     del = require('del'),
+    eslint = require('gulp-eslint'),
     espower = require('gulp-espower'),
     istanbul = require('gulp-istanbul'),
     merge = require('merge-stream'),
@@ -34,8 +35,10 @@ gulp.task('server', function() {
 
 // eslint all javascripts
 gulp.task('lint', function() {
-  // TODO: gulp-eslint doesn't support latest eslint
-  // please update this task when updated.
+  return gulp.src(['src/**/*.js', 'gulpfile.js', '*.conf.js'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failOnError());
 });
 
 // all bower componets are copy in /lib

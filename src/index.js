@@ -76,7 +76,7 @@ class Fetcher extends events.EventEmitter {
             message = body.errors[0].message;
             code = body.errors[0].message_id;
           } else {
-            throw new Error('cant be here: error = ' + text);
+            throw new Error('cant be here: error = ' + message);
           }
 
           let err = new FetchError(message, code);
@@ -119,22 +119,22 @@ export class VCPClient extends Fetcher {
     assert(params, 'params required');
 
     assert(params.client_id, 'params.client_id required');
-    assert.strictEqual(typeof params.client_id, 'string',  'params.client_id should be string');
+    assert.strictEqual(typeof params.client_id, 'string', 'params.client_id should be string');
 
     assert(params.client_secret, 'params.client_secret required');
-    assert.strictEqual(typeof params.client_secret, 'string',  'params.client_secret should be string');
+    assert.strictEqual(typeof params.client_secret, 'string', 'params.client_secret should be string');
 
     assert(params.username, 'params.username required');
-    assert.strictEqual(typeof params.username, 'string',  'params.username should be string');
+    assert.strictEqual(typeof params.username, 'string', 'params.username should be string');
 
     assert(params.password, 'params.password required');
-    assert.strictEqual(typeof params.password, 'string',  'params.password should be string');
+    assert.strictEqual(typeof params.password, 'string', 'params.password should be string');
 
     assert(params.scope, 'params.scope required');
     assert(Array.isArray(params.scope), 'params.scope should be array');
 
     assert(params.grant_type, 'params.grant_type required');
-    assert.strictEqual(typeof params.grant_type, 'string',  'params.grant_type should be string');
+    assert.strictEqual(typeof params.grant_type, 'string', 'params.grant_type should be string');
   }
 
   auth() {
@@ -253,6 +253,8 @@ export class VCPClient extends Fetcher {
   /**
    * canceling log upload
    * and resolve promise of logUpload()
+   *
+   * @returns {undefined} no return
    */
   logUploadCancel() {
     this.emit('cancel');

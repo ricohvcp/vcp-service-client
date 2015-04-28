@@ -30,11 +30,14 @@ ecmaFeatures:
 plugins:
   - nodeca
   - no-func-space
+  - arrow-function
 
 # see: http:#eslint.org/docs/rules/
 rules: # 0: disable, 1: warn, 2: error
   # Plugins
   nodeca/indent          : [ 2, spaces, 2 ]
+  arrow-function/space   : 2
+  arrow-function/paren   : 2
   no-func-space/no-func-space : 2
 
   # Possible Errors

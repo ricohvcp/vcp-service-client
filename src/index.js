@@ -144,7 +144,6 @@ export class VCPClient extends Fetcher {
     return this.fetch(url, {
       method: 'post',
       body: { // copy params for join scope
-        /*eslint camelcase:0*/
         client_id: params.client_id,
         client_secret: params.client_secret,
         username: params.username,

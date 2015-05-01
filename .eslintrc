@@ -151,7 +151,7 @@ rules: # 0: disable, 1: warn, 2: error
 
   # Stylistic Issues
   brace-style            : [2, '1tbs'] # require brace style
-  camelcase              : 1 # TODO: force using camelcase
+  camelcase              : 0 # TODO: force using camelcase
   # comma-spacing          : [2, {before: false, after: true}] # space after comma: (a, b)
   # comma-style            : [0, first], # comma first
   consistent-this        : [2, 'thisArg'] # use var thisArg = this;

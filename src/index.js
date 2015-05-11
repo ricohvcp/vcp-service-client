@@ -1,5 +1,5 @@
 var assert = require('assert');
-var events = require('events');
+var EventEmitter = require('events').EventEmitter;
 var superagent = require('superagent');
 
 var scopes = require('./scopes').SCOPES;
@@ -11,7 +11,9 @@ export class FetchError extends Error {
   }
 }
 
-class Fetcher extends events.EventEmitter {
+export class Fetcher extends EventEmitter {
+  constructor() {
+  }
 
   fetch(url, options) {
     assert(url, 'url required');
@@ -61,7 +63,16 @@ class Fetcher extends events.EventEmitter {
         }
 
         let status = res.status;
-        let body = res.body;
+        let header = res.header;
+        let body = res.text;
+
+        if (header['content-length'] === undefined || header['content-length'] === '0') {
+          body = null;
+        }
+
+        if (header['content-type'].match(/application\/json/)) {
+          body = res.body;
+        }
 
         if (status > 399) {
           let message, code;
@@ -81,10 +92,6 @@ class Fetcher extends events.EventEmitter {
 
           let err = new FetchError(message, code);
           return reject(err);
-        }
-
-        if (res.header['content-length'] === '0') {
-          body = null;
         }
 
         return resolve(body);

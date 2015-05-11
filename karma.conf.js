@@ -13,7 +13,7 @@ module.exports = function(config) {
     files: [
       'lib/promise.js',
       'build/browser/bundle.min.js',
-      'build/test/**/*.js'
+      'build/test/test.js'
     ],
 
     // list of files to exclude

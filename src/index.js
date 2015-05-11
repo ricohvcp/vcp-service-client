@@ -24,6 +24,10 @@ export class Fetcher extends EventEmitter {
 
     let req = superagent[method](url);
 
+    if (options.proxy) {
+      options.proxy.wrapper(req, options.proxy.url);
+    }
+
     let timeout = options.timeout || 10000;
     req.timeout(timeout);
 

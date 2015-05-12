@@ -124,7 +124,7 @@ export class VCPClient extends Fetcher {
     assert(endpoint, 'endpoint required');
     VCPClient.validateParams(params);
 
-    super();
+    super(params.proxy);
     this.endpoint = endpoint;
     this.params = params;
   }
@@ -149,6 +149,10 @@ export class VCPClient extends Fetcher {
 
     assert(params.grant_type, 'params.grant_type required');
     assert.strictEqual(typeof params.grant_type, 'string', 'params.grant_type should be string');
+
+    if (params.proxy) {
+      assert.strictEqual(typeof params.proxy, 'function', 'params.proxy should be function');
+    }
   }
 
   auth() {

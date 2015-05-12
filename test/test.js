@@ -210,6 +210,15 @@ describe('VCPClient test', function() {
             return p;
           },
           message: 'params.grant_type should be string'
+        },
+        {
+          name: 'with invalid params.proxy',
+          params: () => {
+            let p = copy(params);
+            p.proxy = 'proxy';
+            return p;
+          },
+          message: 'params.proxy should be function'
         }
       ].forEach((p) => {
         it(p.name, () => {

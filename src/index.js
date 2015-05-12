@@ -12,7 +12,8 @@ export class FetchError extends Error {
 }
 
 export class Fetcher extends EventEmitter {
-  constructor() {
+  constructor(proxy) {
+    this.proxy = proxy;
   }
 
   fetch(url, options) {
@@ -24,8 +25,8 @@ export class Fetcher extends EventEmitter {
 
     let req = superagent[method](url);
 
-    if (options.proxy) {
-      options.proxy.wrapper(req, options.proxy.url);
+    if (this.proxy) {
+      this.proxy(req);
     }
 
     let timeout = options.timeout || 10000;

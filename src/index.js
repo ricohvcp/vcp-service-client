@@ -6,6 +6,7 @@ var scopes = require('./scopes').SCOPES;
 
 export class FetchError extends Error {
   constructor(message, code) {
+    super();
     this.message = message;
     this.code = code;
   }
@@ -13,6 +14,7 @@ export class FetchError extends Error {
 
 export class Fetcher extends EventEmitter {
   constructor(proxy) {
+    super();
     this.proxy = proxy;
   }
 

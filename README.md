@@ -194,6 +194,33 @@ client.auth().then(function() {
 });
 ```
 
+## Proxy support
+
+request via proxy in node.js need to add [vcp-service-client-proxy](https://github.com/ricohvcp/vcp-service-client-proxy)
+
+```js
+var Proxy = require('vcp-service-client-proxy');
+var VCPClient = require('vcp-service-client').VCPClient;
+
+var proxy = Proxy({ http: 'http://proxy.com', https: 'https://proxy.com' });
+//  proxy = Proxy(); default arguments is process.env.HTTP(s)_PROXY
+
+var params = {
+  client_id: client_id,
+  client_secret: client_secret,
+  ...
+  proxy: proxy // add proxy
+};
+
+var client = new VCPClient(endpoint, params);
+client.auth().then(function() {
+  ...
+});
+```
+
+in browser usage, set correct value to browser not modify code.
+
+
 ## how to build yourself
 
 ```sh

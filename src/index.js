@@ -6,7 +6,7 @@ var scopes = require('./scopes').SCOPES;
 
 export class FetchError extends Error {
   constructor(message, code) {
-    super();
+    super(message);
     this.message = message;
     this.code = code;
   }

@@ -222,17 +222,36 @@ describe('VCPClient test', function() {
         }
       ].forEach((p) => {
         it(p.name, () => {
-          try {
-            let client = new VCPClient(endpoint, p.params());
-            assert.fail('cant be here: ' + client);
-          } catch (err) {
-            assert(err instanceof assert.AssertionError);
-            let actual = JSON.parse(err.message);
+
+          // node only
+          if (typeof window === 'undefined') {
+            try {
+              let client = new VCPClient(endpoint, p.params());
+              assert.fail('cant be here: ' + client);
+            } catch (err) {
+              assert(err instanceof assert.AssertionError);
+              let actual = JSON.parse(err.message);
+              let expected = [p.message];
+              assert.deepEqual(actual, expected);
+            }
+          }
+
+          // browser doesn't throw AssertionError
+          // but run in node/browser too.
+          let consoleassert = console.assert;
+
+          console.assert = function(exp, message) {
+            assert.strictEqual(exp, false);
+            let actual = JSON.parse(message);
             let expected = [p.message];
             assert.deepEqual(actual, expected);
           }
+          let client = new VCPClient(endpoint, p.params());
+
+          console.assert = consoleassert;
         });
       });
+
     });
   });
 

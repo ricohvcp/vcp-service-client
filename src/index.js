@@ -1,6 +1,7 @@
 var assert = require('assert');
 var EventEmitter = require('events').EventEmitter;
 var superagent = require('superagent');
+var Violate = require('violations').Violate;
 
 var scopes = require('./scopes').SCOPES;
 
@@ -121,38 +122,89 @@ export class VCPClient extends Fetcher {
    * @param {String} params.grant_type - grant_type of API
    */
   constructor(endpoint, params) {
-    assert(endpoint, 'endpoint required');
-    VCPClient.validateParams(params);
+    assert(endpoint, 'endpoint is required');
+    assert(params, 'params are required');
+    VCPClient.validateParams().assert(params);
 
     super(params.proxy);
     this.endpoint = endpoint;
     this.params = params;
   }
 
-  static validateParams(params) {
-    assert(params, 'params required');
+  static validateParams() {
+    let rules = {
+      'client_id': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return `params.${name} is required`;
+        }
 
-    assert(params.client_id, 'params.client_id required');
-    assert.strictEqual(typeof params.client_id, 'string', 'params.client_id should be string');
+        if (!_.isString(val)) {
+          return `params.${name} should be string`;
+        }
+      },
 
-    assert(params.client_secret, 'params.client_secret required');
-    assert.strictEqual(typeof params.client_secret, 'string', 'params.client_secret should be string');
+      'client_secret': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return `params.${name} is required`;
+        }
 
-    assert(params.username, 'params.username required');
-    assert.strictEqual(typeof params.username, 'string', 'params.username should be string');
+        if (!_.isString(val)) {
+          return `params.${name} should be string`;
+        }
+      },
 
-    assert(params.password, 'params.password required');
-    assert.strictEqual(typeof params.password, 'string', 'params.password should be string');
+      'username': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return `params.${name} is required`;
+        }
 
-    assert(params.scope, 'params.scope required');
-    assert(Array.isArray(params.scope), 'params.scope should be array');
+        if (!_.isString(val)) {
+          return `params.${name} should be string`;
+        }
+      },
 
-    assert(params.grant_type, 'params.grant_type required');
-    assert.strictEqual(typeof params.grant_type, 'string', 'params.grant_type should be string');
+      'password': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return `params.${name} is required`;
+        }
 
-    if (params.proxy) {
-      assert.strictEqual(typeof params.proxy, 'function', 'params.proxy should be function');
-    }
+        if (!_.isString(val)) {
+          return `params.${name} should be string`;
+        }
+      },
+
+      'scope': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return `params.${name} is required`;
+        }
+
+        if (!_.isArray(val)) {
+          return `params.${name} should be array`;
+        }
+      },
+
+      'grant_type': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return `params.${name} is required`;
+        }
+
+        if (!_.isString(val)) {
+          return `params.${name} should be string`;
+        }
+      },
+
+      'proxy': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return; // optional
+        }
+
+        if (!_.isFunction(val)) {
+          return `params.${name} should be function`;
+        }
+      }
+    };
+
+    return new Violate(rules);
   }
 
   auth() {

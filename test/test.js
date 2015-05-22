@@ -33,7 +33,7 @@ describe('VCPClient test', function() {
         assert.fail('cant be here: ' + client);
       } catch(err) {
         assert(err instanceof Error);
-        assert.strictEqual(err.message, 'endpoint required');
+        assert.strictEqual(err.message, 'endpoint is required');
       }
     });
 
@@ -43,7 +43,7 @@ describe('VCPClient test', function() {
         assert.fail('cant be here: ' + client);
       } catch(err) {
         assert(err instanceof Error);
-        assert.strictEqual(err.message, 'params required');
+        assert.strictEqual(err.message, 'params are required');
       }
     });
 
@@ -59,7 +59,7 @@ describe('VCPClient test', function() {
             delete p.client_id;
             return p;
           },
-          message: 'params.client_id required'
+          message: 'params.client_id is required'
         },
         {
           name: 'with empty params.client_id',
@@ -68,7 +68,7 @@ describe('VCPClient test', function() {
             p.client_id = '';
             return p;
           },
-          message: 'params.client_id required'
+          message: 'params.client_id is required'
         },
         {
           name: 'with invalid type params.client_id',
@@ -88,7 +88,7 @@ describe('VCPClient test', function() {
             delete p.client_secret;
             return p;
           },
-          message: 'params.client_secret required'
+          message: 'params.client_secret is required'
         },
         {
           name: 'with empty params.client_secret',
@@ -97,7 +97,7 @@ describe('VCPClient test', function() {
             p.client_secret = '';
             return p;
           },
-          message: 'params.client_secret required'
+          message: 'params.client_secret is required'
         },
         {
           name: 'with invalid params.client_secret',
@@ -116,7 +116,7 @@ describe('VCPClient test', function() {
             delete p.username;
             return p;
           },
-          message: 'params.username required'
+          message: 'params.username is required'
         },
         {
           name: 'with empty params.username',
@@ -125,7 +125,7 @@ describe('VCPClient test', function() {
             p.username = '';
             return p;
           },
-          message: 'params.username required'
+          message: 'params.username is required'
         },
         {
           name: 'with invalid params.username',
@@ -144,7 +144,7 @@ describe('VCPClient test', function() {
             delete p.password;
             return p;
           },
-          message: 'params.password required'
+          message: 'params.password is required'
         },
         {
           name: 'with empty params.password',
@@ -153,7 +153,7 @@ describe('VCPClient test', function() {
             p.password = '';
             return p;
           },
-          message: 'params.password required'
+          message: 'params.password is required'
         },
         {
           name: 'with invalid params.password',
@@ -172,7 +172,7 @@ describe('VCPClient test', function() {
             delete p.scope;
             return p;
           },
-          message: 'params.scope required'
+          message: 'params.scope is required'
         },
         {
           name: 'with invalid params.scope',
@@ -191,7 +191,7 @@ describe('VCPClient test', function() {
             delete p.grant_type;
             return p;
           },
-          message: 'params.grant_type required'
+          message: 'params.grant_type is required'
         },
         {
           name: 'with empty params.grant_type',
@@ -200,7 +200,7 @@ describe('VCPClient test', function() {
             p.grant_type = '';
             return p;
           },
-          message: 'params.grant_type required'
+          message: 'params.grant_type is required'
         },
         {
           name: 'with invalid params.grant_type',
@@ -227,7 +227,9 @@ describe('VCPClient test', function() {
             assert.fail('cant be here: ' + client);
           } catch (err) {
             assert(err instanceof assert.AssertionError);
-            assert.strictEqual(err.message, p.message);
+            let actual = JSON.parse(err.message);
+            let expected = [p.message];
+            assert.deepEqual(actual, expected);
           }
         });
       });

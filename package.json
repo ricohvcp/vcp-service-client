@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "superagent": "^0.21.0",
-    "violations": "0.0.3"
+    "violations": "0.0.4"
   },
   "devDependencies": {
     "bower": "1.4.1",

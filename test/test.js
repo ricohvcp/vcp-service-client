@@ -10,6 +10,23 @@ describe('VCPClient test', function() {
 
   this.timeout(10 * 1000); // 10sec
 
+  if (typeof window !== 'undefined') {
+    let console_assert = console.assert;
+    before(() => {
+      // in browser stub console.assert with
+      // throwing Error
+      console.assert = (exp, message) => {
+        if (!exp) {
+          throw new Error(message);
+        }
+      }
+    });
+
+    after(() => {
+      console.assert = console_assert;
+    });
+  }
+
   let params = {
     /*eslint camelcase:0*/
     client_id: config.CLIENT_ID,

@@ -19,10 +19,8 @@ export class Fetcher extends EventEmitter {
     this.proxy = proxy;
   }
 
-  fetch(url, options) {
+  fetch(url, options = {}) {
     assert(url, 'url required');
-
-    options = options || {};
 
     let method = options.method || 'get';
 
@@ -289,10 +287,10 @@ export class VCPClient extends Fetcher {
    *
    * @param {String} log - log data for upload
    * @param {String} filename - filename of uploaded log
-   * @param {Number} [timeout=5000ms] - number for uploading timeout in milli second
+   * @param {Number} [timeout=1000ms] - number for uploading timeout in milli second
    * @returns {Promise} resolve when upload finished, reject otherwise
    */
-  logUpload(log, filename, timeout) {
+  logUpload(log, filename, timeout = 10000) {
     assert(log, 'log is required');
     assert(filename, 'filename is required');
 
@@ -302,9 +300,6 @@ export class VCPClient extends Fetcher {
 
     // API limit is limit for logfile size
     assert(log.length < 1024 * 1024 * 128, 'logfile too big. (API limit 128MB)');
-
-    // optional and default to 10 sec
-    timeout = timeout || 10000;
 
     return this.discovery(scopes.LOG_UPLOAD_API).then((res) => {
       let url = res.endpoint;

@@ -106,8 +106,8 @@ export class Fetcher extends EventEmitter {
             throw new Error('cant be here: error = ' + message);
           }
 
-          let err = new FetchError(message, code);
-          return reject(err);
+          let fetchErr = new FetchError(message, code);
+          return reject(fetchErr);
         }
 
         return resolve(body);

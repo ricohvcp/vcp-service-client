@@ -23,9 +23,10 @@ export class Fetcher extends EventEmitter {
     assert(url, 'url required');
 
     let method = options.method || 'get';
-
     let req = superagent[method](url);
 
+    // wrap with vcp-service-client-proxy
+    // (based on superagent-proxy)
     if (this.proxy) {
       this.proxy(req);
     }
@@ -59,6 +60,9 @@ export class Fetcher extends EventEmitter {
       req.end((err, res) => {
         this.removeAllListeners('cancel');
 
+        // in superagent, error has response in 4xx, 5xx
+        // so avoid reject(err) below and
+        // merge into same flow for create error mesasge below.
         if (err && err.response) {
           res = err.response;
           err = null;
@@ -72,10 +76,13 @@ export class Fetcher extends EventEmitter {
         let header = res.header;
         let body = res.text;
 
+        // in some case, body has '' (emtpy string), so replace them into null
         if (header['content-length'] === undefined || header['content-length'] === '0') {
           body = null;
         }
 
+        // in plain/text, res.text is body but
+        // in application/json, res.body is parsed json
         if (header['content-type'].match(/application\/json/)) {
           body = res.body;
         }
@@ -93,6 +100,9 @@ export class Fetcher extends EventEmitter {
             message = body.errors[0].message;
             code = body.errors[0].message_id;
           } else {
+            // in vcp services, in error status must has
+            // error message in response body
+            // so we can't do nothing in here
             throw new Error('cant be here: error = ' + message);
           }
 

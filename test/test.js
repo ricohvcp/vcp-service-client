@@ -567,7 +567,9 @@ describe('VCPClient test', function() {
       try {
         client.logUpload(log, filename);
       } catch(err) {
-        assert.strictEqual(err.message, 'logfile too big. (API limit 128MB)');
+        let message = JSON.parse(err.message);
+        assert.strictEqual(message.length, 1);
+        assert.strictEqual(message[0], 'logfile too big. (API limit 128MB)');
       }
     });
 
@@ -579,7 +581,9 @@ describe('VCPClient test', function() {
       try {
         client.logUpload(log, filename);
       } catch(err) {
-        assert.strictEqual(err.message, 'invalid log filename. (API limit alpahnumeric and -, ., _)');
+        let message = JSON.parse(err.message);
+        assert.strictEqual(message.length, 1);
+        assert.strictEqual(message[0], 'invalid log filename. (API limit alphanumeric and -, ., _)');
       }
     });
   });

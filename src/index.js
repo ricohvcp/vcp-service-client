@@ -215,6 +215,49 @@ export class VCPClient extends Fetcher {
     return new Violate(rules);
   }
 
+  static validateLogupload() {
+    let rules = {
+      'log': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return `${name} is required`;
+        }
+
+        if (val.length >= 1024 * 1024 * 128) {
+          return 'logfile too big. (API limit 128MB)';
+        }
+      },
+      'filename': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return `${name} is required`;
+        }
+
+        let messages = [];
+        if (val.length > 32) {
+          // API limit for logfile name
+          messages.push('logfile name too large. (API limit less than 32byte )');
+        }
+
+        if (!/^[a-zA-Z0-9_\-\.]+$/.test(val)) {
+          // API limit is limit for logfile size
+          messages.push('invalid log filename. (API limit alphanumeric and -, ., _)');
+        }
+
+        return messages;
+      },
+      'timeout': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return; // optional
+        }
+
+        if (!_.isNumber(val)) {
+          return `${name} should be Number`;
+        }
+      }
+    };
+
+    return new Violate(rules);
+  }
+
   auth() {
     let url = `${this.endpoint}/auth/token`;
     let params = this.params;
@@ -301,15 +344,7 @@ export class VCPClient extends Fetcher {
    * @returns {Promise} resolve when upload finished, reject otherwise
    */
   logUpload(log, filename, timeout = 10000) {
-    assert(log, 'log is required');
-    assert(filename, 'filename is required');
-
-    // API limit for logfile name
-    assert(filename.length < 32, 'logfile name too large. (API limit less than 32byte )');
-    assert(/^[a-zA-Z0-9_\-\.]+$/.test(filename), 'invalid log filename. (API limit alpahnumeric and -, ., _)');
-
-    // API limit is limit for logfile size
-    assert(log.length < 1024 * 1024 * 128, 'logfile too big. (API limit 128MB)');
+    VCPClient.validateLogupload().assert({ log, filename, timeout });
 
     return this.discovery(scopes.LOG_UPLOAD_API).then((res) => {
       let url = res.endpoint;

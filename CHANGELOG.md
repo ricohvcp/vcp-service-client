@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [0.0.11](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.11)
+
+- update validation logics
+
+## 0.0.8-0.0.10
+
+- bugfix
+
+## [0.0.7](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.7)
+
+- support proxy using vcp-service-client-proxy
+
 ## [0.0.6](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.6)
 
 - update superagent to v1.1.0

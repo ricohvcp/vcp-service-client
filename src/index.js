@@ -116,30 +116,13 @@ export class Fetcher extends EventEmitter {
   }
 }
 
-export class VCPClient extends Fetcher {
-
-  /**
-   * @constructor
-   * @param {String} endpoint - endpoint url string for Auth API
-   * @param {Object} params - parameter for Auth API
-   * @param {String} params.client_id - client_id of client app
-   * @param {String} params.client_secret - client_secret of client app
-   * @param {String} params.username - CID of user
-   * @param {String} params.password - password of user
-   * @param {String[]} params.scope - list of scope string
-   * @param {String} params.grant_type - grant_type of API
-   */
-  constructor(endpoint, params) {
-    assert(endpoint, 'endpoint is required');
-    assert(params, 'params are required');
-    VCPClient.validateParams().assert(params);
-
-    super(params.proxy);
-    this.endpoint = endpoint;
-    this.params = params;
+export class Validator {
+  constructor() {
+    this.params = this.buildParams();
+    this.logupload = this.buildLogupload();
   }
 
-  static validateParams() {
+  buildParams() {
     let rules = {
       'client_id': (val, name, _) => {
         if (_.isEmpty(val)) {
@@ -215,7 +198,7 @@ export class VCPClient extends Fetcher {
     return new Violate(rules);
   }
 
-  static validateLogupload() {
+  buildLogupload() {
     let rules = {
       'log': (val, name, _) => {
         if (_.isEmpty(val)) {
@@ -256,6 +239,32 @@ export class VCPClient extends Fetcher {
     };
 
     return new Violate(rules);
+  }
+}
+
+export class VCPClient extends Fetcher {
+
+  /**
+   * @constructor
+   * @param {String} endpoint - endpoint url string for Auth API
+   * @param {Object} params - parameter for Auth API
+   * @param {String} params.client_id - client_id of client app
+   * @param {String} params.client_secret - client_secret of client app
+   * @param {String} params.username - CID of user
+   * @param {String} params.password - password of user
+   * @param {String[]} params.scope - list of scope string
+   * @param {String} params.grant_type - grant_type of API
+   */
+  constructor(endpoint, params) {
+    assert(endpoint, 'endpoint is required');
+    assert(params, 'params are required');
+    let validator = new Validator();
+    validator.params.assert(params);
+
+    super(params.proxy);
+    this.validator = validator;
+    this.endpoint = endpoint;
+    this.params = params;
   }
 
   auth() {
@@ -344,7 +353,7 @@ export class VCPClient extends Fetcher {
    * @returns {Promise} resolve when upload finished, reject otherwise
    */
   logUpload(log, filename, timeout = 10000) {
-    VCPClient.validateLogupload().assert({ log, filename, timeout });
+    this.validator.logupload.assert({ log, filename, timeout });
 
     return this.discovery(scopes.LOG_UPLOAD_API).then((res) => {
       let url = res.endpoint;

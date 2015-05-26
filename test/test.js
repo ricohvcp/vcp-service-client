@@ -44,13 +44,13 @@ describe('VCPClient test', function() {
       assert.strictEqual(client.endpoint, endpoint);
     });
 
-    it('new without endpoint', () => {
+    it('new without args', () => {
       try {
         let client = new VCPClient();
         assert.fail('cant be here: ' + client);
       } catch(err) {
         assert(err instanceof Error);
-        assert.strictEqual(err.message, 'endpoint is required');
+        assert.deepEqual(JSON.parse(err.message), ['endpoint is required', 'params is required']);
       }
     });
 
@@ -60,7 +60,7 @@ describe('VCPClient test', function() {
         assert.fail('cant be here: ' + client);
       } catch(err) {
         assert(err instanceof Error);
-        assert.strictEqual(err.message, 'params are required');
+        assert.deepEqual(JSON.parse(err.message), ['params is required']);
       }
     });
 

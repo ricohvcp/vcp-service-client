@@ -118,12 +118,12 @@ export class Fetcher extends EventEmitter {
 
 export class Validator {
   constructor() {
-    this.params = this.buildParams();
+    this.new = this.buildNew();
     this.logupload = this.buildLogupload();
   }
 
-  buildParams() {
-    let rules = {
+  buildNew() {
+    let paramRule = {
       'client_id': (val, name, _) => {
         if (_.isEmpty(val)) {
           return `params.${name} is required`;
@@ -195,6 +195,31 @@ export class Validator {
       }
     };
 
+    let rules = {
+      'endpoint': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return `${name} is required`;
+        }
+
+        if (!_.isString(val)) {
+          return `${name} should be string`;
+        }
+      },
+
+      'params': (val, name, _) => {
+        if (_.isEmpty(val)) {
+          return `${name} is required`;
+        }
+
+        if (!_.isObject(val)) {
+          return `${name} should be object`;
+        }
+
+        let paramValidate = new Violate(paramRule);
+        return paramValidate.validate(val);
+      }
+    };
+
     return new Violate(rules);
   }
 
@@ -256,10 +281,8 @@ export class VCPClient extends Fetcher {
    * @param {String} params.grant_type - grant_type of API
    */
   constructor(endpoint, params) {
-    assert(endpoint, 'endpoint is required');
-    assert(params, 'params are required');
     let validator = new Validator();
-    validator.params.assert(params);
+    validator.new.assert({ endpoint, params });
 
     super(params.proxy);
     this.validator = validator;

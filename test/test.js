@@ -537,12 +537,12 @@ describe('VCPClient test', function() {
       }
 
       client.auth().then(() => {
-        // cancel
+        let uploadPromise = client.logUpload(log, filename);
         setTimeout(() => {
-          client.logUploadCancel();
+          uploadPromise.cancel();
         }, 50);
 
-        return client.logUpload(log, filename);
+        return uploadPromise;
       }).then((result) => {
         assert.fail('cant be here');
       }).catch((err) => {

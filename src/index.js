@@ -2,6 +2,7 @@ var assert = require('assert');
 var EventEmitter = require('events').EventEmitter;
 var superagent = require('superagent');
 var Violate = require('violations').Violate;
+var Promise = require('bluebird');
 
 var scopes = require('./scopes').SCOPES;
 
@@ -48,18 +49,7 @@ export class Fetcher extends EventEmitter {
     }
 
     return new Promise((resolve, reject) => {
-      this.on('cancel', () => {
-        // req.abort() blocks for returning TimeouError to req.end
-        // so make it async and reject promise first
-        setTimeout(() => {
-          req.abort();
-        }, 0);
-        reject(new Error('upload canceled'));
-      });
-
       req.end((err, res) => {
-        this.removeAllListeners('cancel');
-
         // in superagent, error has response in 4xx, 5xx
         // so avoid reject(err) below and
         // merge into same flow for create error mesasge below.
@@ -112,6 +102,13 @@ export class Fetcher extends EventEmitter {
 
         return resolve(body);
       });
+    }).cancellable().catch(Promise.CancellationError, () => {
+      // req.abort() blocks for returning TimeouError to req.end
+      // so make it async and reject promise first
+      setTimeout(() => {
+        req.abort();
+      }, 0);
+      throw new Error('upload canceled');
     });
   }
 }

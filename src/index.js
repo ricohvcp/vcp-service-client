@@ -387,14 +387,4 @@ export class VCPClient extends Fetcher {
       });
     });
   }
-
-  /**
-   * canceling log upload
-   * and resolve promise of logUpload()
-   *
-   * @returns {undefined} no return
-   */
-  logUploadCancel() {
-    this.emit('cancel');
-  }
 }

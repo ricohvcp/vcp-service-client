@@ -2,7 +2,7 @@ var assert = require('power-assert');
 var Proxy = require('vcp-service-client-proxy');
 
 var VCPClient = require('../src').VCPClient;
-var Fetcher = require('../src').Fetcher;
+var Fetcher = require('../src/fetcher').Fetcher;
 var config = require('../config/config').config;
 var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;

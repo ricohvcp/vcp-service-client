@@ -272,29 +272,6 @@ describe('VCPClient test', function() {
     });
   });
 
-  describe('emitter', () => {
-    it('emit', () => {
-      let client = new VCPClient(endpoint, params);
-
-      let c = 0;
-      client.on('test', function test0(data) {
-        assert.strictEqual(data, 'data');
-        if (c++ === 2) {
-          done();
-        }
-      });
-
-      client.on('test', function test1(data) {
-        assert.strictEqual(data, 'data');
-        if (c++ === 2) {
-          done();
-        }
-      });
-
-      client.emit('test', 'data');
-    });
-  });
-
   describe('auth', () => {
     it('success', (done) => {
       let client = new VCPClient(endpoint, params);

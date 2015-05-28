@@ -264,7 +264,7 @@ export class Validator {
   }
 }
 
-export class VCPClient extends Fetcher {
+export class VCPClient {
 
   /**
    * @constructor
@@ -281,17 +281,17 @@ export class VCPClient extends Fetcher {
     let validator = new Validator();
     validator.new.assert({ endpoint, params });
 
-    super(params.proxy);
     this.validator = validator;
     this.endpoint = endpoint;
     this.params = params;
+    this.fetcher = new Fetcher(params.proxy);
   }
 
   auth() {
     let url = `${this.endpoint}/auth/token`;
     let params = this.params;
 
-    return this.fetch(url, {
+    return this.fetcher.fetch(url, {
       method: 'post',
       body: { // copy params for join scope
         client_id: params.client_id,
@@ -313,7 +313,7 @@ export class VCPClient extends Fetcher {
     let url = `${this.endpoint}/auth/discovery`;
     let access_token = this.authInfo.access_token;
 
-    return this.fetch(url, {
+    return this.fetcher.fetch(url, {
       method: 'post',
       access_token: access_token,
       body: { scope: scope }
@@ -342,7 +342,7 @@ export class VCPClient extends Fetcher {
       let url = `${res.endpoint}/${this.params.username}`;
       let access_token = res.access_token;
 
-      return this.fetch(url, {
+      return this.fetcher.fetch(url, {
         method: 'get',
         access_token: access_token
       });
@@ -356,7 +356,7 @@ export class VCPClient extends Fetcher {
       let url = `${res.endpoint}/${this.params.username}/${cid}`;
       let access_token = res.access_token;
 
-      return this.fetch(url, {
+      return this.fetcher.fetch(url, {
         method: 'get',
         access_token: access_token
       });
@@ -379,7 +379,7 @@ export class VCPClient extends Fetcher {
       let url = res.endpoint;
       url = url.replace('{filename_suffix}', filename);
 
-      return this.fetch(url, {
+      return this.fetcher.fetch(url, {
         method: 'post',
         body: log,
         access_token: res.access_token,

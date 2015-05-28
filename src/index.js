@@ -14,6 +14,7 @@ export class FetchError extends Error {
   }
 }
 
+// TODO: support progress
 export class Fetcher extends EventEmitter {
   constructor(proxy) {
     super();

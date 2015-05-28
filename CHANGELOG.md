@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [0.0.12](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.11)
+
+- [**breakin changes**] remove `logUploadCancel()`
+- all API return cancelable promise
+- VCPClient is not event emitter now
+- reject promise with Array of FetchError if multiple error was responed
+
 ## [0.0.11](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.11)
 
 - update validation logics

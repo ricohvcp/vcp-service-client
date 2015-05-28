@@ -35,7 +35,7 @@ gulp.task('server', function() {
 
 // eslint all javascripts
 gulp.task('lint', function() {
-  return gulp.src(['src/**/*.js', 'gulpfile.js', '*.conf.js'])
+  return gulp.src([ 'src/**/*.js', 'gulpfile.js', '*.conf.js' ])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failOnError());

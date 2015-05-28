@@ -15,10 +15,6 @@ RICOH Visual Communication Platform service client for javascript
 $ npm install vcp-service-client
 ```
 
-if your target browser doesn't have `Promise` API.
-use [ypromise](https://github.com/yahoo/ypromise) for polyfill.
-after build task, `lib/promise.js` is that.
-
 ## API
 
 ### configuration params
@@ -113,7 +109,7 @@ client.roster(cid)
 ```
 
 
-### logUpload() / logUploadCancel()
+### logUpload()
 
 call logupload API and upload logdata, return Promsie
 
@@ -130,12 +126,6 @@ client.logUpload(log, filename, timeout)
       .catch(function() {
         console.error('upload timeouted, aborted, or failed');
       });
-
-// cancel upload via logUploadCancel();
-document.getElementById('uploadcancel')
-        .addEventListener('click', function() {
-          client.logUploadCancel();
-        });
 ```
 
 ### discovery()
@@ -220,6 +210,32 @@ client.auth().then(function() {
 
 in browser usage, set correct value to browser not modify code.
 
+
+## Canceling requests
+
+all promise from request API are cancelable.
+
+for example, you can cancel logupload with calling `cancel()` method.
+
+
+```js
+var log = 'this is log data which you wanna upload';
+var filename = 'mylogfilename'; // this will be name of saved file at log server
+var timeout = 5000; // (default 10000 ms)
+
+client.logUpload(log, filename, timeout)
+      .then(function() {
+        console.log('upload finished');
+      })
+      .catch(function() {
+        console.error('upload timeouted, aborted, or failed');
+      });
+
+document.getElementById('uploadcancel')
+      .addEventListener('click', function() {
+        client.cancel();
+      });
+```
 
 ## how to build yourself
 

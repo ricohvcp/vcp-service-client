@@ -3,7 +3,7 @@
   "description": "RICOH Visual Communication Platform service client for javascript",
   "version": "0.0.0",
   "dependencies": {
-    "ypromise": "*"
+    "bluebird": "*"
   },
   "devDependencies": {
     "mocha": "*",

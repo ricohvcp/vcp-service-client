@@ -6,6 +6,7 @@
     "url": "http://github.com/ricohvcp/vcp-service-client/issues"
   },
   "dependencies": {
+    "bluebird": "^2.9.26",
     "superagent": "^1.2.0",
     "violations": "0.0.6"
   },

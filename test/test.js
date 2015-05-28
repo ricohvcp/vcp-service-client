@@ -483,9 +483,11 @@ describe('VCPClient test', function() {
         assert.strictEqual(roster.udc_id, cid);
         done();
       }).catch((err) => {
-        assert.ok(err instanceof FetchError);
-        assert.strictEqual(err.message, '存在しないUDC-IDです');
-        assert.strictEqual(err.code, 'roster.error.udcid.notexist');
+        assert.strictEqual(err.length, 1);
+        let fetchErr = err[0];
+        assert.ok(fetchErr instanceof FetchError);
+        assert.strictEqual(fetchErr.message, '存在しないUDC-IDです');
+        assert.strictEqual(fetchErr.code, 'roster.error.udcid.notexist');
         done();
       }).catch(done);
     });

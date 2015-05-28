@@ -79,26 +79,30 @@ export class Fetcher extends EventEmitter {
         }
 
         if (status > 399) {
-          let message, code;
-
+          // single error
           if (body.error !== undefined) {
-            // single error
-            message = body.error_description;
-            code = body.error;
-          } else if (body.errors !== undefined) {
-            // multiple error
-            // but use only first.
-            message = body.errors[0].message;
-            code = body.errors[0].message_id;
-          } else {
-            // in vcp services, in error status must has
-            // error message in response body
-            // so we can't do nothing in here
-            throw new Error('cant be here: error = ' + message);
+            let message = body.error_description;
+            let code = body.error;
+            let fetchError = new FetchError(message, code);
+            return reject(fetchError);
           }
 
-          let fetchErr = new FetchError(message, code);
-          return reject(fetchErr);
+          // multiple error
+          if (body.errors !== undefined) {
+            let fetchErrors = body.errors.map((error) => {
+              let message = error.message;
+              let code = error.message_id;
+              return new FetchError(message, code);
+            });
+
+            // reject with Array of FetchError
+            return reject(fetchErrors);
+          }
+
+          // in vcp services, in error status must has
+          // error message in response body
+          // so we can't do nothing in here
+          return reject(new Error(`cant be here: status=${status} body=${body}`));
         }
 
         return resolve(body);

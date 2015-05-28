@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [0.0.12](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.11)
+## [0.0.12](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.12)
 
 - [**breakin changes**] remove `logUploadCancel()`
 - all API return cancelable promise

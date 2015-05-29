@@ -31,6 +31,7 @@ plugins:
   - nodeca
   - no-func-space
   - arrow-function
+  - classes
 
 # see: http:#eslint.org/docs/rules/
 rules: # 0: disable, 1: warn, 2: error
@@ -40,6 +41,8 @@ rules: # 0: disable, 1: warn, 2: error
   arrow-function/paren   : 2
   arrow-function/no-condition : 2
   no-func-space/no-func-space : 2
+  classes/space          : 2
+  classes/name           : [ 2, 'class', 'name' ]
 
   # Possible Errors
   no-comma-dangle        : 2 # no trailing comma at last prop

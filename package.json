@@ -16,6 +16,7 @@
     "browserify-istanbul": "0.2.1",
     "del": "1.2.0",
     "eslint-plugin-arrow-function": "0.0.2",
+    "eslint-plugin-classes": "0.0.2",
     "eslint-plugin-no-func-space": "0.0.4",
     "eslint-plugin-nodeca": "1.0.3",
     "fixbow": "0.0.1",

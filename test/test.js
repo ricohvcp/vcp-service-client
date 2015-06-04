@@ -28,7 +28,6 @@ describe('VCPClient test', function() {
   }
 
   let params = {
-    /*eslint camelcase:0*/
     client_id: config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,
     username: config.CID,

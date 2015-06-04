@@ -113,7 +113,7 @@ export class VCPClient {
    * @returns {Promise} resolve when upload finished, reject otherwise
    */
   logUpload(log, filename, timeout = 10000) {
-    this.validator.logupload.assert({ log, filename, timeout });
+    this.validator.logUpload.assert({ log, filename, timeout });
 
     return this.discovery(scopes.LOG_UPLOAD_API).then((res) => {
       let url = res.endpoint;

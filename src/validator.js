@@ -3,7 +3,7 @@ var Violate = require('violations').Violate;
 export class Validator {
   constructor() {
     this.new = this.buildNew();
-    this.logupload = this.buildLogupload();
+    this.logUpload = this.buildLogUpload();
   }
 
   buildNew() {
@@ -107,7 +107,7 @@ export class Validator {
     return new Violate(rules);
   }
 
-  buildLogupload() {
+  buildLogUpload() {
     let rules = {
       'log': (val, name, _) => {
         if (_.isEmpty(val)) {

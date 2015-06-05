@@ -101,11 +101,15 @@ gulp.task('test', ['build:babel'], function(cb) {
     .pipe(istanbul())
     .pipe(istanbul.hookRequire())
     .on('finish', function() {
+      var option = {
+        reporter: 'spec'
+      };
+      if (process.argv[4]) {
+        // --env option comes here
+        option.grep = process.argv[4];
+      }
       gulp.src('build/test/*.js')
-        .pipe(mocha({
-          // grep: 'auth',
-          reporter: 'spec'
-        }))
+        .pipe(mocha(option))
         .pipe(istanbul.writeReports({
           dir: 'tmp',
           reporters: [ 'html', 'text' ],

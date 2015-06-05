@@ -564,7 +564,7 @@ describe('VCPClient test', function() {
       } catch(err) {
         let message = JSON.parse(err.message);
         assert.strictEqual(message.length, 1);
-        assert.strictEqual(message[0], 'logfile too big. (API limit 128MB)');
+        assert.strictEqual(message[0], 'logfile too large. (API limit 128MB)');
       }
     });
 

@@ -115,7 +115,7 @@ export class Validator {
         }
 
         if (val.length >= 1024 * 1024 * 128) {
-          return 'logfile too big. (API limit 128MB)';
+          return 'logfile too large. (API limit 128MB)';
         }
       },
       'filename': (val, name, _) => {
@@ -126,7 +126,7 @@ export class Validator {
         let messages = [];
         if (val.length > 32) {
           // API limit for logfile name
-          messages.push('logfile name too large. (API limit less than 32byte )');
+          messages.push('logfile name too large. (API limit less than 32byte)');
         }
 
         if (!/^[a-zA-Z0-9_\-\.]+$/.test(val)) {

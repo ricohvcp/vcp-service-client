@@ -33,6 +33,7 @@ export class VCPClient {
 
     return this.fetcher.fetch(url, {
       method: 'post',
+      type: 'form',
       body: { // copy params for join scope
         client_id: params.client_id,
         client_secret: params.client_secret,
@@ -55,6 +56,7 @@ export class VCPClient {
 
     return this.fetcher.fetch(url, {
       method: 'post',
+      type: 'form',
       access_token: access_token,
       body: { scope: scope }
     }).then((response) => {

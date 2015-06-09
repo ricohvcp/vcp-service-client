@@ -39,12 +39,11 @@ export class Fetcher extends EventEmitter {
     }
 
     // set content-type to form-urlencoded
-    if (options.body) {
-      if (typeof options.body === 'object') {
-        req.type('form');
-      }
-      req.send(options.body);
+    if (options.type) {
+      req.type(options.type);
     }
+
+    req.send(options.body);
 
     return new Promise((resolve, reject) => {
       req.end((err, res) => {

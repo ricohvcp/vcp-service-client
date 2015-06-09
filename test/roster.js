@@ -22,7 +22,6 @@ describe('roster test', function() {
       client.auth().then(() => {
         return client.rosters();
       }).then((rosters) => {
-        console.log(rosters.results);
         assert.ok(Array.isArray(rosters.results));
         assert.strictEqual(typeof rosters.total_results, 'number');
         assert.strictEqual(rosters.total_results, rosters.results.length);

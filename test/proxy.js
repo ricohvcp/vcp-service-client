@@ -1,10 +1,10 @@
+/*eslint process-env: 0, no-process-env: 0*/
 var assert = require('power-assert');
 var Proxy = require('vcp-service-client-proxy');
 
 var VCPClient = require('../src').VCPClient;
 var Fetcher = require('../src/fetcher').Fetcher;
 var config = require('../config/config').config;
-var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;
 
 describe('Fetcher test', function() {
@@ -19,7 +19,7 @@ describe('Fetcher test', function() {
       fetcher.fetch('http://example.com').then((res) => {
         assert.strictEqual(typeof res, 'string');
         done();
-      }).catch(console.log.bind(console));
+      });
     });
 
     it('https', (done) => {
@@ -28,7 +28,7 @@ describe('Fetcher test', function() {
       fetcher.fetch('https://example.com').then((res) => {
         assert.strictEqual(typeof res, 'string');
         done();
-      }).catch(console.log.bind(console));
+      });
     });
   });
 
@@ -44,7 +44,7 @@ describe('Fetcher test', function() {
       fetcher.fetch('http://example.com').then((res) => {
         assert.strictEqual(typeof res, 'string');
         done();
-      }).catch(console.log.bind(console));
+      });
     });
 
     it('https', (done) => {
@@ -53,7 +53,7 @@ describe('Fetcher test', function() {
       fetcher.fetch('https://example.com').then((res) => {
         assert.strictEqual(typeof res, 'string');
         done();
-      }).catch(console.log.bind(console));
+      });
     });
   });
 

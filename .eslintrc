@@ -161,7 +161,7 @@ rules: # 0: disable, 1: warn, 2: error
   func-style             : [2, 'declaration'] # use function expression
   key-spacing            : [2, { beforeColon: false, afterColon: true }] # add colon after key
   max-nested-callbacks   : [2, 4] # max callback nest
-  new-cap                : [2, { newIsCap: true, capIsNew: true }] # use UpperCap for Constructor and always call with new
+  new-cap                : [2, { newIsCap: true, capIsNew: false }] # use UpperCap for Constructor and always call with new
   new-parens             : 2 # use parens for new: no new Person; use new Person();
   no-array-constructor   : 2 # no use new Array() or Array()
   no-inline-comments     : 0 # allow inline comments

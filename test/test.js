@@ -1,3 +1,4 @@
+/*eslint max-len: 0*/
 var assert = require('power-assert');
 var VCPClient = require('../src').VCPClient;
 var FetchError = require('../src/fetcher').FetchError;
@@ -6,8 +7,6 @@ var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;
 
 describe('VCPClient test', function() {
-  /*eslint no-inner-declarations:0, no-redeclare:0*/
-
   this.timeout(10 * 1000); // 10sec
 
   if (typeof window !== 'undefined') {
@@ -19,7 +18,7 @@ describe('VCPClient test', function() {
         if (!exp) {
           throw new Error(message);
         }
-      }
+      };
     });
 
     after(() => {
@@ -49,7 +48,7 @@ describe('VCPClient test', function() {
         assert.fail('cant be here: ' + client);
       } catch(err) {
         assert(err instanceof Error);
-        assert.deepEqual(JSON.parse(err.message), ['endpoint is required', 'params is required']);
+        assert.deepEqual(JSON.parse(err.message), [ 'endpoint is required', 'params is required' ]);
       }
     });
 
@@ -64,7 +63,9 @@ describe('VCPClient test', function() {
     });
 
     describe('new with invalid params', () => {
-      let copy = (o) => JSON.parse(JSON.stringify(o));
+      function copy(o) {
+        return JSON.parse(JSON.stringify(o));
+      }
 
       [
         // client_id
@@ -238,12 +239,11 @@ describe('VCPClient test', function() {
         }
       ].forEach((p) => {
         it(p.name, () => {
-
           // node only
           if (typeof window === 'undefined') {
             try {
               let client = new VCPClient(endpoint, p.params());
-              assert.fail('cant be here: ' + client);
+              assert.fail(`cant be here: ${client}`);
             } catch (err) {
               assert(err instanceof assert.AssertionError);
               let actual = JSON.parse(err.message);
@@ -261,13 +261,12 @@ describe('VCPClient test', function() {
             let actual = JSON.parse(message);
             let expected = [p.message];
             assert.deepEqual(actual, expected);
-          }
-          let client = new VCPClient(endpoint, p.params());
+          };
+          let dummy = new VCPClient(endpoint, p.params());
 
           console.assert = consoleassert;
         });
       });
-
     });
   });
 
@@ -386,7 +385,7 @@ describe('VCPClient test', function() {
       client.auth().then(() => {
         return client.discovery(scopes.AUTH_API);
       }).then((info) => {
-        assert.fail('cant be here');
+        assert.fail(`cant be here: ${info}`);
       }).catch((err) => {
         assert.ok(err instanceof Error);
         assert.ok(/discovery result doesn\'t include.*/.test(err.message));
@@ -425,7 +424,7 @@ describe('VCPClient test', function() {
     });
   });
 
-  describe('information', (done) => {
+  describe('information', () => {
     it('success', (done) => {
       let client = new VCPClient(endpoint, params);
       client.auth().then(() => {
@@ -438,7 +437,7 @@ describe('VCPClient test', function() {
     });
   });
 
-  describe('logUpload', (done) => {
+  describe('logUpload', () => {
     it('success', (done) => {
       let client = new VCPClient(endpoint, params);
       let filename = 'log_upload_test_from_browser';
@@ -468,7 +467,7 @@ describe('VCPClient test', function() {
 
         return uploadPromise;
       }).then((result) => {
-        assert.fail('cant be here');
+        assert.fail(`cant be here: ${result}`);
       }).catch((err) => {
         assert.ok(err instanceof Error);
         assert.strictEqual(err.message, 'upload canceled');
@@ -489,7 +488,7 @@ describe('VCPClient test', function() {
       client.auth().then(() => {
         return client.logUpload(log, filename, timeout);
       }).then((result) => {
-        assert.fail('cant be here');
+        assert.fail(`cant be here: ${result}`);
       }).catch((err) => {
         assert.ok(err instanceof Error);
         assert.strictEqual(err.message, `timeout of ${timeout}ms exceeded`);

@@ -2,11 +2,9 @@ var assert = require('power-assert');
 var VCPClient = require('../src').VCPClient;
 var FetchError = require('../src/fetcher').FetchError;
 var config = require('../config/config').config;
-var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;
 
 describe('roster test', function() {
-
   let params = {
     client_id: config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,
@@ -16,7 +14,7 @@ describe('roster test', function() {
     grant_type: 'password'
   };
 
-  describe('rosters', (done) => {
+  describe('rosters', () => {
     it('success', (done) => {
       let client = new VCPClient(endpoint, params);
       client.auth().then(() => {
@@ -30,7 +28,7 @@ describe('roster test', function() {
     });
   });
 
-  describe('roster', (done) => {
+  describe('roster', () => {
     it('success', (done) => {
       let cid;
       let client = new VCPClient(endpoint, params);

@@ -6,13 +6,13 @@
     "url": "http://github.com/ricohvcp/vcp-service-client/issues"
   },
   "dependencies": {
-    "bluebird": "^2.9.26",
+    "bluebird": "^2.9.27",
     "superagent": "^1.2.0",
-    "violations": "0.0.6"
+    "violations": "0.0.7"
   },
   "devDependencies": {
     "bower": "1.4.1",
-    "browserify": "10.2.1",
+    "browserify": "10.2.4",
     "browserify-istanbul": "0.2.1",
     "del": "1.2.0",
     "eslint-plugin-arrow-function": "0.0.2",
@@ -21,13 +21,13 @@
     "eslint-plugin-nodeca": "1.0.3",
     "fixbow": "0.0.1",
     "fixpack": "2.2.0",
-    "gulp": "3.8.11",
+    "gulp": "3.9.0",
     "gulp-babel": "5.1.0",
     "gulp-connect": "2.2.0",
-    "gulp-eslint": "0.12.0",
+    "gulp-eslint": "0.13.2",
     "gulp-espower": "0.10.1",
-    "gulp-istanbul": "0.9.0",
-    "gulp-mocha": "2.1.0",
+    "gulp-istanbul": "0.10.0",
+    "gulp-mocha": "2.1.1",
     "gulp-remove-lines": "0.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0",

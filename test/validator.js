@@ -53,6 +53,31 @@ describe('Validator test', function() {
     });
   });
 
+  describe('buildAddContact', () => {
+    it('buildAddContact', () => {
+      let v = new Validator();
+      let s101 = (new Array(102)).join('a');
+      let s256 = (new Array(257)).join('a');
+      [
+        {
+          arg: { name: {}, name_kana: {}, sender_name: {}, sender_name_kana: {} },
+          msg: [ 'name', 'name_kana', 'sender_name', 'sender_name_kana' ].map((m) => `${m} should be string`)
+        },
+        {
+          arg: { name: s101, name_kana: 'a', sender_name: s101, sender_name_kana: 'a' },
+          msg: [ 'name', 'sender_name' ].map((m) => `${m}'s length should between 0 and 100`)
+        },
+        {
+          arg: { name: 'a', name_kana: s256, sender_name: 'a', sender_name_kana: s256 },
+          msg: [ 'name_kana', 'sender_name_kana' ].map((m) => `${m}'s length should between 0 and 255`)
+        },
+      ].forEach((param) => {
+        let msg = v.addContact.validate(param.arg);
+        assert.deepEqual(msg, param.msg);
+      });
+    });
+  });
+
   describe('buildLogUpload', () => {
     it('buildLogUpload', () => {
       let v = new Validator();

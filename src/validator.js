@@ -4,6 +4,7 @@ export class Validator {
   constructor() {
     this.new = this.buildNew();
     this.logUpload = this.buildLogUpload();
+    this.addContact = this.buildAddContact();
   }
 
   buildNew() {
@@ -101,6 +102,76 @@ export class Validator {
 
         let paramValidate = new Violate(paramRule);
         return paramValidate.validate(val);
+      }
+    };
+
+    return new Violate(rules);
+  }
+
+  buildAddContact() {
+    let rules = {
+      'name': (val, name, _) => {
+        if (_.isUndefined(val)) {
+          return; // optional
+        }
+
+        if (!_.isString(val)) {
+          return `${name} should be string`;
+        }
+
+        // no surrogate pair because only UCS2 range
+        let min = 0, max = 100;
+        if (!(min <= val.length && val.length <= max)) {
+          return `${name}'s length should between ${min} and ${max}`;
+        }
+      },
+
+      'name_kana': (val, name, _) => {
+        if (_.isUndefined(val)) {
+          return; // optional
+        }
+
+        if (!_.isString(val)) {
+          return `${name} should be string`;
+        }
+
+        // no surrogate pair because only UCS2 range
+        let min = 0, max = 255;
+        if (!(min <= val.length && val.length <= max)) {
+          return `${name}'s length should between ${min} and ${max}`;
+        }
+      },
+
+      'sender_name': (val, name, _) => {
+        if (_.isUndefined(val)) {
+          return; // optional
+        }
+
+        if (!_.isString(val)) {
+          return `${name} should be string`;
+        }
+
+        // no surrogate pair because only UCS2 range
+        let min = 0, max = 100;
+        if (!(min <= val.length && val.length <= max)) {
+          return `${name}'s length should between ${min} and ${max}`;
+        }
+      },
+
+      'sender_name_kana': (val, name, _) => {
+        if (_.isUndefined(val)) {
+          return; // optional
+        }
+
+        if (!_.isString(val)) {
+          return `${name} should be string`;
+        }
+
+        // no surrogate pair because only UCS2 range
+        let min = 0, max = 255;
+        if (!(min <= val.length && val.length <= max)) {
+          return `${name}'s length should between ${min} and ${max}`;
+        }
       }
     };
 

@@ -79,23 +79,14 @@ export class VCPClient {
     return this.discovery(scopes.INFORMATION_URI);
   }
 
-  rosters() {
+  getRoster(cid) {
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}`;
-      let access_token = res.access_token;
 
-      return this.fetcher.fetch(url, {
-        method: 'get',
-        access_token: access_token
-      });
-    });
-  }
+      if (cid !== undefined) {
+        url = `${url}/${cid}`;
+      }
 
-  roster(cid) {
-    assert(cid, 'cid is required');
-
-    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
-      let url = `${res.endpoint}/${this.params.username}/${cid}`;
       let access_token = res.access_token;
 
       return this.fetcher.fetch(url, {

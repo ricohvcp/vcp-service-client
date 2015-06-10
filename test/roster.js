@@ -22,7 +22,7 @@ describe('roster test', function() {
     it('success', (done) => {
       let client = new VCPClient(endpoint, params);
       client.auth().then(() => {
-        return client.rosters();
+        return client.getRoster();
       }).then((rosters) => {
         assert.ok(Array.isArray(rosters.results));
         assert.strictEqual(typeof rosters.total_results, 'number');
@@ -37,14 +37,14 @@ describe('roster test', function() {
       let cid;
       let client = new VCPClient(endpoint, params);
       client.auth().then(() => {
-        return client.rosters();
+        return client.getRoster();
       }).then((rosters) => {
         if (rosters.results.length > 0) {
           cid = rosters.results.shift().udc_id;
         } else {
           return done(new Error(`${params.username} doesn't have a roster`));
         }
-        return client.roster(cid);
+        return client.getRoster(cid);
       }).then((roster) => {
         assert.ok(roster);
         assert.strictEqual(roster.udc_id, cid);
@@ -56,7 +56,7 @@ describe('roster test', function() {
       let cid;
       let client = new VCPClient(endpoint, params);
       client.auth().then(() => {
-        return client.roster('invalidCID');
+        return client.getRoster('invalidCID');
       }).then((roster) => {
         assert.ok(roster);
         assert.strictEqual(roster.udc_id, cid);

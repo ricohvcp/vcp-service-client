@@ -105,6 +105,56 @@ export class VCPClient {
     });
   }
 
+  addRoster(cid, options = {}) {
+    assert(cid, 'cid is required');
+    this.validator.addContact.assert(options);
+
+    let body = options;
+    body.udc_id = cid;
+
+    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
+      let url = `${res.endpoint}/${this.params.username}`;
+      let access_token = res.access_token;
+
+      return this.fetcher.fetch(url, {
+        method: 'post',
+        type: 'json',
+        access_token: access_token,
+        body: body
+      });
+    });
+  }
+
+  updateRoster(cid, options = {}) {
+    assert(cid, 'cid is required');
+
+    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
+      let url = `${res.endpoint}/${this.params.username}/${cid}`;
+      let access_token = res.access_token;
+
+      return this.fetcher.fetch(url, {
+        method: 'put',
+        type: 'json',
+        access_token: access_token,
+        body: options
+      });
+    });
+  }
+
+  deleteRoster(cid) {
+    assert(cid, 'cid is required');
+
+    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
+      let url = `${res.endpoint}/${this.params.username}/${cid}`;
+      let access_token = res.access_token;
+
+      return this.fetcher.fetch(url, {
+        method: 'del',
+        access_token: access_token
+      });
+    });
+  }
+
   /**
    * upload log with Log Upload API.
    * `log` will upload and save on log server with `filename`

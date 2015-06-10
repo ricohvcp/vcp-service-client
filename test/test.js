@@ -6,6 +6,10 @@ var config = require('../config/config').config;
 var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;
 
+function clone(o) {
+  return JSON.parse(JSON.stringify(o));
+}
+
 describe('VCPClient test', function() {
   this.timeout(10 * 1000); // 10sec
 
@@ -63,16 +67,12 @@ describe('VCPClient test', function() {
     });
 
     describe('new with invalid params', () => {
-      function copy(o) {
-        return JSON.parse(JSON.stringify(o));
-      }
-
       [
         // client_id
         {
           name: 'without params.client_id',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             delete p.client_id;
             return p;
           },
@@ -81,7 +81,7 @@ describe('VCPClient test', function() {
         {
           name: 'with empty params.client_id',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.client_id = '';
             return p;
           },
@@ -90,7 +90,7 @@ describe('VCPClient test', function() {
         {
           name: 'with invalid type params.client_id',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.client_id = 1000;
             return p;
           },
@@ -101,7 +101,7 @@ describe('VCPClient test', function() {
         {
           name: 'without params.client_secret',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             delete p.client_secret;
             return p;
           },
@@ -110,7 +110,7 @@ describe('VCPClient test', function() {
         {
           name: 'with empty params.client_secret',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.client_secret = '';
             return p;
           },
@@ -119,7 +119,7 @@ describe('VCPClient test', function() {
         {
           name: 'with invalid params.client_secret',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.client_secret = 1000;
             return p;
           },
@@ -129,7 +129,7 @@ describe('VCPClient test', function() {
         {
           name: 'without params.username',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             delete p.username;
             return p;
           },
@@ -138,7 +138,7 @@ describe('VCPClient test', function() {
         {
           name: 'with empty params.username',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.username = '';
             return p;
           },
@@ -147,7 +147,7 @@ describe('VCPClient test', function() {
         {
           name: 'with invalid params.username',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.username = 1000;
             return p;
           },
@@ -157,7 +157,7 @@ describe('VCPClient test', function() {
         {
           name: 'without params.password',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             delete p.password;
             return p;
           },
@@ -166,7 +166,7 @@ describe('VCPClient test', function() {
         {
           name: 'with empty params.password',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.password = '';
             return p;
           },
@@ -175,7 +175,7 @@ describe('VCPClient test', function() {
         {
           name: 'with invalid params.password',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.password = 1000;
             return p;
           },
@@ -185,7 +185,7 @@ describe('VCPClient test', function() {
         {
           name: 'without params.scope',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             delete p.scope;
             return p;
           },
@@ -194,7 +194,7 @@ describe('VCPClient test', function() {
         {
           name: 'with invalid params.scope',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.scope = 1000;
             return p;
           },
@@ -204,7 +204,7 @@ describe('VCPClient test', function() {
         {
           name: 'without params.grant_type',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             delete p.grant_type;
             return p;
           },
@@ -213,7 +213,7 @@ describe('VCPClient test', function() {
         {
           name: 'with empty params.grant_type',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.grant_type = '';
             return p;
           },
@@ -222,7 +222,7 @@ describe('VCPClient test', function() {
         {
           name: 'with invalid params.grant_type',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.grant_type = 1000;
             return p;
           },
@@ -231,7 +231,7 @@ describe('VCPClient test', function() {
         {
           name: 'with invalid params.proxy',
           params: () => {
-            let p = copy(params);
+            let p = clone(params);
             p.proxy = 'proxy';
             return p;
           },

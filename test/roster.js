@@ -8,7 +8,9 @@ function clone(o) {
   return JSON.parse(JSON.stringify(o));
 }
 
-describe('roster test', function() {
+function nop() {}
+
+describe('getRoster', function() {
   let params = {
     client_id: config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,
@@ -71,94 +73,110 @@ describe('roster test', function() {
       }).catch(done);
     });
   });
+});
 
-  describe('addRoster', () => {
-    it('with only udc_id', () => {
-      let cid = '999001010059';
+describe('story', function() {
+  let params = {
+    client_id: config.CLIENT_ID,
+    client_secret: config.CLIENT_SECRET,
+    scope: config.SCOPE_LIST,
+    grant_type: 'password'
+  };
 
-      let client = new VCPClient(endpoint, params);
-      client.auth().then(() => {
-        return client.addRoster(cid);
-      }).then((result) => {
-        assert.strictEqual(result.udc_id, cid);
-        assert.strictEqual(result.ask, 'subscribe');
-        assert.strictEqual(result.subscription, 'none');
-        console.log(result);
-      });
-    });
+  let A = '999001010058';
+  let B = '999001010059';
 
-    it('with name, name_kana', () => {
-      let cid = '999001010059';
-      let options = {
-        name: '59',
-        name_kana: 'ごじゅうきゅう',
-        sender_name: '50',
-        sender_name_kana: 'ごじゅう'
-      };
+  let paramA = clone(params);
+  paramA.username = A;
+  paramA.password = A;
 
-      let client = new VCPClient(endpoint, params);
-      client.auth().then(() => {
-        return client.addRoster(cid, options);
-      }).then((result) => {
-        assert.strictEqual(result.udc_id, cid);
-        assert.strictEqual(result.ask, 'subscribe');
-        assert.strictEqual(result.subscription, 'none');
-        assert.strictEqual(result.name, options.name);
-        assert.strictEqual(result.name_kana, options.name_kana);
-      });
-    });
+  let paramB = clone(params);
+  paramB.username = B;
+  paramB.password = B;
+
+  let clientA = new VCPClient(endpoint, paramA);
+  let clientB = new VCPClient(endpoint, paramB);
+
+
+  before((done) => {
+    Promise.all([ clientA.auth(), clientB.auth() ]).then(nop).then(done, done);
   });
 
-  describe('updateRoster', () => {
-    it('subscribe', () => {
-      let p = clone(params);
+  it('A send request to B', (done) => {
+    let options = {
+      name: 'B',
+      name_kana: 'びー',
+      sender_name: 'A',
+      sender_name_kana: 'えー'
+    };
 
-      p.username = '999001010059';
-      p.password = '999001010059';
-
-      let cid = '999001010050';
-      let options = {
-        type: 'subscribed'
-      };
-
-      let client = new VCPClient(endpoint, p);
-      client.auth().then(() => {
-        return client.updateRoster(cid, options);
-      }).then((result) => {
-        assert.strictEqual(result.udc_id, cid);
-        assert.strictEqual(result.subscription, 'both');
-        assert.strictEqual(result.ask, '');
-      });
-    });
-
-    it('unsubscribe', () => {
-      let p = clone(params);
-
-      p.username = '999001010059';
-      p.password = '999001010059';
-
-      let cid = '999001010050';
-      let options = {
-        type: 'unsubscribed'
-      };
-
-      let client = new VCPClient(endpoint, p);
-      client.auth().then(() => {
-        return client.updateRoster(cid, options);
-      }).then((result) => {
-        assert.strictEqual(result, null);
-      });
-    });
+    clientA.addRoster(B, options).then((result) => {
+      assert.strictEqual(result.udc_id, B);
+      assert.strictEqual(result.ask, 'subscribe');
+      assert.strictEqual(result.subscription, 'none');
+      assert.strictEqual(result.name, options.name);
+      assert.strictEqual(result.name_kana, options.name_kana);
+      done();
+    }).catch(done);
   });
 
-  describe('deleteRoster', () => {
-    let cid = '999001010059';
+  it('getRoster of both', (done) => {
+    Promise.all([ clientA.getRoster(), clientB.getRoster() ]).then(([a, b]) => {
+      assert.strictEqual(a.total_results, 1);
+      assert.strictEqual(b.total_results, 1);
 
-    let client = new VCPClient(endpoint, params);
-    client.auth().then(() => {
-      return client.deleteRoster(cid);
-    }).then((result) => {
+      let resultA = a.results[0];
+      let resultB = b.results[0];
+
+      assert.strictEqual(resultA.udc_id, B);
+      assert.strictEqual(resultA.ask, 'subscribe');
+      assert.strictEqual(resultA.subscription, 'none');
+
+      assert.strictEqual(resultB.udc_id, A);
+      assert.strictEqual(resultB.ask, '');
+      assert.strictEqual(resultB.subscription, 'none');
+
+      done();
+    }).catch(done);
+  });
+
+  it('B accepts A', (done) => {
+    let options = {
+      type: 'subscribed'
+    };
+
+    clientB.updateRoster(A, options).then((result) => {
+      assert.strictEqual(result.udc_id, A);
+      assert.strictEqual(result.subscription, 'both');
+      assert.strictEqual(result.ask, '');
+      done();
+    }).catch(done);
+  });
+
+  it('getRoster of both', (done) => {
+    Promise.all([ clientA.getRoster(), clientB.getRoster() ]).then(([a, b]) => {
+      assert.strictEqual(a.total_results, 1);
+      assert.strictEqual(b.total_results, 1);
+
+      let resultA = a.results[0];
+      let resultB = b.results[0];
+
+      assert.strictEqual(resultA.udc_id, B);
+      assert.strictEqual(resultA.ask, '');
+      assert.strictEqual(resultA.subscription, 'both');
+
+      assert.strictEqual(resultB.udc_id, A);
+      assert.strictEqual(resultB.ask, '');
+      assert.strictEqual(resultB.subscription, 'both');
+
+      done();
+    }).catch(done);
+  });
+
+  it('B removes A', (done) => {
+    clientB.deleteRoster(A).then((result) => {
       assert.strictEqual(result, null);
-    });
+      done();
+    }).catch(done);
   });
 });

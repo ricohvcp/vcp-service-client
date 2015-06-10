@@ -179,4 +179,12 @@ describe('story', function() {
       done();
     }).catch(done);
   });
+
+  it('getRoster of both after', (done) => {
+    Promise.all([ clientA.getRoster(), clientB.getRoster() ]).then(([a, b]) => {
+      assert.strictEqual(a.total_results, 0);
+      assert.strictEqual(b.total_results, 0);
+      done();
+    }).catch(done);
+  });
 });

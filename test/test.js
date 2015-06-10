@@ -369,22 +369,23 @@ describe('VCPClient test', function() {
   });
 
   describe('discovery', () => {
+    let client;
+
+    before((done) => {
+      client = new VCPClient(endpoint, params);
+      client.auth().then(done, done);
+    });
+
     it('success', (done) => {
-      let client = new VCPClient(endpoint, params);
-      client.auth().then(() => {
-        // any scope with granted are ok
-        return client.discovery(scopes.INFORMATION_URI);
-      }).then((info) => {
+      // any scope with granted are ok
+      client.discovery(scopes.INFORMATION_URI).then((info) => {
         assert(info);
         done();
       }).catch(done);
     });
 
     it('error: no result for SCOPE', (done) => {
-      let client = new VCPClient(endpoint, params);
-      client.auth().then(() => {
-        return client.discovery(scopes.AUTH_API);
-      }).then((info) => {
+      client.discovery(scopes.AUTH_API).then((info) => {
         assert.fail(`cant be here: ${info}`);
       }).catch((err) => {
         assert.ok(err instanceof Error);
@@ -395,11 +396,15 @@ describe('VCPClient test', function() {
   });
 
   describe('accountInfo', () => {
+    let client;
+
+    before((done) => {
+      client = new VCPClient(endpoint, params);
+      client.auth().then(done, done);
+    });
+
     it('success', (done) => {
-      let client = new VCPClient(endpoint, params);
-      client.auth().then(() => {
-        return client.accountInfo();
-      }).then((info) => {
+      client.accountInfo().then((info) => {
         assert.strictEqual(typeof info.email_verified, 'boolean');
         assert.strictEqual(typeof info.web_password_changed, 'boolean');
         done();
@@ -408,11 +413,15 @@ describe('VCPClient test', function() {
   });
 
   describe('userInfo', () => {
+    let client;
+
+    before((done) => {
+      client = new VCPClient(endpoint, params);
+      client.auth().then(done, done);
+    });
+
     it('success', (done) => {
-      let client = new VCPClient(endpoint, params);
-      client.auth().then(() => {
-        return client.userInfo();
-      }).then((info) => {
+      client.userInfo().then((info) => {
         assert.strictEqual(info.type, 'account');
         assert.strictEqual(typeof info.id, 'number');
         assert.strictEqual(typeof info.display_name, 'string');
@@ -425,11 +434,15 @@ describe('VCPClient test', function() {
   });
 
   describe('information', () => {
+    let client;
+
+    before((done) => {
+      client = new VCPClient(endpoint, params);
+      client.auth().then(done, done);
+    });
+
     it('success', (done) => {
-      let client = new VCPClient(endpoint, params);
-      client.auth().then(() => {
-        return client.information();
-      }).then((info) => {
+      client.information().then((info) => {
         assert.strictEqual(typeof info.ja, 'string');
         assert.strictEqual(typeof info.global, 'string');
         done();
@@ -438,35 +451,37 @@ describe('VCPClient test', function() {
   });
 
   describe('logUpload', () => {
+    let client;
+
+    before((done) => {
+      client = new VCPClient(endpoint, params);
+      client.auth().then(done, done);
+    });
+
     it('success', (done) => {
-      let client = new VCPClient(endpoint, params);
       let filename = 'log_upload_test_from_browser';
       let log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
-      client.auth().then(() => {
-        return client.logUpload(log, filename);
-      }).then((result) => {
+      client.logUpload(log, filename).then((result) => {
         assert.strictEqual(result, null);
         done();
       }).catch(done);
     });
 
     it('cancel', (done) => {
-      let client = new VCPClient(endpoint, params);
       let filename = 'log_upload_test_from_browser';
       let log = 'a';
       for (let i = 0; i < 20; i++) {
         log += log;
       }
 
-      client.auth().then(() => {
-        let uploadPromise = client.logUpload(log, filename);
-        setTimeout(() => {
-          uploadPromise.cancel();
-        }, 50);
+      let uploadPromise = client.logUpload(log, filename);
 
-        return uploadPromise;
-      }).then((result) => {
+      setTimeout(() => {
+        uploadPromise.cancel();
+      }, 50);
+
+      uploadPromise.then((result) => {
         assert.fail(`cant be here: ${result}`);
       }).catch((err) => {
         assert.ok(err instanceof Error);
@@ -476,7 +491,6 @@ describe('VCPClient test', function() {
     });
 
     it('error: timeout', (done) => {
-      let client = new VCPClient(endpoint, params);
       let filename = 'log_upload_test_from_browser';
       let log = 'a';
       for (let i = 0; i < 20; i++) {
@@ -485,9 +499,7 @@ describe('VCPClient test', function() {
 
       let timeout = 1;
 
-      client.auth().then(() => {
-        return client.logUpload(log, filename, timeout);
-      }).then((result) => {
+      client.logUpload(log, filename, timeout).then((result) => {
         assert.fail(`cant be here: ${result}`);
       }).catch((err) => {
         assert.ok(err instanceof Error);
@@ -497,7 +509,6 @@ describe('VCPClient test', function() {
     });
 
     it('error: file size too large', () => {
-      let client = new VCPClient(endpoint, params);
       let filename = 'log_upload_test_from_browser';
       let log = 'a';
       for (let i = 0; i < 27; i++) {
@@ -514,7 +525,6 @@ describe('VCPClient test', function() {
     });
 
     it('error: invalid file name', () => {
-      let client = new VCPClient(endpoint, params);
       let filename = 'test#from%browser';
       let log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 

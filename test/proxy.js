@@ -12,23 +12,20 @@ describe('Fetcher test', function() {
 
   describe('implicit proxy', () => {
     let proxy = Proxy();
+    let fetcher = new Fetcher(proxy);
 
     it('http', (done) => {
-      let fetcher = new Fetcher(proxy);
-
       fetcher.fetch('http://example.com').then((res) => {
         assert.strictEqual(typeof res, 'string');
         done();
-      });
+      }).catch(done);
     });
 
     it('https', (done) => {
-      let fetcher = new Fetcher(proxy);
-
       fetcher.fetch('https://example.com').then((res) => {
         assert.strictEqual(typeof res, 'string');
         done();
-      });
+      }).catch(done);
     });
   });
 
@@ -38,22 +35,20 @@ describe('Fetcher test', function() {
       https: process.env.HTTPS_PROXY
     });
 
-    it('http', (done) => {
-      let fetcher = new Fetcher(proxy);
+    let fetcher = new Fetcher(proxy);
 
+    it('http', (done) => {
       fetcher.fetch('http://example.com').then((res) => {
         assert.strictEqual(typeof res, 'string');
         done();
-      });
+      }).catch(done);
     });
 
     it('https', (done) => {
-      let fetcher = new Fetcher(proxy);
-
       fetcher.fetch('https://example.com').then((res) => {
         assert.strictEqual(typeof res, 'string');
         done();
-      });
+      }).catch(done);
     });
   });
 

@@ -390,7 +390,7 @@ describe('VCPClient test', function() {
         assert.ok(err instanceof Error);
         assert.ok(/discovery result doesn\'t include.*/.test(err.message));
         done();
-      });
+      }).catch(done);
     });
   });
 

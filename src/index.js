@@ -1,4 +1,3 @@
-var assert = require('assert');
 var scopes = require('./scopes').SCOPES;
 var Validator = require('./validator').Validator;
 var Fetcher = require('./fetcher').Fetcher;
@@ -49,8 +48,6 @@ export class VCPClient {
   }
 
   discovery(scope) {
-    assert(scope, 'scope is required');
-
     let url = `${this.endpoint}/auth/discovery`;
     let access_token = this.authInfo.access_token;
 
@@ -97,13 +94,12 @@ export class VCPClient {
   }
 
   addRoster(cid, options = {}) {
-    assert(cid, 'cid is required');
-    this.validator.addContact.assert(options);
-
-    let body = options;
-    body.udc_id = cid;
-
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
+      this.validator.addContact.assert(options);
+
+      let body = options;
+      body.udc_id = cid;
+
       let url = `${res.endpoint}/${this.params.username}`;
       let access_token = res.access_token;
 
@@ -117,8 +113,6 @@ export class VCPClient {
   }
 
   updateRoster(cid, options = {}) {
-    assert(cid, 'cid is required');
-
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}/${cid}`;
       let access_token = res.access_token;
@@ -133,8 +127,6 @@ export class VCPClient {
   }
 
   deleteRoster(cid) {
-    assert(cid, 'cid is required');
-
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}/${cid}`;
       let access_token = res.access_token;
@@ -156,9 +148,9 @@ export class VCPClient {
    * @returns {Promise} resolve when upload finished, reject otherwise
    */
   logUpload(log, filename, timeout = 10000) {
-    this.validator.logUpload.assert({ log, filename, timeout });
-
     return this.discovery(scopes.LOG_UPLOAD_API).then((res) => {
+      this.validator.logUpload.assert({ log, filename, timeout });
+
       let url = res.endpoint;
       url = url.replace('{filename_suffix}', filename);
 

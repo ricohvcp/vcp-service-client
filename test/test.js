@@ -6,10 +6,6 @@ var config = require('../config/config').config;
 var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;
 
-function clone(o) {
-  return JSON.parse(JSON.stringify(o));
-}
-
 describe('VCPClient test', function() {
   this.timeout(10 * 1000); // 10sec
 
@@ -295,26 +291,22 @@ describe('VCPClient test', function() {
         log += log;
       }
 
-      try {
-        client.logUpload(log, filename);
-      } catch(err) {
+      client.logUpload(log, filename).catch((err) => {
         let message = JSON.parse(err.message);
         assert.strictEqual(message.length, 1);
         assert.strictEqual(message[0], 'logfile too large. (API limit 128MB)');
-      }
+      });
     });
 
     it('error: invalid file name', () => {
       let filename = 'test#from%browser';
       let log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
-      try {
-        client.logUpload(log, filename);
-      } catch(err) {
+      client.logUpload(log, filename).catch((err) => {
         let message = JSON.parse(err.message);
         assert.strictEqual(message.length, 1);
         assert.strictEqual(message[0], 'invalid log filename. (API limit alphanumeric and -, ., _)');
-      }
+      });
     });
   });
 });

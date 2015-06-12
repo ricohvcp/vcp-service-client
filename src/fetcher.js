@@ -1,4 +1,3 @@
-var assert = require('assert');
 var EventEmitter = require('events').EventEmitter;
 var superagent = require('superagent');
 var Promise = require('bluebird');
@@ -19,8 +18,6 @@ export class Fetcher extends EventEmitter {
   }
 
   fetch(url, options = {}) {
-    assert(url, 'url required');
-
     let method = options.method || 'get';
     let req = superagent[method](url);
 
@@ -62,13 +59,6 @@ export class Fetcher extends EventEmitter {
         let status = res.status;
         let header = res.header;
         let body = res.text;
-
-        // TODO: debugging
-        if (url.search(/auth\/token/) || url.search(/auth\/discovery/)) {
-          console.log(url, status);
-        } else {
-          console.log(url, status, body);
-        }
 
         // in some case, body has '' (emtpy string), so replace them into null
         if (header['content-length'] === undefined || header['content-length'] === '0') {

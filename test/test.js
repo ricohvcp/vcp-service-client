@@ -1,5 +1,6 @@
 /*eslint max-len: 0*/
 var assert = require('power-assert');
+var AssertionError = require('violations').AssertionError;
 var VCPClient = require('../src').VCPClient;
 var FetchError = require('../src/fetcher').FetchError;
 var config = require('../config/config').config;
@@ -30,7 +31,7 @@ describe('VCPClient test', function() {
         let client = new VCPClient();
         assert.fail('cant be here: ' + client);
       } catch(err) {
-        assert(err instanceof Error);
+        assert(err instanceof AssertionError);
         assert.deepEqual(JSON.parse(err.message), [ 'endpoint is required', 'params is required' ]);
       }
     });
@@ -40,7 +41,7 @@ describe('VCPClient test', function() {
         let client = new VCPClient(endpoint);
         assert.fail('cant be here: ' + client);
       } catch(err) {
-        assert(err instanceof Error);
+        assert(err instanceof AssertionError);
         assert.deepEqual(JSON.parse(err.message), ['params is required']);
       }
     });

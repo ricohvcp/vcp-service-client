@@ -8,7 +8,7 @@
   "dependencies": {
     "bluebird": "^2.9.27",
     "superagent": "^1.2.0",
-    "violations": "0.0.7"
+    "violations": "0.1.0"
   },
   "devDependencies": {
     "bower": "1.4.1",

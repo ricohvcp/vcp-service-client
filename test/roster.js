@@ -20,9 +20,10 @@ describe('getRoster', function() {
     grant_type: 'password'
   };
 
+  let client = new VCPClient(endpoint, params);
+
   describe('rosters', () => {
     it('success', (done) => {
-      let client = new VCPClient(endpoint, params);
       client.auth().then(() => {
         return client.getRoster();
       }).then((rosters) => {
@@ -37,7 +38,6 @@ describe('getRoster', function() {
   describe('roster', () => {
     it('success', (done) => {
       let cid;
-      let client = new VCPClient(endpoint, params);
       client.auth().then(() => {
         return client.getRoster();
       }).then((rosters) => {
@@ -56,7 +56,6 @@ describe('getRoster', function() {
 
     it('error: non-existent cid', (done) => {
       let cid;
-      let client = new VCPClient(endpoint, params);
       client.auth().then(() => {
         return client.getRoster('invalidCID');
       }).then((roster) => {

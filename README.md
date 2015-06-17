@@ -85,29 +85,76 @@ client.information()
       });
 ```
 
-### rosters()
+### getRoster()
 
 call roster API and get all roster info and return Promise.
 
 ```js
-client.rosters()
+client.getRoster()
       .then(function(rosters) {
         console.log(rosters);
       });
 ```
 
-### roster(cid)
-
-call roster API and get roster info of given cid and return Promise.
+call roster API with cid, get roster info of given cid and return Promise.
 
 ```js
 var cid = 'xxxxxx';
-client.roster(cid)
+client.getRoster(cid)
       .then(function(roster) {
         console.log(roster);
       });
 ```
 
+### addRoster()
+
+call roster API and send roster request and return Promise.
+
+```js
+var cid = 'xxxxxx';
+var options = {
+  name: 'A',
+  name_kana: 'えー',
+  sender_name: 'B',
+  sender_name_kana: 'びー'
+};
+
+client.addRoster(cid, options)
+      .then((result) => {
+        console.log(result);
+      }).catch();
+```
+
+### updateRoster()
+
+call roster API and send update request and return Promise.
+
+```js
+var cid = 'xxxxxx';
+var options = {
+  type: 'subscribed', // or 'unsubscribed'
+  name: 'A',
+  name_kana: 'えー'
+};
+
+client.updateRoster(cid, options)
+      .then(function(result) {
+        console.log(result);
+      });
+```
+
+### deleteRoster()
+
+call roster API and send delete request and return Promise.
+
+```js
+var cid = 'xxxxxx';
+
+client.deleteRoster(cid)
+      .then(function(result) {
+        console.log(result);
+      });
+```
 
 ### logUpload()
 
@@ -123,9 +170,6 @@ client.logUpload(log, filename, timeout)
       .then(function() {
         console.log('upload finished');
       })
-      .catch(function() {
-        console.error('upload timeouted, aborted, or failed');
-      });
 ```
 
 ### discovery()

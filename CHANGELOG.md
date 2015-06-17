@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [0.0.13](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.13)
+
+- support roster
+ - getRoster()
+ - addRoster()
+ - updateRoster()
+ - deleteRoster()
+
 ## [0.0.12](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.12)
 
 - [**breakin changes**] remove `logUploadCancel()`

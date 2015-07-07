@@ -2,7 +2,21 @@ var EventEmitter = require('events').EventEmitter;
 var superagent = require('superagent');
 var Promise = require('bluebird');
 
+/**
+ * Class of Custom FetchError
+ *
+ * @extends {Error}
+ * @access public
+ */
 export class FetchError extends Error {
+
+  /**
+   * constructor of this class
+   * calling super (Erro constructor) with message.
+   *
+   * @param {String} message - error message
+   * @param {String} code - HTTP status code
+   */
   constructor(message, code) {
     super(message);
     this.message = message;
@@ -11,12 +25,35 @@ export class FetchError extends Error {
 }
 
 // TODO: support progress
+/**
+ * Class of Fetcher
+ *
+ * @extends {EventEmitter}
+ * @access public
+ */
 export class Fetcher extends EventEmitter {
+
+  /**
+   * constructor of this class
+   * @param {Function} proxy - superagent-proxy
+   */
   constructor(proxy) {
     super();
     this.proxy = proxy;
   }
 
+  /**
+   * constructor of this class
+   * calling super (Erro constructor) with message.
+   *
+   * @param {String} url - url for fetch
+   * @param {Object} options - options for http request
+   * @param {String} options.method - HTTP medthod
+   * @param {Number} options.timeout - timeout in milli second
+   * @param {String} options.access_token - access token for Bearer header
+   * @param {String} options.type - content-type
+   * @param {String} options.body - request body
+   */
   fetch(url, options = {}) {
     let method = options.method || 'get';
     let req = superagent[method](url);

@@ -26,6 +26,11 @@ export class VCPClient {
     this.fetcher = new Fetcher(params.proxy);
   }
 
+  /**
+   * call auth API.
+   *
+   * @returns {Promise} resolve when auth info fetched, reject otherwise
+   */
   auth() {
     let url = `${this.endpoint}/auth/token`;
     let params = this.params;
@@ -47,6 +52,12 @@ export class VCPClient {
     });
   }
 
+  /**
+   * call discovery API with given scope.
+   *
+   * @param {String} scope - scope for discovery
+   * @returns {Promise} resolve when discovery result fetched, reject otherwise
+   */
   discovery(scope) {
     let url = `${this.endpoint}/auth/discovery`;
     let access_token = this.authInfo.access_token;
@@ -64,18 +75,41 @@ export class VCPClient {
     });
   }
 
+  /**
+   * get Account Info using Aoount Info Query API.
+   *
+   * @returns {Promise} resolve when account info fetched, reject otherwise
+   */
   accountInfo() {
     return this.discovery(scopes.GD_ACCOUNT_INFO_QUERY);
   }
 
+  /**
+   * get User Info using User Info Query API.
+   *
+   * @returns {Promise} resolve when user info fetched, reject otherwise
+   */
   userInfo() {
     return this.discovery(scopes.USERINFO_QUERY);
   }
 
+  /**
+   * get Infomation using Information API.
+   *
+   * @returns {Promise} resolve when infomation fetched, reject otherwise
+   */
   information() {
     return this.discovery(scopes.INFORMATION_URI);
   }
 
+  /**
+   * get Roster using Roster Web API.
+   * if `cid` was specified, get the roster of that cid,
+   * and if not specified, get the list of all roster.
+   *
+   * @param {String} cid - cid of roster
+   * @returns {Promise} resolve when roster info fetched, reject otherwise
+   */
   getRoster(cid) {
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}`;
@@ -93,6 +127,17 @@ export class VCPClient {
     });
   }
 
+  /**
+   * add Roster using Roster Web API.
+   *
+   * @param {String} cid - cid of roster
+   * @param {Object} params - parameter for Roster API
+   * @param {String} params.name - name of roster
+   * @param {String} params.kana - kana of roster
+   * @param {String} params.sender_name - name of sender
+   * @param {String} params.sender_name_kana - kana of sender
+   * @returns {Promise} resolve when roster result fetched, reject otherwise
+   */
   addRoster(cid, options = {}) {
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       this.validator.addContact.assert(options);
@@ -112,6 +157,17 @@ export class VCPClient {
     });
   }
 
+  /**
+   * update Roster using Roster Web API.
+   *
+   * @param {String} cid - cid of roster
+   * @param {Object} params - parameter for Roster API
+   * @param {String} params.name - name of roster
+   * @param {String} params.kana - kana of roster
+   * @param {String} params.sender_name - name of sender
+   * @param {String} params.sender_name_kana - kana of sender
+   * @returns {Promise} resolve when roster result fetched, reject otherwise
+   */
   updateRoster(cid, options = {}) {
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}/${cid}`;
@@ -126,6 +182,14 @@ export class VCPClient {
     });
   }
 
+  /**
+   * delete Roster using Roster Web API.
+   * if `cid` was specified, get the roster of that cid,
+   * and if not specified, get the list of all roster.
+   *
+   * @param {String} cid - cid of roster
+   * @returns {Promise} resolve when roster info fetched, reject otherwise
+   */
   deleteRoster(cid) {
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}/${cid}`;

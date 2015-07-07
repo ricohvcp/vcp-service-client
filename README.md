@@ -36,7 +36,7 @@ create instance with Auth URI Endpoint and configuration params.
 
 ```js
 // create instance
-var client = new VCPClient('https://auth.ucs.ricoh.com', config);
+var client = new VCPClient('https://auth.ucs.ricoh.com', params);
 ```
 
 ### auth()
@@ -48,6 +48,8 @@ need to call this onece, before calling other api.
 // login
 client.auth()
       .then(function() {
+        // result will saved into instance
+        // but usually no need to access directory.
         console.log(client.authInfo);
       });
 ```

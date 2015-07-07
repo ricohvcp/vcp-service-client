@@ -3,10 +3,13 @@ var Validator = require('./validator').Validator;
 var Fetcher = require('./fetcher').Fetcher;
 var Promise = require('bluebird');
 
+/**
+ * Class of Client for VCP web service api
+ * @access public
+ */
 export class VCPClient {
 
   /**
-   * @constructor
    * @param {String} endpoint - endpoint url string for Auth API
    * @param {Object} params - parameter for Auth API
    * @param {String} params.client_id - client_id of client app

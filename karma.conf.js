@@ -12,7 +12,9 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'build/browser/bundle.min.js',
-      'build/test/test.js'
+      'build/test/test.js',
+      'build/test/roster.js',
+      'build/test/validator.js'
     ],
 
     // list of files to exclude

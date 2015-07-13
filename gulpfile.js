@@ -16,15 +16,20 @@ var gulp = require('gulp'),
 
 
 /**
- * .
- * /build - compiled
- * /lib   - main of bower components
- * /src   - javascripts
- * /test  - tests
- * /tmp   - temporally files (build, coverage, etc)
+ * |-- src
+ * |   `-- *.js
+ * |-- test
+ * |   `-- *.js
+ * |-- build (compiled)
+ * |   |-- src
+ * |   |   `-- *.js
+ * |   `-- test
+ * |       `-- *.js
+ * |-- tmp (tmpbuild, coverage etc)
+ * `-- lib (bower libs)
  */
 
-// eslint all javascripts
+// eslint all javascripts including setting/config files
 gulp.task('lint', function() {
   return gulp.src([ 'src/**/*.js', 'test/**/*.js', 'gulpfile.js', '*.conf.js' ])
              .pipe(eslint())
@@ -32,13 +37,18 @@ gulp.task('lint', function() {
              .pipe(eslint.failOnError());
 });
 
-// all bower componets are copy in /lib
+// copy all bower componets in /lib
 gulp.task('bower', function() {
   return gulp.src(bower({ includeDev: 'inclusive' }))
              .pipe(gulp.dest('lib'));
 });
 
-// build with babel
+// compile all javascripts with babel
+// and saved into build dir.
+//
+// src/*    =>   build/src/*
+// config/* =>   build/config/*
+// test/*   =>   build/test/*
 gulp.task('build:babel', function() {
   var src = gulp.src('src/**/*.js')
                 .pipe(babel())

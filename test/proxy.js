@@ -7,7 +7,7 @@ var Fetcher = require('../src/fetcher').Fetcher;
 var config = require('../config/config').config;
 var endpoint = config.ENDPOINT;
 
-describe('Fetcher test', function() {
+describe('Proxy test', function() {
   this.timeout(10 * 1000); // 10sec
 
   describe('implicit proxy', () => {

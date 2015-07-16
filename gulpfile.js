@@ -55,39 +55,30 @@ gulp.task('bower', function() {
 // src/*    =>   build/src/*
 // test/*   =>   build/test/*
 gulp.task('build:babel', function() {
+  // copy only config.js not config.template.js
+  var config = gulp.src('config/config.js')
+                   .pipe(babel())
+                   .pipe(gulp.dest('build/config/'));
+
   var src = gulp.src('src/**/*.js')
                 .pipe(babel())
-                .pipe(gulp.dest('build/src'));
+                .pipe(gulp.dest('build/src/'));
 
-  var config = gulp.src('config/*.js')
-                   .pipe(babel())
-                   .pipe(gulp.dest('build/config'));
-
-  var test = gulp.src('test/*.js')
+  var test = gulp.src('test/**/*.js')
                  .pipe(babel())
                  .pipe(espower())
-                 .pipe(gulp.dest('build/test'));
+                 .pipe(gulp.dest('build/test/'));
 
   return merge(src, config, test);
 });
 
 // build with browserify
 gulp.task('build:browserify', ['build:babel'], function(done) {
-  gulp.src('build/src/index.js')
-      .pipe(gulp.dest('build/src'))
-      .on('end', function() {
-        browserify('./build/src/index.js', { standalone: 'VCPClient' })
-          .bundle()
-          .pipe(source('bundle.js'))
-          .pipe(gulp.dest('./build/browser'))
-          .on('end', done);
-
-        browserify('./build/test/test.js')
-          .ignore('power-assert')
-          .bundle()
-          .pipe(source('bundle.test.js'))
-          .pipe(gulp.dest('./build/browser'));
-      });
+  browserify('./build/src/index.js', { standalone: 'VCPClient' })
+    .bundle()
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest('./build/browser'))
+    .on('end', done);
 });
 
 // build src for browser

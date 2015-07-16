@@ -20,15 +20,20 @@ var gulp = require('gulp'),
  * |   `-- *.js
  * |-- test
  * |   `-- *.js
- * |-- build (compiled)
+ * |-- build (babeled)
+ * |   |-- browser (browserifyed)
+ * |   |   |-- bundle.js
+ * |   |   |-- bundle.min.js
+ * |   |   `-- bundle.test.js
+ * |   |-- config
+ * |   |   `-- config.js
  * |   |-- src
  * |   |   `-- *.js
  * |   `-- test
  * |       `-- *.js
- * |-- tmp (tmpbuild, coverage etc)
+ * |-- tmp (coverage etc)
  * `-- lib (bower libs)
  */
-
 // eslint all javascripts including setting/config files
 gulp.task('lint', function() {
   return gulp.src([ 'src/**/*.js', 'test/**/*.js', 'gulpfile.js', '*.conf.js' ])
@@ -46,8 +51,8 @@ gulp.task('bower', function() {
 // compile all javascripts with babel
 // and saved into build dir.
 //
-// src/*    =>   build/src/*
 // config/* =>   build/config/*
+// src/*    =>   build/src/*
 // test/*   =>   build/test/*
 gulp.task('build:babel', function() {
   var src = gulp.src('src/**/*.js')

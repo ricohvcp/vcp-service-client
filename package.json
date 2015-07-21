@@ -88,7 +88,7 @@
     "lint": "gulp lint && fixpack && fixbow",
     "prepublish": "npm run clean && npm run build",
     "start": "gulp server",
-    "test": "gulp lint && gulp test --env",
+    "test": "npm run lint && gulp test --env",
     "test-browser": "gulp clean && gulp build && npm run bower && karma start",
     "x-full-rebuild": "npm run clean-all && npm install && npm test",
     "x-install-global-bin": "npm install -g gulp bower mocha eslint fixpack fixbow karma-cli"

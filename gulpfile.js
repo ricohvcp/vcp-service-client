@@ -16,6 +16,8 @@ var gulp = require('gulp'),
 
 
 /**
+ * |-- config
+ * |   `-- config.js
  * |-- src
  * |   `-- *.js
  * |-- test
@@ -66,7 +68,7 @@ gulp.task('build:babel', function() {
 
   var test = gulp.src('test/**/*.js')
                  .pipe(babel())
-                 .pipe(espower())
+                 .pipe(espower()) // power-assert transpile
                  .pipe(gulp.dest('build/test/'));
 
   return merge(src, config, test);

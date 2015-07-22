@@ -3,6 +3,8 @@ var assert = require('power-assert');
 var Validator = require('../src/validator').Validator;
 
 describe('Validator test', function() {
+  this.timeout(10 * 2000); // 20sec
+
   it('constructor', () => {
     let v = new Validator();
     assert(v.new);

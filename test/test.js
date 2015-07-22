@@ -8,7 +8,7 @@ var scopes = require('../src/scopes').SCOPES;
 var endpoint = config.ENDPOINT;
 
 describe('VCPClient test', function() {
-  this.timeout(10 * 1000); // 10sec
+  this.timeout(10 * 2000); // 20sec
 
   let params = {
     client_id: config.CLIENT_ID,

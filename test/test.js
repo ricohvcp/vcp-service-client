@@ -230,6 +230,8 @@ describe('VCPClient test', function() {
   describe('logUpload', () => {
     let client;
 
+    let largelog = new Array(1024).join('a');
+
     before((done) => {
       client = new VCPClient(endpoint, params);
       client.auth().then(done, done);
@@ -247,16 +249,12 @@ describe('VCPClient test', function() {
 
     it('cancel', (done) => {
       let filename = 'log_upload_test_from_browser';
-      let log = 'a';
-      for (let i = 0; i < 20; i++) {
-        log += log;
-      }
 
-      let uploadPromise = client.logUpload(log, filename);
+      let uploadPromise = client.logUpload(largelog, filename);
 
       setTimeout(() => {
         uploadPromise.cancel();
-      }, 50);
+      }, 1);
 
       uploadPromise.then((result) => {
         assert.fail(`cant be here: ${result}`);
@@ -269,14 +267,10 @@ describe('VCPClient test', function() {
 
     it('error: timeout', (done) => {
       let filename = 'log_upload_test_from_browser';
-      let log = 'a';
-      for (let i = 0; i < 20; i++) {
-        log += log;
-      }
 
       let timeout = 1;
 
-      client.logUpload(log, filename, timeout).then((result) => {
+      client.logUpload(largelog, filename, timeout).then((result) => {
         assert.fail(`cant be here: ${result}`);
       }).catch((err) => {
         assert.ok(err instanceof Error);
@@ -287,12 +281,8 @@ describe('VCPClient test', function() {
 
     it('error: file size too large', () => {
       let filename = 'log_upload_test_from_browser';
-      let log = 'a';
-      for (let i = 0; i < 27; i++) {
-        log += log;
-      }
 
-      client.logUpload(log, filename).catch((err) => {
+      client.logUpload(new Array(1024 * 1024 * 128 + 1), filename).catch((err) => {
         let message = JSON.parse(err.message);
         assert.strictEqual(message.length, 1);
         assert.strictEqual(message[0], 'logfile too large. (API limit 128MB)');

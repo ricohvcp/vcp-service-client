@@ -92,7 +92,7 @@ describe('Validator test', function() {
           msg: [ 'log is required', 'filename is required' ]
         },
         {
-          arg: { log: (new Array(134217729)).join('a'), filename: (new Array(134217729)).join('a') },
+          arg: { log: new Array(134217729), filename: (new Array(34)).join('a') },
           msg: [
             'logfile too large. (API limit 128MB)',
             'logfile name too large. (API limit less than 32byte)'

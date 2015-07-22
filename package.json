@@ -11,7 +11,6 @@
     "violations": "0.1.0"
   },
   "devDependencies": {
-    "bower": "1.4.1",
     "browserify": "10.2.4",
     "browserify-istanbul": "0.2.1",
     "del": "1.2.0",
@@ -40,7 +39,6 @@
     "karma-ie-launcher": "0.2.0",
     "karma-mocha": "0.2.0",
     "karma-safari-launcher": "0.1.1",
-    "main-bower-files": "2.8.2",
     "merge-stream": "^0.1.8",
     "mocha": "2.2.5",
     "power-assert": "0.11.0",
@@ -60,8 +58,6 @@
     ".travis.yml",
     "CHANGELOG.md",
     "README.md",
-    "bower.json",
-    "bower_components",
     "build",
     "gulpfile.js",
     "index.js",
@@ -81,7 +77,6 @@
     "url": "git://github.com/ricohvcp/vcp-service-client.git"
   },
   "scripts": {
-    "bower": "bower install && gulp bower",
     "build": "gulp build",
     "clean": "gulp clean",
     "clean-all": "gulp clean:all",
@@ -89,8 +84,8 @@
     "prepublish": "npm run clean && npm run build",
     "start": "gulp server",
     "test": "gulp lint && gulp test --env",
-    "test-browser": "gulp clean && gulp build && npm run bower && karma start",
+    "test-browser": "gulp clean && gulp build && karma start",
     "x-full-rebuild": "npm run clean-all && npm install && npm test",
-    "x-install-global-bin": "npm install -g gulp bower mocha eslint fixpack fixbow karma-cli"
+    "x-install-global-bin": "npm install -g gulp mocha eslint fixpack fixbow karma-cli"
   }
 }

@@ -2,6 +2,7 @@ var assert = require('power-assert');
 var VCPClient = require('../src').VCPClient;
 var FetchError = require('../src/fetcher').FetchError;
 var config = require('../config/config').config;
+var Promise = require('bluebird');
 var endpoint = config.ENDPOINT;
 
 function clone(o) {

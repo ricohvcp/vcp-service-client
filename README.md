@@ -322,9 +322,6 @@ all tasks could run from npm command.
 ## install npm dependencies
 $ npm install
 
-## install bower dependencies and move it main files to lib
-$ npm run bower
-
 ## build all files in build/
 $ npm run build
 

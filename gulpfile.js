@@ -2,7 +2,6 @@
 'use strict';
 var gulp = require('gulp'),
     babel = require('gulp-babel'),
-    bower = require('main-bower-files'),
     browserify = require('browserify'),
     del = require('del'),
     eslint = require('gulp-eslint'),
@@ -33,8 +32,7 @@ var gulp = require('gulp'),
  * |   |   `-- *.js
  * |   `-- test
  * |       `-- *.js
- * |-- tmp (coverage etc)
- * `-- lib (bower libs)
+ * `-- tmp (coverage etc)
  */
 // eslint all javascripts including setting/config files
 gulp.task('lint', function() {
@@ -42,12 +40,6 @@ gulp.task('lint', function() {
              .pipe(eslint())
              .pipe(eslint.format())
              .pipe(eslint.failOnError());
-});
-
-// copy all bower componets in /lib
-gulp.task('bower', function() {
-  return gulp.src(bower({ includeDev: 'inclusive' }))
-             .pipe(gulp.dest('lib'));
 });
 
 // compile all javascripts with babel
@@ -119,10 +111,10 @@ gulp.task('test', ['build:babel'], function(cb) {
 
 // clean temporally files
 gulp.task('clean', function(cb) {
-  return del([ 'build/*', 'lib/*', 'tmp/*', 'npm-debug.log', '!*/.gitkeep' ], cb);
+  return del([ 'build/*', 'tmp/*', 'npm-debug.log', '!*/.gitkeep' ], cb);
 });
 
 // clean all dependencies and temporally files
 gulp.task('clean:all', ['clean'], function(cb) {
-  return del([ 'node_modules', 'bower_components' ], cb);
+  return del('node_modules', cb);
 });

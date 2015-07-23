@@ -80,7 +80,9 @@ export class Fetcher extends EventEmitter {
     req.send(options.body);
 
     return new Promise((resolve, reject) => {
+      console.time(url);
       req.end((err, res) => {
+        console.timeEnd(url);
         // in superagent, error has response in 4xx, 5xx
         // so avoid reject(err) below and
         // merge into same flow for create error mesasge below.

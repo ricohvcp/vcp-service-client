@@ -3,6 +3,8 @@ var assert = require('power-assert');
 var Validator = require('../src/validator').Validator;
 
 describe('Validator test', function() {
+  this.timeout(10 * 2000); // 20sec
+
   it('constructor', () => {
     let v = new Validator();
     assert(v.new);
@@ -92,7 +94,7 @@ describe('Validator test', function() {
           msg: [ 'log is required', 'filename is required' ]
         },
         {
-          arg: { log: (new Array(134217729)).join('a'), filename: (new Array(134217729)).join('a') },
+          arg: { log: new Array(134217729), filename: (new Array(34)).join('a') },
           msg: [
             'logfile too large. (API limit 128MB)',
             'logfile name too large. (API limit less than 32byte)'

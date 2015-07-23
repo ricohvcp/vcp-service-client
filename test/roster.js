@@ -2,6 +2,7 @@ var assert = require('power-assert');
 var VCPClient = require('../src').VCPClient;
 var FetchError = require('../src/fetcher').FetchError;
 var config = require('../config/config').config;
+var Promise = require('bluebird');
 var endpoint = config.ENDPOINT;
 
 function clone(o) {
@@ -11,6 +12,8 @@ function clone(o) {
 function nop() {}
 
 describe('getRoster', function() {
+  this.timeout(10 * 2000); // 20sec
+
   let params = {
     client_id: config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,
@@ -75,6 +78,8 @@ describe('getRoster', function() {
 });
 
 describe('story', function() {
+  this.timeout(10 * 2000); // 20sec
+
   let params = {
     client_id: config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,

@@ -222,7 +222,7 @@ rules: # 0: disable, 1: warn, 2: error
   no-const-assign         : 2 # disallow modifying variables that are declared using const
   no-this-before-super    : 2 # disallow use of this/super before calling super() in constructors.
   no-var                  : 2 # require let or const instead of var
-  object-shorthand        : [2, 'always'] # require method and property shorthand syntax for object literals
+  # object-shorthand        : [2, 'always'] # require method and property shorthand syntax for object literals
   prefer-const            : 2 # suggest using const declaration for variables that are never modified after declared
   prefer-spread           : 2 # suggest using the spread operator instead of .apply().
   prefer-reflect          : 2 # suggest using Reflect methods where applicable

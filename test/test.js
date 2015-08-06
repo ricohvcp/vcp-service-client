@@ -1,44 +1,44 @@
-/*eslint max-len: 0*/
-var assert = require('power-assert');
-var AssertionError = require('violations').AssertionError;
-var VCPClient = require('../src').VCPClient;
-var FetchError = require('../src/fetcher').FetchError;
-var config = require('../config/config').config;
-var scopes = require('../src/scopes').SCOPES;
-var endpoint = config.ENDPOINT;
+/* eslint max-len: 0 */
+const assert = require('power-assert');
+const AssertionError = require('violations').AssertionError;
+const VCPClient = require('../src').VCPClient;
+const FetchError = require('../src/fetcher').FetchError;
+const config = require('../config/config').config;
+const scopes = require('../src/scopes').SCOPES;
+const endpoint = config.ENDPOINT;
 
 describe('VCPClient test', function() {
   this.timeout(10 * 2000); // 20sec
 
-  let params = {
+  const params = {
     client_id: config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,
     username: config.CID,
     password: config.PASSWORD,
     scope: config.SCOPE_LIST,
-    grant_type: 'password'
+    grant_type: 'password',
   };
 
   describe('constructor', () => {
     it('new', () => {
-      let client = new VCPClient(endpoint, params);
+      const client = new VCPClient(endpoint, params);
       assert.deepEqual(client.params, params);
       assert.strictEqual(client.endpoint, endpoint);
     });
 
     it('new without args', () => {
       try {
-        let client = new VCPClient();
+        const client = new VCPClient();
         assert.fail('cant be here: ' + client);
       } catch(err) {
         assert(err instanceof AssertionError);
-        assert.deepEqual(JSON.parse(err.message), [ 'endpoint is required', 'params is required' ]);
+        assert.deepEqual(JSON.parse(err.message), ['endpoint is required', 'params is required']);
       }
     });
 
     it('new without params', () => {
       try {
-        let client = new VCPClient(endpoint);
+        const client = new VCPClient(endpoint);
         assert.fail('cant be here: ' + client);
       } catch(err) {
         assert(err instanceof AssertionError);
@@ -49,7 +49,7 @@ describe('VCPClient test', function() {
 
   describe('auth', () => {
     it('success', (done) => {
-      let client = new VCPClient(endpoint, params);
+      const client = new VCPClient(endpoint, params);
       client.auth().then(() => {
         assert.ok(client.authInfo.access_token);
         assert.ok(client.authInfo.refresh_token);
@@ -61,9 +61,9 @@ describe('VCPClient test', function() {
     });
 
     it('error: param with invalid client_id', (done) => {
-      let p = JSON.parse(JSON.stringify(params));
+      const p = JSON.parse(JSON.stringify(params));
       p.client_id = 'xxxxxxxx';
-      let client = new VCPClient(endpoint, p);
+      const client = new VCPClient(endpoint, p);
       client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
@@ -75,9 +75,9 @@ describe('VCPClient test', function() {
     });
 
     it('error: param with invalid client_secret', (done) => {
-      let p = JSON.parse(JSON.stringify(params));
+      const p = JSON.parse(JSON.stringify(params));
       p.client_secret = 'xxxxxxxx';
-      let client = new VCPClient(endpoint, p);
+      const client = new VCPClient(endpoint, p);
       client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
@@ -89,9 +89,9 @@ describe('VCPClient test', function() {
     });
 
     it('error: param with invalid username', (done) => {
-      let p = JSON.parse(JSON.stringify(params));
+      const p = JSON.parse(JSON.stringify(params));
       p.username = 'xxxxxxxx';
-      let client = new VCPClient(endpoint, p);
+      const client = new VCPClient(endpoint, p);
       client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
@@ -103,9 +103,9 @@ describe('VCPClient test', function() {
     });
 
     it('error: param with invalid password', (done) => {
-      let p = JSON.parse(JSON.stringify(params));
+      const p = JSON.parse(JSON.stringify(params));
       p.password = 'xxxxxxxx';
-      let client = new VCPClient(endpoint, p);
+      const client = new VCPClient(endpoint, p);
       client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
@@ -117,9 +117,9 @@ describe('VCPClient test', function() {
     });
 
     it('error: param with invalid scope', (done) => {
-      let p = JSON.parse(JSON.stringify(params));
+      const p = JSON.parse(JSON.stringify(params));
       p.scope = [];
-      let client = new VCPClient(endpoint, p);
+      const client = new VCPClient(endpoint, p);
       client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
@@ -131,9 +131,9 @@ describe('VCPClient test', function() {
     });
 
     it('error: param with invalid grant_type', (done) => {
-      let p = JSON.parse(JSON.stringify(params));
+      const p = JSON.parse(JSON.stringify(params));
       p.grant_type = 'xxxxxxxx';
-      let client = new VCPClient(endpoint, p);
+      const client = new VCPClient(endpoint, p);
       client.auth().then(() => {
         assert.fail('cant be here');
       }).catch((err) => {
@@ -230,7 +230,7 @@ describe('VCPClient test', function() {
   describe('logUpload', () => {
     let client;
 
-    let largelog = new Array(1024).join('a');
+    const largelog = new Array(1024).join('a');
 
     before((done) => {
       client = new VCPClient(endpoint, params);
@@ -238,8 +238,8 @@ describe('VCPClient test', function() {
     });
 
     it('success', (done) => {
-      let filename = 'log_upload_test_from_browser';
-      let log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+      const filename = 'log_upload_test_from_browser';
+      const log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
       client.logUpload(log, filename).then((result) => {
         assert.strictEqual(result, null);
@@ -248,9 +248,9 @@ describe('VCPClient test', function() {
     });
 
     it('cancel', (done) => {
-      let filename = 'log_upload_test_from_browser';
+      const filename = 'log_upload_test_from_browser';
 
-      let uploadPromise = client.logUpload(largelog, filename);
+      const uploadPromise = client.logUpload(largelog, filename);
 
       setTimeout(() => {
         uploadPromise.cancel();
@@ -266,9 +266,9 @@ describe('VCPClient test', function() {
     });
 
     it('error: timeout', (done) => {
-      let filename = 'log_upload_test_from_browser';
+      const filename = 'log_upload_test_from_browser';
 
-      let timeout = 1;
+      const timeout = 1;
 
       client.logUpload(largelog, filename, timeout).then((result) => {
         assert.fail(`cant be here: ${result}`);
@@ -280,21 +280,21 @@ describe('VCPClient test', function() {
     });
 
     it('error: file size too large', () => {
-      let filename = 'log_upload_test_from_browser';
+      const filename = 'log_upload_test_from_browser';
 
       client.logUpload(new Array(1024 * 1024 * 128 + 1), filename).catch((err) => {
-        let message = JSON.parse(err.message);
+        const message = JSON.parse(err.message);
         assert.strictEqual(message.length, 1);
         assert.strictEqual(message[0], 'logfile too large. (API limit 128MB)');
       });
     });
 
     it('error: invalid file name', () => {
-      let filename = 'test#from%browser';
-      let log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+      const filename = 'test#from%browser';
+      const log = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
 
       client.logUpload(log, filename).catch((err) => {
-        let message = JSON.parse(err.message);
+        const message = JSON.parse(err.message);
         assert.strictEqual(message.length, 1);
         assert.strictEqual(message[0], 'invalid log filename. (API limit alphanumeric and -, ., _)');
       });

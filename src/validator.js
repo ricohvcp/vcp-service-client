@@ -1,4 +1,4 @@
-var Violate = require('violations').Violate;
+const Violate = require('violations').Violate;
 
 export class Validator {
   constructor() {
@@ -8,8 +8,8 @@ export class Validator {
   }
 
   buildNew() {
-    let paramRule = {
-      'client_id': (val, name, _) => {
+    const paramRule = {
+      client_id: (val, name, _) => {
         if (_.isEmpty(val)) {
           return `params.${name} is required`;
         }
@@ -19,7 +19,7 @@ export class Validator {
         }
       },
 
-      'client_secret': (val, name, _) => {
+      client_secret: (val, name, _) => {
         if (_.isEmpty(val)) {
           return `params.${name} is required`;
         }
@@ -29,7 +29,7 @@ export class Validator {
         }
       },
 
-      'username': (val, name, _) => {
+      username: (val, name, _) => {
         if (_.isEmpty(val)) {
           return `params.${name} is required`;
         }
@@ -39,7 +39,7 @@ export class Validator {
         }
       },
 
-      'password': (val, name, _) => {
+      password: (val, name, _) => {
         if (_.isEmpty(val)) {
           return `params.${name} is required`;
         }
@@ -49,7 +49,7 @@ export class Validator {
         }
       },
 
-      'scope': (val, name, _) => {
+      scope: (val, name, _) => {
         if (_.isEmpty(val)) {
           return `params.${name} is required`;
         }
@@ -59,7 +59,7 @@ export class Validator {
         }
       },
 
-      'grant_type': (val, name, _) => {
+      grant_type: (val, name, _) => {
         if (_.isEmpty(val)) {
           return `params.${name} is required`;
         }
@@ -69,7 +69,7 @@ export class Validator {
         }
       },
 
-      'proxy': (val, name, _) => {
+      proxy: (val, name, _) => {
         if (_.isEmpty(val)) {
           return; // optional
         }
@@ -77,11 +77,11 @@ export class Validator {
         if (!_.isFunction(val)) {
           return `params.${name} should be function`;
         }
-      }
+      },
     };
 
-    let rules = {
-      'endpoint': (val, name, _) => {
+    const rules = {
+      endpoint: (val, name, _) => {
         if (_.isEmpty(val)) {
           return `${name} is required`;
         }
@@ -91,7 +91,7 @@ export class Validator {
         }
       },
 
-      'params': (val, name, _) => {
+      params: (val, name, _) => {
         if (_.isEmpty(val)) {
           return `${name} is required`;
         }
@@ -100,17 +100,17 @@ export class Validator {
           return `${name} should be object`;
         }
 
-        let paramValidate = new Violate(paramRule);
+        const paramValidate = new Violate(paramRule);
         return paramValidate.validate(val);
-      }
+      },
     };
 
     return new Violate(rules);
   }
 
   buildAddContact() {
-    let rules = {
-      'name': (val, name, _) => {
+    const rules = {
+      name: (val, name, _) => {
         if (_.isUndefined(val)) {
           return; // optional
         }
@@ -120,13 +120,13 @@ export class Validator {
         }
 
         // no surrogate pair because only UCS2 range
-        let min = 0, max = 100;
+        const min = 0, max = 100;
         if (!(min <= val.length && val.length <= max)) {
           return `${name}'s length should between ${min} and ${max}`;
         }
       },
 
-      'name_kana': (val, name, _) => {
+      name_kana: (val, name, _) => {
         if (_.isUndefined(val)) {
           return; // optional
         }
@@ -136,13 +136,13 @@ export class Validator {
         }
 
         // no surrogate pair because only UCS2 range
-        let min = 0, max = 255;
+        const min = 0, max = 255;
         if (!(min <= val.length && val.length <= max)) {
           return `${name}'s length should between ${min} and ${max}`;
         }
       },
 
-      'sender_name': (val, name, _) => {
+      sender_name: (val, name, _) => {
         if (_.isUndefined(val)) {
           return; // optional
         }
@@ -152,13 +152,13 @@ export class Validator {
         }
 
         // no surrogate pair because only UCS2 range
-        let min = 0, max = 100;
+        const min = 0, max = 100;
         if (!(min <= val.length && val.length <= max)) {
           return `${name}'s length should between ${min} and ${max}`;
         }
       },
 
-      'sender_name_kana': (val, name, _) => {
+      sender_name_kana: (val, name, _) => {
         if (_.isUndefined(val)) {
           return; // optional
         }
@@ -168,19 +168,19 @@ export class Validator {
         }
 
         // no surrogate pair because only UCS2 range
-        let min = 0, max = 255;
+        const min = 0, max = 255;
         if (!(min <= val.length && val.length <= max)) {
           return `${name}'s length should between ${min} and ${max}`;
         }
-      }
+      },
     };
 
     return new Violate(rules);
   }
 
   buildLogUpload() {
-    let rules = {
-      'log': (val, name, _) => {
+    const rules = {
+      log: (val, name, _) => {
         if (_.isEmpty(val)) {
           return `${name} is required`;
         }
@@ -189,12 +189,12 @@ export class Validator {
           return 'logfile too large. (API limit 128MB)';
         }
       },
-      'filename': (val, name, _) => {
+      filename: (val, name, _) => {
         if (_.isEmpty(val)) {
           return `${name} is required`;
         }
 
-        let messages = [];
+        const messages = [];
         if (val.length > 32) {
           // API limit for logfile name
           messages.push('logfile name too large. (API limit less than 32byte)');
@@ -207,7 +207,7 @@ export class Validator {
 
         return messages;
       },
-      'timeout': (val, name, _) => {
+      timeout: (val, name, _) => {
         if (_.isEmpty(val)) {
           return; // optional
         }
@@ -215,7 +215,7 @@ export class Validator {
         if (!_.isNumber(val)) {
           return `${name} should be Number`;
         }
-      }
+      },
     };
 
     return new Violate(rules);

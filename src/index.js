@@ -1,7 +1,7 @@
-var scopes = require('./scopes').SCOPES;
-var Validator = require('./validator').Validator;
-var Fetcher = require('./fetcher').Fetcher;
-var Promise = require('bluebird');
+const scopes = require('./scopes').SCOPES;
+const Validator = require('./validator').Validator;
+const Fetcher = require('./fetcher').Fetcher;
+const Promise = require('bluebird');
 
 /**
  * Class of Client for VCP web service api
@@ -20,7 +20,7 @@ export class VCPClient {
    * @param {String} params.grant_type - grant_type of API
    */
   constructor(endpoint, params) {
-    let validator = new Validator();
+    const validator = new Validator();
     validator.new.assert({ endpoint, params });
 
     this.validator = validator;
@@ -35,8 +35,8 @@ export class VCPClient {
    * @returns {Promise} resolve when auth info fetched, reject otherwise
    */
   auth() {
-    let url = `${this.endpoint}/auth/token`;
-    let params = this.params;
+    const url = `${this.endpoint}/auth/token`;
+    const params = this.params;
 
     return this.fetcher.fetch(url, {
       method: 'post',
@@ -47,8 +47,8 @@ export class VCPClient {
         username: params.username,
         password: params.password,
         scope: params.scope.join(' '),
-        grant_type: params.grant_type
-      }
+        grant_type: params.grant_type,
+      },
     }).then((authInfo) => {
       this.authInfo = authInfo;
       return Promise.resolve();
@@ -62,14 +62,14 @@ export class VCPClient {
    * @returns {Promise} resolve when discovery result fetched, reject otherwise
    */
   discovery(scope) {
-    let url = `${this.endpoint}/auth/discovery`;
-    let access_token = this.authInfo.access_token;
+    const url = `${this.endpoint}/auth/discovery`;
+    const access_token = this.authInfo.access_token;
 
     return this.fetcher.fetch(url, {
       method: 'post',
       type: 'form',
       access_token: access_token,
-      body: { scope: scope }
+      body: { scope: scope },
     }).then((response) => {
       if (response[scope] === undefined) {
         throw new Error(`discovery result doesn't include ${scope} field: ${JSON.stringify(response)}`);
@@ -121,11 +121,11 @@ export class VCPClient {
         url = `${url}/${cid}`;
       }
 
-      let access_token = res.access_token;
+      const access_token = res.access_token;
 
       return this.fetcher.fetch(url, {
         method: 'get',
-        access_token: access_token
+        access_token: access_token,
       });
     });
   }
@@ -145,17 +145,17 @@ export class VCPClient {
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
       this.validator.addContact.assert(options);
 
-      let body = options;
+      const body = options;
       body.udc_id = cid;
 
-      let url = `${res.endpoint}/${this.params.username}`;
-      let access_token = res.access_token;
+      const url = `${res.endpoint}/${this.params.username}`;
+      const access_token = res.access_token;
 
       return this.fetcher.fetch(url, {
         method: 'post',
         type: 'json',
         access_token: access_token,
-        body: body
+        body: body,
       });
     });
   }
@@ -173,34 +173,34 @@ export class VCPClient {
    */
   updateRoster(cid, options = {}) {
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
-      let url = `${res.endpoint}/${this.params.username}/${cid}`;
-      let access_token = res.access_token;
+      const url = `${res.endpoint}/${this.params.username}/${cid}`;
+      const access_token = res.access_token;
 
       return this.fetcher.fetch(url, {
         method: 'put',
         type: 'json',
         access_token: access_token,
-        body: options
+        body: options,
       });
     });
   }
 
   /**
-   * delete Roster using Roster Web API.
+   * deconste Roster using Roster Web API.
    * if `cid` was specified, get the roster of that cid,
    * and if not specified, get the list of all roster.
    *
    * @param {String} cid - cid of roster
    * @returns {Promise} resolve when roster info fetched, reject otherwise
    */
-  deleteRoster(cid) {
+  deconsteRoster(cid) {
     return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
-      let url = `${res.endpoint}/${this.params.username}/${cid}`;
-      let access_token = res.access_token;
+      const url = `${res.endpoint}/${this.params.username}/${cid}`;
+      const access_token = res.access_token;
 
       return this.fetcher.fetch(url, {
         method: 'del',
-        access_token: access_token
+        access_token: access_token,
       });
     });
   }
@@ -225,7 +225,7 @@ export class VCPClient {
         method: 'post',
         body: log,
         access_token: res.access_token,
-        timeout: timeout
+        timeout: timeout,
       });
     });
   }

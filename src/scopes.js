@@ -1,3 +1,4 @@
+/* eslint no-var:0 */
 var SCOPES = {
   AUTH_API: 'https://ucs.ricoh.com/scope/api/auth',
   DISCOVERY_API: 'https://ucs.ricoh.com/scope/api/discovery',
@@ -18,7 +19,7 @@ var SCOPES = {
   ACCOUNT_SERVICE_API: 'https://ucs.ricoh.com/scope/api/account_',
   CONFERENCE_HISTORY_SERVICE_API: 'https://ucs.ricoh.com/scope/api/conference_history',
   USER_SERVICE_INTERNAL_API: 'https://ucs.ricoh.com/scope/api/user.internal',
-  APP_LIST_API: 'https://ucs.ricoh.com/scope/api/app_list'
+  APP_LIST_API: 'https://ucs.ricoh.com/scope/api/app_list',
 };
 
 module.exports.SCOPES = SCOPES;

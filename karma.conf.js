@@ -7,12 +7,12 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: [ 'browserify', 'mocha' ],
+    frameworks: ['browserify', 'mocha'],
 
     // list of files / patterns to load in the browser
     files: [
       'build/browser/bundle.min.js',
-      'build/test/**/*.js'
+      'build/test/**/*.js',
     ],
 
     // list of files to exclude
@@ -20,13 +20,13 @@ module.exports = function(config) {
     ],
 
     browserify: {
-      debug: true
+      debug: true,
     },
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'build/test/**/*.js': ['browserify']
+      'build/test/**/*.js': ['browserify'],
     },
 
     // test results reporter to use
@@ -53,6 +53,6 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: false,
   });
 };

@@ -1,9 +1,9 @@
-var assert = require('power-assert');
-var VCPClient = require('../src').VCPClient;
-var FetchError = require('../src/fetcher').FetchError;
-var config = require('../config/config').config;
-var Promise = require('bluebird');
-var endpoint = config.ENDPOINT;
+const assert = require('power-assert');
+const VCPClient = require('../src').VCPClient;
+const FetchError = require('../src/fetcher').FetchError;
+const config = require('../config/config').config;
+const Promise = require('bluebird');
+const endpoint = config.ENDPOINT;
 
 function clone(o) {
   return JSON.parse(JSON.stringify(o));
@@ -14,16 +14,16 @@ function nop() {}
 describe('getRoster', function() {
   this.timeout(10 * 2000); // 20sec
 
-  let params = {
+  const params = {
     client_id: config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,
     username: config.CID,
     password: config.PASSWORD,
     scope: config.SCOPE_LIST,
-    grant_type: 'password'
+    grant_type: 'password',
   };
 
-  let client = new VCPClient(endpoint, params);
+  const client = new VCPClient(endpoint, params);
 
   describe('rosters', () => {
     it('success', (done) => {
@@ -67,7 +67,7 @@ describe('getRoster', function() {
         done();
       }).catch((err) => {
         assert.strictEqual(err.length, 1);
-        let fetchErr = err[0];
+        const fetchErr = err[0];
         assert.ok(fetchErr instanceof FetchError);
         assert.strictEqual(fetchErr.message, '存在しないUDC-IDです');
         assert.strictEqual(fetchErr.code, 'roster.error.udcid.notexist');
@@ -80,38 +80,38 @@ describe('getRoster', function() {
 describe('story', function() {
   this.timeout(10 * 2000); // 20sec
 
-  let params = {
+  const params = {
     client_id: config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,
     scope: config.SCOPE_LIST,
-    grant_type: 'password'
+    grant_type: 'password',
   };
 
-  let A = '999001010058';
-  let B = '999001010059';
+  const A = '999001010058';
+  const B = '999001010059';
 
-  let paramA = clone(params);
+  const paramA = clone(params);
   paramA.username = A;
   paramA.password = A;
 
-  let paramB = clone(params);
+  const paramB = clone(params);
   paramB.username = B;
   paramB.password = B;
 
-  let clientA = new VCPClient(endpoint, paramA);
-  let clientB = new VCPClient(endpoint, paramB);
+  const clientA = new VCPClient(endpoint, paramA);
+  const clientB = new VCPClient(endpoint, paramB);
 
 
   before((done) => {
-    Promise.all([ clientA.auth(), clientB.auth() ]).then(nop).then(done, done);
+    Promise.all([clientA.auth(), clientB.auth()]).then(nop).then(done, done);
   });
 
   it('A send request to B', (done) => {
-    let options = {
+    const options = {
       name: 'B',
       name_kana: 'びー',
       sender_name: 'A',
-      sender_name_kana: 'えー'
+      sender_name_kana: 'えー',
     };
 
     clientA.addRoster(B, options).then((result) => {
@@ -125,12 +125,12 @@ describe('story', function() {
   });
 
   it('getRoster of both', (done) => {
-    Promise.all([ clientA.getRoster(), clientB.getRoster() ]).then(([a, b]) => {
+    Promise.all([clientA.getRoster(), clientB.getRoster()]).then(([a, b]) => {
       assert.strictEqual(a.total_results, 1);
       assert.strictEqual(b.total_results, 1);
 
-      let resultA = a.results[0];
-      let resultB = b.results[0];
+      const resultA = a.results[0];
+      const resultB = b.results[0];
 
       assert.strictEqual(resultA.udc_id, B);
       assert.strictEqual(resultA.ask, 'subscribe');
@@ -145,8 +145,8 @@ describe('story', function() {
   });
 
   it('B accepts A', (done) => {
-    let options = {
-      type: 'subscribed'
+    const options = {
+      type: 'subscribed',
     };
 
     clientB.updateRoster(A, options).then((result) => {
@@ -158,12 +158,12 @@ describe('story', function() {
   });
 
   it('getRoster of both', (done) => {
-    Promise.all([ clientA.getRoster(), clientB.getRoster() ]).then(([a, b]) => {
+    Promise.all([clientA.getRoster(), clientB.getRoster()]).then(([a, b]) => {
       assert.strictEqual(a.total_results, 1);
       assert.strictEqual(b.total_results, 1);
 
-      let resultA = a.results[0];
-      let resultB = b.results[0];
+      const resultA = a.results[0];
+      const resultB = b.results[0];
 
       assert.strictEqual(resultA.udc_id, B);
       assert.strictEqual(resultA.ask, '');
@@ -178,14 +178,14 @@ describe('story', function() {
   });
 
   it('B removes A', (done) => {
-    clientB.deleteRoster(A).then((result) => {
+    clientB.deconsteRoster(A).then((result) => {
       assert.strictEqual(result, null);
       done();
     }).catch(done);
   });
 
   it('getRoster of both after', (done) => {
-    Promise.all([ clientA.getRoster(), clientB.getRoster() ]).then(([a, b]) => {
+    Promise.all([clientA.getRoster(), clientB.getRoster()]).then(([a, b]) => {
       assert.strictEqual(a.total_results, 0);
       assert.strictEqual(b.total_results, 0);
       done();

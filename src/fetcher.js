@@ -1,6 +1,6 @@
-var EventEmitter = require('events').EventEmitter;
-var superagent = require('superagent');
-var Promise = require('bluebird');
+const EventEmitter = require('events').EventEmitter;
+const superagent = require('superagent');
+const Promise = require('bluebird');
 
 /**
  * Class of Custom FetchError
@@ -55,8 +55,8 @@ export class Fetcher extends EventEmitter {
    * @param {String} options.body - request body
    */
   fetch(url, options = {}) {
-    let method = options.method || 'get';
-    let req = superagent[method](url);
+    const method = options.method || 'get';
+    const req = superagent[method](url);
 
     // wrap with vcp-service-client-proxy
     // (based on superagent-proxy)
@@ -64,7 +64,7 @@ export class Fetcher extends EventEmitter {
       this.proxy(req);
     }
 
-    let timeout = options.timeout || 10000;
+    const timeout = options.timeout || 10000;
     req.timeout(timeout);
 
     // set access_token to Authroization header
@@ -95,8 +95,8 @@ export class Fetcher extends EventEmitter {
           return reject(err);
         }
 
-        let status = res.status;
-        let header = res.header;
+        const status = res.status;
+        const header = res.header;
         let body = res.text;
 
         // in some case, body has '' (emtpy string), so replace them into null
@@ -113,17 +113,17 @@ export class Fetcher extends EventEmitter {
         if (status > 399) {
           // single error
           if (body.error !== undefined) {
-            let message = body.error_description;
-            let code = body.error;
-            let fetchError = new FetchError(message, code);
+            const message = body.error_description;
+            const code = body.error;
+            const fetchError = new FetchError(message, code);
             return reject(fetchError);
           }
 
           // multiple error
           if (body.errors !== undefined) {
-            let fetchErrors = body.errors.map((error) => {
-              let message = error.message;
-              let code = error.message_id;
+            const fetchErrors = body.errors.map((error) => {
+              const message = error.message;
+              const code = error.message_id;
               return new FetchError(message, code);
             });
 

@@ -1,17 +1,16 @@
-/*eslint global-strict:0*/
-'use strict';
-var gulp = require('gulp'),
-    babel = require('gulp-babel'),
-    browserify = require('browserify'),
-    del = require('del'),
-    eslint = require('gulp-eslint'),
-    espower = require('gulp-espower'),
-    istanbul = require('gulp-istanbul'),
-    merge = require('merge-stream'),
-    mocha = require('gulp-mocha'),
-    rename = require('gulp-rename'),
-    source = require('vinyl-source-stream'),
-    uglify = require('gulp-uglify');
+/* eslint no-var:0, global-strict:0, indent:0 */
+var gulp = require('gulp')
+  , babel = require('gulp-babel')
+  , browserify = require('browserify')
+  , del = require('del')
+  , eslint = require('gulp-eslint')
+  , espower = require('gulp-espower')
+  , istanbul = require('gulp-istanbul')
+  , merge = require('merge-stream')
+  , mocha = require('gulp-mocha')
+  , rename = require('gulp-rename')
+  , source = require('vinyl-source-stream')
+  , uglify = require('gulp-uglify');
 
 
 /**
@@ -36,7 +35,7 @@ var gulp = require('gulp'),
  */
 // eslint all javascripts including setting/config files
 gulp.task('lint', function() {
-  return gulp.src([ 'src/**/*.js', 'test/**/*.js', 'gulpfile.js', '*.conf.js' ])
+  return gulp.src(['src/**/*.js', 'test/**/*.js', 'gulpfile.js', '*.conf.js'])
              .pipe(eslint())
              .pipe(eslint.format())
              .pipe(eslint.failOnError());
@@ -80,7 +79,7 @@ gulp.task('build', ['build:browserify'], function() {
   gulp.src('build/browser/bundle.js')
       .pipe(uglify())
       .pipe(rename({
-        extname: '.min.js'
+        extname: '.min.js',
       }))
       .pipe(gulp.dest('./build/browser'));
 });
@@ -92,7 +91,7 @@ gulp.task('test', ['build:babel'], function(cb) {
       .pipe(istanbul.hookRequire())
       .on('finish', function() {
         var option = {
-          reporter: 'spec'
+          reporter: 'spec',
         };
         if (process.argv[4]) {
           // --env option comes here
@@ -102,8 +101,8 @@ gulp.task('test', ['build:babel'], function(cb) {
           .pipe(mocha(option))
           .pipe(istanbul.writeReports({
             dir: 'tmp',
-            reporters: [ 'html', 'text' ],
-            reportOpts: { dir: 'tmp' }
+            reporters: ['html', 'text'],
+            reportOpts: { dir: 'tmp' },
           }))
           .on('end', cb);
       });
@@ -111,7 +110,7 @@ gulp.task('test', ['build:babel'], function(cb) {
 
 // clean temporally files
 gulp.task('clean', function(cb) {
-  return del([ 'build/*', 'tmp/*', 'npm-debug.log', '!*/.gitkeep' ], cb);
+  return del(['build/*', 'tmp/*', 'npm-debug.log', '!*/.gitkeep'], cb);
 });
 
 // clean all dependencies and temporally files

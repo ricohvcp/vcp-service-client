@@ -1,3 +1,4 @@
+/* eslint no-invalid-this: 0 */
 const assert = require('power-assert');
 const VCPClient = require('../src').VCPClient;
 const FetchError = require('../src/fetcher').FetchError;

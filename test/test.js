@@ -1,4 +1,4 @@
-/* eslint max-len: 0 */
+/* eslint max-len: 0, no-invalid-this: 0 */
 const assert = require('power-assert');
 const AssertionError = require('violations').AssertionError;
 const VCPClient = require('../src').VCPClient;
@@ -29,8 +29,8 @@ describe('VCPClient test', function() {
     it('new without args', () => {
       try {
         const client = new VCPClient();
-        assert.fail('cant be here: ' + client);
-      } catch(err) {
+        assert.fail(`cant be here: ${client}`);
+      } catch (err) {
         assert(err instanceof AssertionError);
         assert.deepEqual(JSON.parse(err.message), ['endpoint is required', 'params is required']);
       }
@@ -39,8 +39,8 @@ describe('VCPClient test', function() {
     it('new without params', () => {
       try {
         const client = new VCPClient(endpoint);
-        assert.fail('cant be here: ' + client);
-      } catch(err) {
+        assert.fail(`cant be here: ${client}`);
+      } catch (err) {
         assert(err instanceof AssertionError);
         assert.deepEqual(JSON.parse(err.message), ['params is required']);
       }

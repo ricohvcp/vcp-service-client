@@ -1,4 +1,4 @@
-/* eslint max-len:0 */
+/* eslint max-len:0, no-invalid-this: 0 */
 const assert = require('power-assert');
 const Validator = require('../src/validator').Validator;
 

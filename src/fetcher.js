@@ -7,13 +7,26 @@ Promise.config({
   cancellation: true,
 });
 
+// node.js style inherits
+function inherits(ctor, superCtor) {
+  ctor.super_ = superCtor;
+  ctor.prototype = Object.create(superCtor.prototype, {
+    constructor: {
+      value: ctor,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+};
+
 /**
  * Class of Custom FetchError
  *
  * @extends {Error}
  * @access public
  */
-export class FetchError extends Error {
+export class FetchError /*extends Error*/ {
 
   /**
    * constructor of this class
@@ -23,11 +36,17 @@ export class FetchError extends Error {
    * @param {String} code - HTTP status code
    */
   constructor(message, code) {
-    super(message);
+    Error.call(this); // super(message)
     this.message = message;
     this.code = code;
   }
 }
+
+/**
+ * CAUTION: babel doesn't support extends builtins
+ * so do it using util.inherts of node.js style
+ */
+inherits(FetchError, Error);
 
 // TODO: support progress
 /**

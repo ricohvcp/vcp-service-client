@@ -48,17 +48,18 @@ gulp.task('lint', function() {
 // src/*    =>   build/src/*
 // test/*   =>   build/test/*
 gulp.task('build:babel', function() {
+  var preset = { "presets": ["es2015"] };
   // copy only config.js not config.template.js
   var config = gulp.src('config/config.js')
-                   .pipe(babel())
+                   .pipe(babel(preset))
                    .pipe(gulp.dest('build/config/'));
 
   var src = gulp.src('src/**/*.js')
-                .pipe(babel())
+                .pipe(babel(preset))
                 .pipe(gulp.dest('build/src/'));
 
   var test = gulp.src('test/**/*.js')
-                 .pipe(babel())
+                 .pipe(babel(preset))
                  .pipe(espower()) // power-assert transpile
                  .pipe(gulp.dest('build/test/'));
 

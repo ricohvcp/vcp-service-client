@@ -9,16 +9,15 @@ Promise.config({
 
 // node.js style inherits
 function inherits(ctor, superCtor) {
-  ctor.super_ = superCtor;
   ctor.prototype = Object.create(superCtor.prototype, {
     constructor: {
-      value: ctor,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
+      value:        ctor,
+      enumerable:   false,
+      writable:     true,
+      configurable: true,
+    },
   });
-};
+}
 
 /**
  * Class of Custom FetchError
@@ -26,7 +25,7 @@ function inherits(ctor, superCtor) {
  * @extends {Error}
  * @access public
  */
-export class FetchError /*extends Error*/ {
+export class FetchError /* extends Error */ {
 
   /**
    * constructor of this class
@@ -77,6 +76,7 @@ export class Fetcher extends EventEmitter {
    * @param {String} options.access_token - access token for Bearer header
    * @param {String} options.type - content-type
    * @param {String} options.body - request body
+   * @return {Promise} - cancelable fetchPeromise
    */
   fetch(url, options = {}) {
     const method = options.method || 'get';

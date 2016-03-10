@@ -1,3 +1,4 @@
+/* eslint consistent-return: 0 */
 const Violate = require('violations').Violate;
 
 export class Validator {

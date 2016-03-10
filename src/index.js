@@ -40,14 +40,14 @@ export class VCPClient {
 
     return this.fetcher.fetch(url, {
       method: 'post',
-      type: 'form',
-      body: { // copy params for join scope
-        client_id: params.client_id,
+      type:   'form',
+      body:   { // copy params for join scope
+        client_id:     params.client_id,
         client_secret: params.client_secret,
-        username: params.username,
-        password: params.password,
-        scope: params.scope.join(' '),
-        grant_type: params.grant_type,
+        username:      params.username,
+        password:      params.password,
+        scope:         params.scope.join(' '),
+        grant_type:    params.grant_type,
       },
     }).then((authInfo) => {
       this.authInfo = authInfo;
@@ -66,10 +66,10 @@ export class VCPClient {
     const access_token = this.authInfo.access_token;
 
     return this.fetcher.fetch(url, {
-      method: 'post',
-      type: 'form',
+      method:       'post',
+      type:         'form',
       access_token: access_token,
-      body: { scope: scope },
+      body:         { scope: scope },
     }).then((response) => {
       if (response[scope] === undefined) {
         throw new Error(`discovery result doesn't include ${scope} field: ${JSON.stringify(response)}`);
@@ -124,7 +124,7 @@ export class VCPClient {
       const access_token = res.access_token;
 
       return this.fetcher.fetch(url, {
-        method: 'get',
+        method:       'get',
         access_token: access_token,
       });
     });
@@ -152,10 +152,10 @@ export class VCPClient {
       const access_token = res.access_token;
 
       return this.fetcher.fetch(url, {
-        method: 'post',
-        type: 'json',
+        method:       'post',
+        type:         'json',
         access_token: access_token,
-        body: body,
+        body:         body,
       });
     });
   }
@@ -177,10 +177,10 @@ export class VCPClient {
       const access_token = res.access_token;
 
       return this.fetcher.fetch(url, {
-        method: 'put',
-        type: 'json',
+        method:       'put',
+        type:         'json',
         access_token: access_token,
-        body: options,
+        body:         options,
       });
     });
   }
@@ -199,7 +199,7 @@ export class VCPClient {
       const access_token = res.access_token;
 
       return this.fetcher.fetch(url, {
-        method: 'del',
+        method:       'del',
         access_token: access_token,
       });
     });
@@ -222,10 +222,10 @@ export class VCPClient {
       url = url.replace('{filename_suffix}', filename);
 
       return this.fetcher.fetch(url, {
-        method: 'post',
-        body: log,
+        method:       'post',
+        body:         log,
         access_token: res.access_token,
-        timeout: timeout,
+        timeout:      timeout,
       });
     });
   }

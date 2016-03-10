@@ -1,5 +1,6 @@
-/* eslint no-var:0, global-strict:0, indent:0 */
-var gulp = require('gulp')
+'use strict';
+
+let gulp = require('gulp')
   , babel = require('gulp-babel')
   , browserify = require('browserify')
   , del = require('del')
@@ -34,7 +35,7 @@ var gulp = require('gulp')
  * `-- tmp (coverage etc)
  */
 // eslint all javascripts including setting/config files
-gulp.task('lint', function() {
+gulp.task('lint', () => {
   return gulp.src(['src/**/*.js', 'test/**/*.js', 'gulpfile.js', '*.conf.js'])
              .pipe(eslint())
              .pipe(eslint.format())
@@ -47,18 +48,21 @@ gulp.task('lint', function() {
 // config/* =>   build/config/*
 // src/*    =>   build/src/*
 // test/*   =>   build/test/*
-gulp.task('build:babel', function() {
-  var preset = { "presets": ["es2015"] };
+gulp.task('build:babel', () => {
+  let preset = {
+    presets: ['es2015'],
+  };
+
   // copy only config.js not config.template.js
-  var config = gulp.src('config/config.js')
+  let config = gulp.src('config/config.js')
                    .pipe(babel(preset))
                    .pipe(gulp.dest('build/config/'));
 
-  var src = gulp.src('src/**/*.js')
+  let src = gulp.src('src/**/*.js')
                 .pipe(babel(preset))
                 .pipe(gulp.dest('build/src/'));
 
-  var test = gulp.src('test/**/*.js')
+  let test = gulp.src('test/**/*.js')
                  .pipe(babel(preset))
                  .pipe(espower()) // power-assert transpile
                  .pipe(gulp.dest('build/test/'));
@@ -67,7 +71,7 @@ gulp.task('build:babel', function() {
 });
 
 // build with browserify
-gulp.task('build:browserify', ['build:babel'], function(done) {
+gulp.task('build:browserify', ['build:babel'], (done) => {
   browserify('./build/src/index.js', { standalone: 'VCPClient' })
     .bundle()
     .pipe(source('bundle.js'))
@@ -76,7 +80,7 @@ gulp.task('build:browserify', ['build:babel'], function(done) {
 });
 
 // build src for browser
-gulp.task('build', ['build:browserify'], function() {
+gulp.task('build', ['build:browserify'], () => {
   gulp.src('build/browser/bundle.js')
       .pipe(uglify())
       .pipe(rename({
@@ -86,12 +90,12 @@ gulp.task('build', ['build:browserify'], function() {
 });
 
 // run test on mocha and get coverage
-gulp.task('test', ['build:babel'], function(cb) {
+gulp.task('test', ['build:babel'], (cb) => {
   gulp.src('build/src/**/*.js')
       .pipe(istanbul())
       .pipe(istanbul.hookRequire())
-      .on('finish', function() {
-        var option = {
+      .on('finish', () => {
+        let option = {
           reporter: 'spec',
         };
         if (process.argv[4]) {
@@ -101,8 +105,8 @@ gulp.task('test', ['build:babel'], function(cb) {
         gulp.src('build/test/*.js')
           .pipe(mocha(option))
           .pipe(istanbul.writeReports({
-            dir: 'tmp',
-            reporters: ['html', 'text'],
+            dir:        'tmp',
+            reporters:  ['html', 'text'],
             reportOpts: { dir: 'tmp' },
           }))
           .on('end', cb);
@@ -110,11 +114,11 @@ gulp.task('test', ['build:babel'], function(cb) {
 });
 
 // clean temporally files
-gulp.task('clean', function(cb) {
+gulp.task('clean', (cb) => {
   return del(['build/*', 'tmp/*', 'npm-debug.log', '!*/.gitkeep'], cb);
 });
 
 // clean all dependencies and temporally files
-gulp.task('clean:all', ['clean'], function(cb) {
+gulp.task('clean:all', ['clean'], (cb) => {
   return del('node_modules', cb);
 });

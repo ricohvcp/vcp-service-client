@@ -11,12 +11,12 @@ describe('VCPClient test', function() {
   this.timeout(10 * 2000); // 20sec
 
   const params = {
-    client_id: config.CLIENT_ID,
+    client_id:     config.CLIENT_ID,
     client_secret: config.CLIENT_SECRET,
-    username: config.CID,
-    password: config.PASSWORD,
-    scope: config.SCOPE_LIST,
-    grant_type: 'password',
+    username:      config.CID,
+    password:      config.PASSWORD,
+    scope:         config.SCOPE_LIST,
+    grant_type:    'password',
   };
 
   describe('constructor', () => {
@@ -50,98 +50,124 @@ describe('VCPClient test', function() {
   describe('auth', () => {
     it('success', (done) => {
       const client = new VCPClient(endpoint, params);
-      client.auth().then(() => {
-        assert.ok(client.authInfo.access_token);
-        assert.ok(client.authInfo.refresh_token);
-        assert.ok(client.authInfo.token_type);
-        assert.ok(client.authInfo.expires_in);
-        assert.ok(client.authInfo.scope);
-        done();
-      }).catch(done);
+      client
+        .auth()
+        .then(() => {
+          assert.ok(client.authInfo.access_token);
+          assert.ok(client.authInfo.refresh_token);
+          assert.ok(client.authInfo.token_type);
+          assert.ok(client.authInfo.expires_in);
+          assert.ok(client.authInfo.scope);
+          done();
+        }).catch(done);
     });
 
     it('error: param with invalid client_id', (done) => {
       const p = JSON.parse(JSON.stringify(params));
       p.client_id = 'xxxxxxxx';
       const client = new VCPClient(endpoint, p);
-      client.auth().then(() => {
-        assert.fail('cant be here');
-      }).catch((err) => {
-        assert.ok(err instanceof FetchError);
-        assert.ok(/The client identifier provided is invalid.*/.test(err.message));
-        assert.strictEqual(err.code, 'invalid_client');
-        done();
-      }).catch(done);
+      client
+        .auth()
+        .then(() => {
+          assert.fail('cant be here');
+        })
+        .catch((err) => {
+          assert.ok(err instanceof FetchError);
+          assert.ok(/The client identifier provided is invalid.*/.test(err.message));
+          assert.strictEqual(err.code, 'invalid_client');
+          done();
+        })
+        .catch(done);
     });
 
     it('error: param with invalid client_secret', (done) => {
       const p = JSON.parse(JSON.stringify(params));
       p.client_secret = 'xxxxxxxx';
       const client = new VCPClient(endpoint, p);
-      client.auth().then(() => {
-        assert.fail('cant be here');
-      }).catch((err) => {
-        assert.ok(err instanceof FetchError);
-        assert.ok(/The client identifier provided is invalid.*/.test(err.message));
-        assert.strictEqual(err.code, 'invalid_client');
-        done();
-      }).catch(done);
+      client
+        .auth()
+        .then(() => {
+          assert.fail('cant be here');
+        })
+        .catch((err) => {
+          assert.ok(err instanceof FetchError);
+          assert.ok(/The client identifier provided is invalid.*/.test(err.message));
+          assert.strictEqual(err.code, 'invalid_client');
+          done();
+        })
+        .catch(done);
     });
 
     it('error: param with invalid username', (done) => {
       const p = JSON.parse(JSON.stringify(params));
       p.username = 'xxxxxxxx';
       const client = new VCPClient(endpoint, p);
-      client.auth().then(() => {
-        assert.fail('cant be here');
-      }).catch((err) => {
-        assert.ok(err instanceof FetchError);
-        assert.ok(/The provided access grant is invalid, expired, or revoked.*/.test(err.message));
-        assert.strictEqual(err.code, 'invalid_grant');
-        done();
-      }).catch(done);
+      client
+        .auth()
+        .then(() => {
+          assert.fail('cant be here');
+        })
+        .catch((err) => {
+          assert.ok(err instanceof FetchError);
+          assert.ok(/The provided access grant is invalid, expired, or revoked.*/.test(err.message));
+          assert.strictEqual(err.code, 'invalid_grant');
+          done();
+        })
+        .catch(done);
     });
 
     it('error: param with invalid password', (done) => {
       const p = JSON.parse(JSON.stringify(params));
       p.password = 'xxxxxxxx';
       const client = new VCPClient(endpoint, p);
-      client.auth().then(() => {
-        assert.fail('cant be here');
-      }).catch((err) => {
-        assert.ok(err instanceof FetchError);
-        assert.ok(/The provided access grant is invalid, expired, or revoked.*/.test(err.message));
-        assert.strictEqual(err.code, 'invalid_grant');
-        done();
-      }).catch(done);
+      client
+        .auth()
+        .then(() => {
+          assert.fail('cant be here');
+        })
+        .catch((err) => {
+          assert.ok(err instanceof FetchError);
+          assert.ok(/The provided access grant is invalid, expired, or revoked.*/.test(err.message));
+          assert.strictEqual(err.code, 'invalid_grant');
+          done();
+        })
+        .catch(done);
     });
 
     it('error: param with invalid scope', (done) => {
       const p = JSON.parse(JSON.stringify(params));
       p.scope = [];
       const client = new VCPClient(endpoint, p);
-      client.auth().then(() => {
-        assert.fail('cant be here');
-      }).catch((err) => {
-        assert.ok(err instanceof FetchError);
-        assert.ok(/The request is missing a required parameter.*/.test(err.message));
-        assert.strictEqual(err.code, 'invalid_request');
-        done();
-      }).catch(done);
+      client
+        .auth()
+        .then(() => {
+          assert.fail('cant be here');
+        })
+        .catch((err) => {
+          assert.ok(err instanceof FetchError);
+          assert.ok(/The request is missing a required parameter.*/.test(err.message));
+          assert.strictEqual(err.code, 'invalid_request');
+          done();
+        })
+        .catch(done);
     });
 
     it('error: param with invalid grant_type', (done) => {
       const p = JSON.parse(JSON.stringify(params));
       p.grant_type = 'xxxxxxxx';
       const client = new VCPClient(endpoint, p);
-      client.auth().then(() => {
-        assert.fail('cant be here');
-      }).catch((err) => {
-        assert.ok(err instanceof FetchError);
-        assert.ok(/The access grant included - its type or another attribute - is not supported by the authorization server..*/.test(err.message));
-        assert.strictEqual(err.code, 'unsupported_grant_type');
-        done();
-      }).catch(done);
+      client
+        .auth()
+        .then(() => {
+          assert.fail('cant be here');
+        })
+        .catch((err) => {
+          assert.ok(err instanceof FetchError);
+          assert.ok(/The access grant included - its type or another attribute - is not supported by the authorization server..*/.test(err.message));
+          assert.strictEqual(err.code, 'unsupported_grant_type');
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -155,20 +181,25 @@ describe('VCPClient test', function() {
 
     it('success', (done) => {
       // any scope with granted are ok
-      client.discovery(scopes.INFORMATION_URI).then((info) => {
-        assert(info);
-        done();
-      }).catch(done);
+      client
+        .discovery(scopes.INFORMATION_URI)
+        .then((info) => {
+          assert(info);
+          done();
+        }).catch(done);
     });
 
     it('error: no result for SCOPE', (done) => {
-      client.discovery(scopes.AUTH_API).then((info) => {
-        assert.fail(`cant be here: ${info}`);
-      }).catch((err) => {
-        assert.ok(err instanceof Error);
-        assert.ok(/discovery result doesn\'t include.*/.test(err.message));
-        done();
-      }).catch(done);
+      client
+        .discovery(scopes.AUTH_API).then((info) => {
+          assert.fail(`cant be here: ${info}`);
+        })
+        .catch((err) => {
+          assert.ok(err instanceof Error);
+          assert.ok(/discovery result doesn\'t include.*/.test(err.message));
+          done();
+        })
+        .catch(done);
     });
   });
 
@@ -256,14 +287,17 @@ describe('VCPClient test', function() {
         uploadPromise.cancel();
       }, 1);
 
-      uploadPromise.then((result) => {
-        assert.fail(`cant be here: ${result}`);
-      }).catch((err) => {
-        assert.fail(`cant be here: ${result}`);
-      }).finally(() => {
-        assert.strictEqual(uploadPromise.isCancelled(), true, 'upload canceled');
-        done();
-      });
+      uploadPromise
+        .then((result) => {
+          assert.fail(`cant be here: ${result}`);
+        })
+        .catch((err) => {
+          assert.fail(`cant be here: ${err}`);
+        })
+        .finally(() => {
+          assert.strictEqual(uploadPromise.isCancelled(), true, 'upload canceled');
+          done();
+        });
     });
 
     it('error: timeout', (done) => {
@@ -271,13 +305,17 @@ describe('VCPClient test', function() {
 
       const timeout = 1;
 
-      client.logUpload(largelog, filename, timeout).then((result) => {
-        assert.fail(`cant be here: ${result}`);
-      }).catch((err) => {
-        assert.ok(err instanceof Error);
-        assert.strictEqual(err.message, `timeout of ${timeout}ms exceeded`);
-        done();
-      }).catch(done);
+      client
+        .logUpload(largelog, filename, timeout)
+        .then((result) => {
+          assert.fail(`cant be here: ${result}`);
+        })
+        .catch((err) => {
+          assert.ok(err instanceof Error);
+          assert.strictEqual(err.message, `timeout of ${timeout}ms exceeded`);
+          done();
+        })
+        .catch(done);
     });
 
     it('error: file size too large', () => {

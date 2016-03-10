@@ -259,10 +259,11 @@ describe('VCPClient test', function() {
       uploadPromise.then((result) => {
         assert.fail(`cant be here: ${result}`);
       }).catch((err) => {
-        assert.ok(err instanceof Error);
-        assert.strictEqual(err.message, 'upload canceled');
+        assert.fail(`cant be here: ${result}`);
+      }).finally(() => {
+        assert.strictEqual(uploadPromise.isCancelled(), true, 'upload canceled');
         done();
-      }).catch(done);
+      });
     });
 
     it('error: timeout', (done) => {

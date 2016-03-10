@@ -2,6 +2,11 @@ const EventEmitter = require('events').EventEmitter;
 const superagent = require('superagent');
 const Promise = require('bluebird');
 
+Promise.config({
+  // Enable cancellation
+  cancellation: true,
+});
+
 /**
  * Class of Custom FetchError
  *
@@ -79,7 +84,7 @@ export class Fetcher extends EventEmitter {
 
     req.send(options.body);
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject, cancel) => {
       console.time(url);
       req.end((err, res) => {
         console.timeEnd(url);
@@ -139,13 +144,15 @@ export class Fetcher extends EventEmitter {
 
         return resolve(body);
       });
-    }).cancellable().catch(Promise.CancellationError, () => {
-      // req.abort() blocks for returning TimeouError to req.end
-      // so make it async and reject promise first
-      setTimeout(() => {
-        req.abort();
-      }, 0);
-      throw new Error('upload canceled');
+
+      cancel(() => {
+        // req.abort() blocks for returning TimeouError to req.end
+        // so make it async and reject promise first
+        setTimeout(() => {
+          req.abort();
+        }, 0);
+        // throw new Error('upload canceled');
+      });
     });
   }
 }

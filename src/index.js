@@ -1,4 +1,4 @@
-const scopes = require('./scopes').SCOPES;
+const SCOPES = require('./scopes').SCOPES;
 const Validator = require('./validator').Validator;
 const Fetcher = require('./fetcher').Fetcher;
 const Promise = require('bluebird');
@@ -84,7 +84,7 @@ export class VCPClient {
    * @returns {Promise} resolve when account info fetched, reject otherwise
    */
   accountInfo() {
-    return this.discovery(scopes.GD_ACCOUNT_INFO_QUERY);
+    return this.discovery(SCOPES.GD_ACCOUNT_INFO_QUERY);
   }
 
   /**
@@ -93,7 +93,7 @@ export class VCPClient {
    * @returns {Promise} resolve when user info fetched, reject otherwise
    */
   userInfo() {
-    return this.discovery(scopes.USERINFO_QUERY);
+    return this.discovery(SCOPES.USERINFO_QUERY);
   }
 
   /**
@@ -102,7 +102,7 @@ export class VCPClient {
    * @returns {Promise} resolve when infomation fetched, reject otherwise
    */
   information() {
-    return this.discovery(scopes.INFORMATION_URI);
+    return this.discovery(SCOPES.INFORMATION_URI);
   }
 
   /**
@@ -114,7 +114,7 @@ export class VCPClient {
    * @returns {Promise} resolve when roster info fetched, reject otherwise
    */
   getRoster(cid) {
-    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
+    return this.discovery(SCOPES.ROSTER_SERVICE_HTTP_API).then((res) => {
       let url = `${res.endpoint}/${this.params.username}`;
 
       if (cid !== undefined) {
@@ -142,7 +142,7 @@ export class VCPClient {
    * @returns {Promise} resolve when roster result fetched, reject otherwise
    */
   addRoster(cid, options = {}) {
-    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
+    return this.discovery(SCOPES.ROSTER_SERVICE_HTTP_API).then((res) => {
       this.validator.addContact.assert(options);
 
       const body = options;
@@ -172,7 +172,7 @@ export class VCPClient {
    * @returns {Promise} resolve when roster result fetched, reject otherwise
    */
   updateRoster(cid, options = {}) {
-    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
+    return this.discovery(SCOPES.ROSTER_SERVICE_HTTP_API).then((res) => {
       const url = `${res.endpoint}/${this.params.username}/${cid}`;
       const access_token = res.access_token;
 
@@ -194,7 +194,7 @@ export class VCPClient {
    * @returns {Promise} resolve when roster info fetched, reject otherwise
    */
   deconsteRoster(cid) {
-    return this.discovery(scopes.ROSTER_SERVICE_HTTP_API).then((res) => {
+    return this.discovery(SCOPES.ROSTER_SERVICE_HTTP_API).then((res) => {
       const url = `${res.endpoint}/${this.params.username}/${cid}`;
       const access_token = res.access_token;
 
@@ -215,7 +215,7 @@ export class VCPClient {
    * @returns {Promise} resolve when upload finished, reject otherwise
    */
   logUpload(log, filename, timeout = 10000) {
-    return this.discovery(scopes.LOG_UPLOAD_API).then((res) => {
+    return this.discovery(SCOPES.LOG_UPLOAD_API).then((res) => {
       this.validator.logUpload.assert({ log, filename, timeout });
 
       let url = res.endpoint;

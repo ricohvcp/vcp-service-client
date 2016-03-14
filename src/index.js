@@ -97,7 +97,9 @@ export class VCPClient {
    * @returns {Promise} resolve when account info fetched, reject otherwise
    */
   accountInfo() {
-    return this.discovery(SCOPES.GD_ACCOUNT_INFO_QUERY);
+    return this.discovery(SCOPES.GD_ACCOUNT_INFO_QUERY).then((res) => {
+      return res[SCOPES.GD_ACCOUNT_INFO_QUERY];
+    });
   }
 
   /**
@@ -106,7 +108,9 @@ export class VCPClient {
    * @returns {Promise} resolve when user info fetched, reject otherwise
    */
   userInfo() {
-    return this.discovery(SCOPES.USERINFO_QUERY);
+    return this.discovery(SCOPES.USERINFO_QUERY).then((res) => {
+      return res[SCOPES.USERINFO_QUERY];
+    });
   }
 
   /**
@@ -115,7 +119,9 @@ export class VCPClient {
    * @returns {Promise} resolve when infomation fetched, reject otherwise
    */
   information() {
-    return this.discovery(SCOPES.INFORMATION_URI);
+    return this.discovery(SCOPES.INFORMATION_URI).then((res) => {
+      return res[SCOPES.INFORMATION_URI];
+    });
   }
 
   /**
@@ -128,13 +134,14 @@ export class VCPClient {
    */
   getRoster(cid) {
     return this.discovery(SCOPES.ROSTER_SERVICE_HTTP_API).then((res) => {
-      let url = `${res.endpoint}/${this.params.username}`;
+      const info = res[SCOPES.ROSTER_SERVICE_HTTP_API];
+      let url = `${info.endpoint}/${this.params.username}`;
 
       if (cid !== undefined) {
         url = `${url}/${cid}`;
       }
 
-      const access_token = res.access_token;
+      const access_token = info.access_token;
 
       return this.fetcher.fetch(url, {
         method:       'get',
@@ -156,13 +163,14 @@ export class VCPClient {
    */
   addRoster(cid, options = {}) {
     return this.discovery(SCOPES.ROSTER_SERVICE_HTTP_API).then((res) => {
+      const info = res[SCOPES.ROSTER_SERVICE_HTTP_API];
       this.validator.addContact.assert(options);
 
       const body = options;
       body.udc_id = cid;
 
-      const url = `${res.endpoint}/${this.params.username}`;
-      const access_token = res.access_token;
+      const url = `${info.endpoint}/${this.params.username}`;
+      const access_token = info.access_token;
 
       return this.fetcher.fetch(url, {
         method:       'post',
@@ -186,8 +194,9 @@ export class VCPClient {
    */
   updateRoster(cid, options = {}) {
     return this.discovery(SCOPES.ROSTER_SERVICE_HTTP_API).then((res) => {
-      const url = `${res.endpoint}/${this.params.username}/${cid}`;
-      const access_token = res.access_token;
+      const info = res[SCOPES.ROSTER_SERVICE_HTTP_API];
+      const url = `${info.endpoint}/${this.params.username}/${cid}`;
+      const access_token = info.access_token;
 
       return this.fetcher.fetch(url, {
         method:       'put',
@@ -208,8 +217,9 @@ export class VCPClient {
    */
   deleteRoster(cid) {
     return this.discovery(SCOPES.ROSTER_SERVICE_HTTP_API).then((res) => {
-      const url = `${res.endpoint}/${this.params.username}/${cid}`;
-      const access_token = res.access_token;
+      const info = res[SCOPES.ROSTER_SERVICE_HTTP_API];
+      const url = `${info.endpoint}/${this.params.username}/${cid}`;
+      const access_token = info.access_token;
 
       return this.fetcher.fetch(url, {
         method:       'del',
@@ -229,15 +239,16 @@ export class VCPClient {
    */
   logUpload(log, filename, timeout = 10000) {
     return this.discovery(SCOPES.LOG_UPLOAD_API).then((res) => {
+      const info = res[SCOPES.LOG_UPLOAD_API];
       this.validator.logUpload.assert({ log, filename, timeout });
 
-      let url = res.endpoint;
+      let url = info.endpoint;
       url = url.replace('{filename_suffix}', filename);
 
       return this.fetcher.fetch(url, {
         method:       'post',
         body:         log,
-        access_token: res.access_token,
+        access_token: info.access_token,
         timeout:      timeout,
       });
     });

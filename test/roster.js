@@ -2,6 +2,7 @@
 const assert = require('power-assert');
 const VCPClient = require('../src').VCPClient;
 const FetchError = require('../src/fetcher').FetchError;
+const FetchErrors = require('../src/fetcher').FetchErrors;
 const config = require('../config/config').config;
 const Promise = require('bluebird');
 const endpoint = config.ENDPOINT;
@@ -80,8 +81,9 @@ describe('getRoster', function() {
           done();
         })
         .catch((err) => {
-          assert.strictEqual(err.length, 1);
-          const fetchErr = err[0];
+          assert.ok(err instanceof FetchErrors);
+          assert.strictEqual(err.errors.length, 1);
+          const fetchErr = err.errors[0];
           assert.ok(fetchErr instanceof FetchError);
           assert.strictEqual(fetchErr.message, '存在しないUDC-IDです');
           assert.strictEqual(fetchErr.code, 'roster.error.udcid.notexist');

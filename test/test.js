@@ -3,6 +3,7 @@ const assert = require('power-assert');
 const AssertionError = require('violations').AssertionError;
 const VCPClient = require('../src').VCPClient;
 const FetchError = require('../src/fetcher').FetchError;
+const FetchErrors = require('../src/fetcher').FetchErrors;
 const config = require('../config/config').config;
 const scopes = require('../src/scopes').SCOPES;
 const endpoint = config.ENDPOINT;
@@ -189,14 +190,25 @@ describe('VCPClient test', function() {
         }).catch(done);
     });
 
+    it('success: multi scope', (done) => {
+      // any scope with granted are ok
+      client
+        .discovery([scopes.USERINFO_QUERY, scopes.INFORMATION_URI])
+        .then((info) => {
+          assert(info);
+          done();
+        }).catch(done);
+    });
+
     it('error: no result for SCOPE', (done) => {
       client
         .discovery(scopes.AUTH_API).then((info) => {
           assert.fail(`cant be here: ${info}`);
         })
         .catch((err) => {
-          assert.ok(err instanceof Error);
-          assert.ok(/discovery result doesn\'t include.*/.test(err.message));
+          assert.ok(err instanceof FetchErrors);
+          const e = err.errors[0];
+          assert.ok(/discovery result doesn\'t include.*/.test(e.message));
           done();
         })
         .catch(done);

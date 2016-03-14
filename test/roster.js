@@ -193,7 +193,7 @@ describe('story', function() {
   });
 
   it('B removes A', (done) => {
-    clientB.deconsteRoster(A).then((result) => {
+    clientB.deleteRoster(A).then((result) => {
       assert.strictEqual(result, null);
       done();
     }).catch(done);

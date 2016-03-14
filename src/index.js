@@ -199,14 +199,14 @@ export class VCPClient {
   }
 
   /**
-   * deconste Roster using Roster Web API.
+   * delete Roster using Roster Web API.
    * if `cid` was specified, get the roster of that cid,
    * and if not specified, get the list of all roster.
    *
    * @param {String} cid - cid of roster
    * @returns {Promise} resolve when roster info fetched, reject otherwise
    */
-  deconsteRoster(cid) {
+  deleteRoster(cid) {
     return this.discovery(SCOPES.ROSTER_SERVICE_HTTP_API).then((res) => {
       const url = `${res.endpoint}/${this.params.username}/${cid}`;
       const access_token = res.access_token;

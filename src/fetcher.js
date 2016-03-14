@@ -35,9 +35,30 @@ export class FetchError /* extends Error */ {
    * @param {String} code - HTTP status code
    */
   constructor(message, code) {
-    Error.call(this); // super(message)
+    Error.call(this, message); // super(message)
     this.message = message;
     this.code = code;
+  }
+}
+
+/**
+ * Aggregation Class of Custom FetchErrors
+ *
+ * @extends {Error}
+ * @access public
+ */
+export class FetchErrors /* extends Error */ {
+  /**
+   * constructor of this class
+   * calling super (Erro constructor) with message.
+   *
+   * @param {String} message - error message
+   * @param {Error[]} errors - list of errors
+   */
+  constructor(message, errors) {
+    Error.call(this, message); // super(message)
+    this.message = message;
+    this.errors = errors;
   }
 }
 
@@ -45,6 +66,7 @@ export class FetchError /* extends Error */ {
  * CAUTION: babel doesn't support extends builtins
  * so do it using util.inherts of node.js style
  */
+inherits(FetchErrors, Error);
 inherits(FetchError, Error);
 
 // TODO: support progress
@@ -146,11 +168,13 @@ export class Fetcher extends EventEmitter {
 
           // multiple error
           if (body.errors !== undefined) {
-            const fetchErrors = body.errors.map((error) => {
+            const errors = body.errors.map((error) => {
               const message = error.message;
               const code = error.message_id;
               return new FetchError(message, code);
             });
+
+            const fetchErrors = new FetchErrors('multiple fetch errors', errors);
 
             // reject with Array of FetchError
             return reject(fetchErrors);

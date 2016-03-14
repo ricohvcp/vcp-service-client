@@ -1,6 +1,7 @@
 const SCOPES = require('./scopes').SCOPES;
 const Validator = require('./validator').Validator;
 const Fetcher = require('./fetcher').Fetcher;
+const FetchErrors = require('../src/fetcher').FetchErrors;
 const Promise = require('bluebird');
 
 /**
@@ -58,23 +59,35 @@ export class VCPClient {
   /**
    * call discovery API with given scope.
    *
-   * @param {String} scope - scope for discovery
+   * @param {String|String[]} scopes - scope or SCOPES for discovery
    * @returns {Promise} resolve when discovery result fetched, reject otherwise
    */
-  discovery(scope) {
+  discovery(scopes) {
     const url = `${this.endpoint}/auth/discovery`;
     const access_token = this.authInfo.access_token;
+
+    // make single scope to single element array
+    const scope_list = Array.isArray(scopes) ? scopes : [scopes];
 
     return this.fetcher.fetch(url, {
       method:       'post',
       type:         'form',
       access_token: access_token,
-      body:         { scope: scope },
+      body:         { scope: scope_list.join(' ') },
     }).then((response) => {
-      if (response[scope] === undefined) {
-        throw new Error(`discovery result doesn't include ${scope} field: ${JSON.stringify(response)}`);
+      const errors = scope_list.reduce((pre, curr) => {
+        if (response[curr] === undefined) {
+          const err = new Error(`discovery result doesn't include ${curr} field: ${JSON.stringify(response)}`);
+          pre.push(err);
+        }
+        return pre;
+      }, []);
+
+      if (errors.length > 0) {
+        return Promise.reject(new FetchErrors('discovery errors', errors));
       }
-      return response[scope];
+
+      return response;
     });
   }
 

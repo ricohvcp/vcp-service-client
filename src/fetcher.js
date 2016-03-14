@@ -195,7 +195,6 @@ export class Fetcher extends EventEmitter {
         setTimeout(() => {
           req.abort();
         }, 0);
-        // throw new Error('upload canceled');
       });
     });
   }

@@ -15,6 +15,8 @@ RICOH Visual Communication Platform service client for javascript
 $ npm install vcp-service-client
 ```
 
+or you can use built(and minified) version of JS for browser in [releases](https://github.com/ricohvcp/vcp-service-client/releases/).
+
 ## API
 
 ### configuration params

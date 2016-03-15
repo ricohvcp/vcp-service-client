@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "bluebird": "3",
-    "superagent": "^1.4.0",
+    "superagent": "^1.8.1",
     "violations": "0.1.0"
   },
   "devDependencies": {
@@ -28,7 +28,7 @@
     "gulp-mocha": "2.2.0",
     "gulp-remove-lines": "0.1.0",
     "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.1",
+    "gulp-uglify": "^1.5.3",
     "intelli-espower-loader": "1.0.1",
     "karma": "^0.13.22",
     "karma-browserify": "5.0.2",

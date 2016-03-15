@@ -187,6 +187,13 @@ client.discovery(scope.INFORMATION_URI)
       .then(function(result) {
         console.log(result);
       });
+
+
+// multiple scope
+client.discovery([scopes.USERINFO_QUERY, scopes.INFORMATION_URI])
+      .then(function(result) {
+        console.log(result);
+      });
 ```
 
 ### Example
@@ -269,17 +276,22 @@ var log = 'this is log data which you wanna upload';
 var filename = 'mylogfilename'; // this will be name of saved file at log server
 var timeout = 5000; // (default 10000 ms)
 
-client.logUpload(log, filename, timeout)
+var uploadPromise = client.logUpload(log, filename, timeout)
       .then(function() {
         console.log('upload finished');
       })
       .catch(function() {
         console.error('upload timeouted, aborted, or failed');
+      })
+      .finally(function() {
+        if (uploadPromise.isCancelled()) {
+          console.log('cancelled');
+        }
       });
 
 document.getElementById('uploadcancel')
       .addEventListener('click', function() {
-        client.cancel();
+        uploadPromise.cancel();
       });
 ```
 

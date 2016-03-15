@@ -1,10 +1,14 @@
 # CHANGELOG
 
+## [1.0.2]((https://github.com/ricohvcp/vcp-service-client/releases/tag/v1.0.2)
+
+- support multiple scope in discovery
+- return multiple error from fetch as FetchErrors
+
 ## [1.0.1](https://github.com/ricohvcp/vcp-service-client/releases/tag/v1.0.1)
 
-- update
-  - support [Bluebird new cancellation design](http://bluebirdjs.com/docs/api/cancellation.html) (this blocks release of v1.0.0)
-  - update dependencies
+- support [Bluebird new cancellation design](http://bluebirdjs.com/docs/api/cancellation.html) (this blocks release of v1.0.0)
+- update dependencies
 
 ## [0.0.13](https://github.com/ricohvcp/vcp-service-client/releases/tag/v0.0.13)
 

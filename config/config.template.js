@@ -8,6 +8,10 @@ var config = {
   // your cid infomation
   CID:           '',
   PASSWORD:      '',
+  CID_A:         '',
+  PASSWORD_A:    '',
+  CID_B:         '',
+  PASSWORD_B:    '',
 
   // endpoint of UCS Auth API
   ENDPOINT: 'https://auth.ucs.ricoh.com',

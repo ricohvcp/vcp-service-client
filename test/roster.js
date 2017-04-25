@@ -104,20 +104,19 @@ describe('story', function() {
     grant_type:    'password',
   };
 
-  const A = '999001010058';
-  const B = '999001010059';
+  const A = config.CID_A;
+  const B = config.CID_B;
 
   const paramA = clone(params);
   paramA.username = A;
-  paramA.password = A;
+  paramA.password = config.PASSWORD_A;
 
   const paramB = clone(params);
   paramB.username = B;
-  paramB.password = B;
+  paramB.password = config.PASSWORD_B;
 
   const clientA = new VCPClient(endpoint, paramA);
   const clientB = new VCPClient(endpoint, paramB);
-
 
   before((done) => {
     Promise.all([clientA.auth(), clientB.auth()]).then(nop).then(done, done);

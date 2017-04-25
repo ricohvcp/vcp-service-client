@@ -153,7 +153,7 @@ export class Fetcher extends EventEmitter {
 
         // in plain/text, res.text is body but
         // in application/json, res.body is parsed json
-        if (header['content-type'].match(/application\/json/)) {
+        if (header['content-type'] && header['content-type'].match(/application\/json/)) {
           body = res.body;
         }
 

@@ -219,7 +219,7 @@ document.getElementById('#userinfo')
         .addEventListener('click', function() {
           // call after auth
           client.userInfo().then(function(info) {
-            cosnole.log(info);
+            console.log(info);
           });
         });
 </script>

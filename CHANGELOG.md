@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [1.0.2]((https://github.com/ricohvcp/vcp-service-client/releases/tag/v1.0.2)
+## [1.0.2](https://github.com/ricohvcp/vcp-service-client/releases/tag/v1.0.2)
 
 - support multiple scope in discovery
 - return multiple error from fetch as FetchErrors

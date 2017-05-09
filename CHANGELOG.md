@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [1.0.3](https://github.com/ricohvcp/vcp-service-client/releases/tag/v1.0.3)
+
+- support HTTP response without Content-Type header (Such as result of DELETE)
+- remove hard coded cids, and modify config template
+
 ## [1.0.2](https://github.com/ricohvcp/vcp-service-client/releases/tag/v1.0.2)
 
 - support multiple scope in discovery

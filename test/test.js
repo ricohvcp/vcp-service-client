@@ -324,7 +324,7 @@ describe('VCPClient test', function() {
         })
         .catch((err) => {
           assert.ok(err instanceof Error);
-          assert.strictEqual(err.message, `timeout of ${timeout}ms exceeded`);
+          assert.strictEqual(err.message, `Timeout of ${timeout}ms exceeded`);
           done();
         })
         .catch(done);

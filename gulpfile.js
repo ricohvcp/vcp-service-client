@@ -109,7 +109,8 @@ gulp.task('test', ['build:babel'], (cb) => {
             reporters:  ['html', 'text'],
             reportOpts: { dir: 'tmp' },
           }))
-          .on('end', cb);
+          .on('end', cb)
+          .on('error', cb);
       });
 });
 

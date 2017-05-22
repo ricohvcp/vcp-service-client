@@ -1,5 +1,3 @@
-'use strict';
-
 let gulp = require('gulp')
   , babel = require('gulp-babel')
   , browserify = require('browserify')

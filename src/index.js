@@ -154,11 +154,11 @@ export class VCPClient {
    * add Roster using Roster Web API.
    *
    * @param {String} cid - cid of roster
-   * @param {Object} params - parameter for Roster API
-   * @param {String} params.name - name of roster
-   * @param {String} params.kana - kana of roster
-   * @param {String} params.sender_name - name of sender
-   * @param {String} params.sender_name_kana - kana of sender
+   * @param {Object} options - options for Roster API
+   * @param {String} options.name - name of roster
+   * @param {String} options.kana - kana of roster
+   * @param {String} options.sender_name - name of sender
+   * @param {String} options.sender_name_kana - kana of sender
    * @returns {Promise} resolve when roster result fetched, reject otherwise
    */
   addRoster(cid, options = {}) {
@@ -185,11 +185,11 @@ export class VCPClient {
    * update Roster using Roster Web API.
    *
    * @param {String} cid - cid of roster
-   * @param {Object} params - parameter for Roster API
-   * @param {String} params.name - name of roster
-   * @param {String} params.kana - kana of roster
-   * @param {String} params.sender_name - name of sender
-   * @param {String} params.sender_name_kana - kana of sender
+   * @param {Object} options - options for Roster API
+   * @param {String} options.name - name of roster
+   * @param {String} options.kana - kana of roster
+   * @param {String} options.sender_name - name of sender
+   * @param {String} options.sender_name_kana - kana of sender
    * @returns {Promise} resolve when roster result fetched, reject otherwise
    */
   updateRoster(cid, options = {}) {

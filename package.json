@@ -2,6 +2,7 @@
   "name": "vcp-service-client",
   "description": "RICOH Visual Communication Platform service client for javascript",
   "version": "1.0.3",
+  "author": "Ricoh Company Ltd.",
   "bugs": {
     "url": "http://github.com/ricohvcp/vcp-service-client/issues"
   },

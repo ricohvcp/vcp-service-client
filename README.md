@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/vcp-service-client.svg)](http://badge.fury.io/js/vcp-service-client)
 [![Dependency Status](https://gemnasium.com/ricohvcp/vcp-service-client.svg)](https://gemnasium.com/ricohvcp/vcp-service-client)
-
+[![Build Status](https://travis-ci.org/ricohvcp/vcp-service-client.svg?branch=master)](https://travis-ci.org/ricohvcp/vcp-service-client)
 
 ## DESCRIPTION
 
@@ -354,7 +354,6 @@ $ npm test
 ## run test on browser and get coverage
 $ npm run test-browser
 ```
-
 
 ## LICENSE
 

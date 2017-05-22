@@ -11,7 +11,6 @@ let gulp = require('gulp')
   , source = require('vinyl-source-stream')
   , uglify = require('gulp-uglify');
 
-
 /**
  * |-- config
  * |   `-- config.js
@@ -79,7 +78,7 @@ gulp.task('build:browserify', ['build:babel'], (done) => {
 
 // build src for browser
 gulp.task('build', ['build:browserify'], () => {
-  gulp.src('build/browser/bundle.js')
+  return gulp.src('build/browser/bundle.js')
       .pipe(uglify())
       .pipe(rename({
         extname: '.min.js',
@@ -87,29 +86,31 @@ gulp.task('build', ['build:browserify'], () => {
       .pipe(gulp.dest('./build/browser'));
 });
 
-// run test on mocha and get coverage
-gulp.task('test', ['build:babel'], (cb) => {
-  gulp.src('build/src/**/*.js')
+// prepare for coverage report
+gulp.task('pre-test', ['build:babel'], () => {
+  return gulp.src('build/src/**/*.js')
       .pipe(istanbul())
-      .pipe(istanbul.hookRequire())
-      .on('finish', () => {
-        let option = {
-          reporter: 'spec',
-        };
-        if (process.argv[4]) {
-          // --env option comes here
-          option.grep = process.argv[4];
-        }
-        gulp.src('build/test/*.js')
-          .pipe(mocha(option))
-          .pipe(istanbul.writeReports({
-            dir:        'tmp',
-            reporters:  ['html', 'text'],
-            reportOpts: { dir: 'tmp' },
-          }))
-          .on('end', cb)
-          .on('error', cb);
-      });
+      .pipe(istanbul.hookRequire());
+});
+
+// run test on mocha and get coverage
+gulp.task('test', ['pre-test'], () => {
+  let option = {
+    reporter: 'spec',
+  };
+  if (process.argv[4]) {
+    // --env option comes here
+    option.grep = process.argv[4];
+  }
+
+  return gulp.src('build/test/*.js')
+    .pipe(mocha(option))
+    .on('error', () => process.exit(1))
+    .pipe(istanbul.writeReports({
+      dir:        'tmp',
+      reporters:  ['html', 'text'],
+      reportOpts: { dir: 'tmp' },
+    }));
 });
 
 // clean temporally files

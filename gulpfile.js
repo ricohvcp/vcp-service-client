@@ -9,7 +9,8 @@ let gulp = require('gulp')
   , mocha = require('gulp-mocha')
   , rename = require('gulp-rename')
   , source = require('vinyl-source-stream')
-  , uglify = require('gulp-uglify');
+  , uglify = require('gulp-uglify')
+  , assert = require('assert');
 
 /**
  * |-- config
@@ -31,6 +32,19 @@ let gulp = require('gulp')
  * |       `-- *.js
  * `-- tmp (coverage etc)
  */
+
+// verify version
+gulp.task('verify-version', () => {
+  /* eslint global-require:0, no-process-env:0 */
+  let packageVer = require('./package.json').version;
+  let tagVer = process.env.TRAVIS_TAG;
+
+  if (tagVer) {
+    tagVer = tagVer.slice(1); // remove prefix 'v'. ('v1.0.0' -> '1.0.0')
+    assert.equal(packageVer, tagVer, 'Package version and tagged version are mismatched.');
+  }
+});
+
 // eslint all javascripts including setting/config files
 gulp.task('lint', () => {
   return gulp.src(['src/**/*.js', 'test/**/*.js', 'gulpfile.js', '*.conf.js'])
@@ -94,7 +108,7 @@ gulp.task('pre-test', ['build:babel'], () => {
 });
 
 // run test on mocha and get coverage
-gulp.task('test', ['pre-test'], () => {
+gulp.task('test', ['pre-test', 'verify-version'], () => {
   let option = {
     reporter: 'spec',
   };

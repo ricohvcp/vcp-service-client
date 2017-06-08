@@ -3,3 +3,9 @@ node_js:
   - "6.10.3"
 before_install:
   - "openssl aes-256-cbc -K $encrypted_ed923d2f8881_key -iv $encrypted_ed923d2f8881_iv -in config/config.js.enc -out config/config.js -d"
+deploy:
+  provider: npm
+  on:
+    tags: true
+  api_key:
+    secure: acRT600z9O0GqYFKCTb0AGMj53yalaTxBLKK9ho4bdD4bMkP13/EAdPY967zCX4nE9oV8YTPSftbSqixfK0lQ5hcW+THhD7UHo+oEXlkjFyzNCRs34Mimf7xmoHTZ4muz/nX8wCMIwnTDRZVNQ0iRGlYIl3L08Xi0tcX37Z9BESC/4Qg99yk60bRqTXdnELKA3a+TS59pc9xlfJqrK/dtZPnqJOq3rlTuXDL2Bf/hyivOgenKHZT/rHvRoj4g1LSf5rzNHHAdU5z1WZILx+sOCCNxcWiIMK6g4XbKH32NWU1ndWh13Rdtg8e/NDSRH+AwqPNgYM9iE610L0W6TmQwZwi4FrDmOyK6gOEVejBlnpXfnQVrtaxQYtDxCvNb88xBdteL6wtTyAF5XO8RmeKLrQbDKddU2eHdvEi/eFbN4n2c+9U5Lz/ml8VevVV13mtfd9jWNzyAv1u2vOBrLvVIKXevrBYFnJCAcf6LBbxW11RxR14Lkuzx52msEbngpuzO9caDx2cEwSMM1Yer2u/USlJEXdg6cBaaoG0cSHaR4SFMBKnOKh0SLZdn9uTs1S4KTYnKD36RzKcb0Q6mazavRWcTSrjvnN68yP3ksgSWT3d9FoAsWG2cpUotlXMRPykiU0T65dsqbzYGr8QbC8PC5nBdhYWn1DspA0f35kuaFo=
